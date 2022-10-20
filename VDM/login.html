@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<div class=" card border well rounded-5 shadow-lg">
+  <div class="card-title rounded-5 py-1 px-3 text-center well border border-danger shadow-lg bg-danger text-white">
+    LOGIN
+  </div>
+  <div class="card-body">
+    <form action="" class=" form-group text-dark">
+      <label for="email" class="form-label">UserType:</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text"><i class="fa fa-users"></i></span>
+        <select title="Select User" class="form-select text-center border-dark  id=" sel1" name="sellist1" required>
+          <option title="Select" class="text-danger text-center">Select</option>
+          <option title="Vendor" class="text-danger text-center" value=" Vendor">Vendor</option>
+          <option title="Division" class="text-danger text-center" value="Division">Division</option>
+        </select>
+      </div>
+
+      <label for="email" class="form-label">UserName:</label>
+      <div class="input-group mb-3  ">
+        <span class="input-group-text  ">U</span>
+        <input type="text" class="form-control  border-dark" placeholder="Username" name="usrname" required />
+      </div>
+
+      <div class="mb-3">
+        <label for="pwd" class="form-label">Password:</label>
+        <input type="password" class="form-control border-dark" id="pwd" placeholder="Enter password" name="pswd"
+          required />
+      </div>
+
+      <div>
+        <button type=" submit" class=" form-control btn btn-primary border-primary " title="Submit">
+          Submit <i class="fa fa-sign-in"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
