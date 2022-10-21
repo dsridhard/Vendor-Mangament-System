@@ -13,6 +13,15 @@
 <script src="assest/js/commonJs.js"></script>
 
 </head>
+
+<script>
+    $(document).ready(() => {
+      $('#header').load('header.html')
+      $('#main').load('main.html')
+      $('#footer').load('footer.html')
+    });
+  </script>
+
 <script>
 $(document).ready(function (e){
 
@@ -182,6 +191,7 @@ refreshToken();
 
 
 <body id="maindashboard">
+ <header id="header"></header>
 <div class="ajax-loader" 
 style="display:none">
 <img src='../images/ajax-loader.gif'  />
@@ -338,5 +348,10 @@ style="display:none">
 		</div>
 	</div>
 	</div>
+	
+
+ 
+  <footer class="footer" id="footer"></footer>
+	
 </body>
 </html>

@@ -10,7 +10,7 @@ var key=sessionStorage.getItem('key');
 			}
 		else{
 
-			 $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/",2))+'/signin.html');	
+			 $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/",2))+'/index.html');	
 
 
 			}
