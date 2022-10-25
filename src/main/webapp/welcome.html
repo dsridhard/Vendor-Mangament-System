@@ -6,108 +6,114 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>VDM-Dashboard</title>
-<link rel="icon" type="image/x-icon" href="./assest/images//IRLogo.png">
-<link rel="stylesheet" type="text/css" href="./assest/css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="./assest/js/bootstrap.min.js" />
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" type="text/css" class="./assest/css/all.min.css" />
-<script src="./assest/js/all.min.js"></script>
-<script src="./assest/js/jquery.js"></script>
+<link rel="icon" type="image/x-icon" href="./assets/images//IRLogo.png">
+<link rel="stylesheet" type="text/css" href="./assets/css/bootstrap.min.css" />
+<script src="./assets/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" class="./assets/css/all.min.css" />
+<script src="./assets/js/all.min.js"></script>
+<script src="./assets/js/jquery.js"></script>
+
+
 <script>
     $(document).ready(() => {
 
         $('#header').load('header.html')
-
+        $('#login').load('login.html')
+        $('#registraton').load('registration.html')
         $('#footer').load('footer.html')
+        $(".navigate").on('click', function () {
+            var $this = $(this)
+            target = $this.data('target');
+
+            $('#content').load(target + '.html');
+            return false;
+        })
+
     });
 </script>
 </head>
 
 <body class="overflow-hidden ">
     <header id="header"></header>
-    <div class=" text-center mt-3 mx-3"> Welcome <div class="btn-group">
-            <button type="button" class="btn btn-danger">User</button>
-            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <span class="visually-hidden">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu">
+    <div class="container-fluid mt-2">
+        <div class="row flex-wrap">
+            <div class=" offset-2 col-sm-8 mt-2">Welcome <strong>User</strong></div>
+            <div class="col-sm-2">
+                <div class=" text-center mt-1 mx-3">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-danger"><i class="fa fa-home"
+                                aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">HOME</span>
+                        </button>
+                        <ul class="dropdown-menu">
 
-                <li><a class="dropdown-item show active" data-bs-toggle="pill" href="#"><i class="fas fa-user mx-3"
-                            aria-hidden="true"></i>MyProfile</a></li>
-                <li><a class="dropdown-item" data-bs-toggle="pill" href="#"> <i class="fa fa-wrench mx-3"
-                            aria-hidden="true"></i>Setting</a>
-                </li>
-                <li>
+                            <li><a class="dropdown-item show active" data-toggle="pill" href="#"><i
+                                        class="fas fa-user mx-3" aria-hidden="true"></i>MyProfile</a></li>
+                            <li><a class="dropdown-item" data-toggle="pill" href="#"> <i class="fa fa-wrench mx-3"
+                                        aria-hidden="true"></i>Setting</a>
+                            </li>
+                            <li>
 
-                    <hr class="dropdown-divider">
+                                <hr class="dropdown-divider">
 
-                </li>
-                <li><a class="dropdown-item" data-bs-toggle="pill" href="#"> <i class=" mx-3 fa fa-arrow-circle-left"
-                            aria-hidden="true"></i>Logout</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row py-3 justify-content-center">
-
-            <div class="row  ">
-                <div class="col-3 ">
-                    <ul class="nav nav-pills flex-column " id="vertical-tab">
-                        <li class="nav-item ">
-                            <a class="nav-link active" data-bs-toggle="pill" href="#main">
-                                Home
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" data-bs-toggle="pill" href="#demo">
-                                Contact
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" data-bs-toggle="pill" href="#demo2">
-                                Profile
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-9 ">
-                    <div class="tab-content py-3 text-center" id="Vertical-TabContent ">
-                        <div class="tab-pane fade show active shadow mx-3 " id="main">
-                            <div class="mt-1 mx-3 py-3">
-                                <p class="text-center text-dark mx-3">Register</p>
-                                <form action="" method="get">
-                                    <label for="email" class="form-label">UserName:</label>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">@</span>
-                                        <input type="text" class="form-control" placeholder="Username" name="usrname">
-                                    </div>
-                                    <label for="email" class="form-label">Password:</label>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">@</span>
-                                        <input type="text" class="form-control" placeholder="Username" name="usrname">
-                                    </div>
-                                    <div class="input-group mb-3">
-
-                                        <button type="submit" class="btn btn-primary">Register</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade shadow mx-3" id="demo">
-                            2Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla,
-                            nesciunt?
-                        </div>
-                        <div class="tab-pane fade shadow mx-3" id="demo2">
-                            3 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla,
-                            nesciunt?
-                        </div>
+                            </li>
+                            <li><a class="dropdown-item" data-toggle="pill" href="#"> <i
+                                        class=" mx-3 fa fa-arrow-circle-left" aria-hidden="true"></i>Logout</a>
+                            </li>
+                        </ul>
                     </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row py-3 justify-content-center">
+            <div class="col-md-3 ">
+                <!-- <nav class="nav nav-pills text-center flex-column nav-stacked">
+                    <li class="nav-items"> <a href="#" data-bs-toggle="pills" data-target="registration"
+                            class=" nav-link navigate">Demo1</a>
+                    </li>
+                    <li class="nav-items "> <a href="#" data-bs-toggle="pill" data-target="main"
+                            class=" nav-link navigate ">Demo2</a>
+                    </li>
+                    <li class="nav-items"> <a href="#" data-bs-toggle="pill" data-target="login"
+                            class=" nav-link navigate ">Demo3</a>
+                    </li>
+                    <li class="nav-items"> <a href="#" data-bs-toggle="pill" data-target=""
+                            class=" nav-link navigate ">Demo4</a>
+                    </li>
+
+
+                </nav> -->
+                <ul class="nav nav-pills flex-column  text-center" id=" vertical-tab">
+                    <li class="nav-item ">
+                        <a class="nav-link active  navigate" data-bs-toggle="pill" data-target="registration">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link navigate" data-bs-toggle="pill" data-target="login">
+                            Contact
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link navigate" data-bs-toggle="pill" data-target="main">
+                            Profile
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+            <div class=" col-md-9">
+                <div id="content">
+                    <div id="registraton"></div>
                 </div>
             </div>
         </div>
     </div>
+
+
 
     <footer class="footer" id="footer"></footer>
 </body>
