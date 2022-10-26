@@ -6,14 +6,14 @@ function checksession(){
 
 
 var USER_TYPE=sessionStorage.getItem('usertype');
-alert("userType :: "+USER_TYPE);
+//alert("userType :: "+USER_TYPE);
 
 var key=sessionStorage.getItem('key');
 //alert(key);
 		if(key!='' && key!=null){
 
 
-         alert("checksession not null");
+       //  alert("checksession not null");
          
          if(USER_TYPE!='' &&USER_TYPE!=null  && USER_TYPE==USER_TYPE){
          
@@ -62,9 +62,9 @@ function refreshToken(){
 			  console.log(access_token);
 			 
 			 if(access_token!=''){
-				alert("session token set");
+				//alert("session token set");
 			  sessionStorage.setItem('key', access_token); 
-			    alert("session token get");
+			   // alert("session token get");
 			    }
 });
 	
