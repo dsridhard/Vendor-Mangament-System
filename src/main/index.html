@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<div id="head"></div>
+
+<body>
+  <!-- Header -->
+  <header id="header"></header>
+  <!-- body -->
+  <section class="mx-3">
+    <div class="row d-flex position-relative">
+      <div class="col-xl-9 col-lg-4 w-lg-100 col-sm">
+        <img class="img-fluid" src=" ./assets/images/main.jpeg" alt="train" />
+      </div>
+      <div class="col-xl-3 col-lg-9 col-sm">
+        <div id="login" class="mt-4"></div>
+      </div>
+    </div>
+  </section>
+  <!-- footer -->
+  <footer id="footer" class="bg-danger text-center"></footer>
+</body>
+<script src="./assets/js/bootstrap.min.js"></script>
+<script src="./assets/js/jquery.js"></script>
+<script src="./assets/js/all.min.js"></script>
+<script>
+  $(document).ready(() => {
+    $('#head').load('head.html')
+    $("#header").load("header.html");
+    $("#login").load("login.html");
+    $("#footer").load("footer.html");
+  });
+</script>
+
+</html>
