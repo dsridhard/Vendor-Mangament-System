@@ -1,22 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<link>
-<meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>VDM-Dashboard</title>
-<link rel="icon" type="image/x-icon" href="./assets/images//IRLogo.png">
-<link rel="stylesheet" type="text/css" href="./assets/css/bootstrap.min.css" />
+<div id="head"></div>
+
+<body>
+    <header id="header"></header>
+    <div class="container-fluid mt-2 ">
+        <div class="row">
+            <div class="col">Welcome <span data-bs-toggle="tooltip" title="User" class="badge bg-primary">User</span>
+            </div>
+            <div class="col offset-lg-8">
+                <button class='btn btn-outline-success'>Logout</button>
+            </div>
+
+        </div>
+        <div class="row py-3">
+            <div class="col-md-3 col-sm-5">
+                <ul class="nav nav-pills flex-column  text-center" id=" vertical-tab">
+                    <li class="nav-item ">
+                        <a class="nav-link active  navigate" data-bs-toggle="pill" data-target="registration">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link navigate" data-bs-toggle="pill" data-target="login">
+                            Contact
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link navigate" data-bs-toggle="pill" data-target="index">
+                            Profile
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+            <div class=" col rounded-5 ">
+                <div class="col" id="content">
+                    <div id="registraton"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer class="footer" id="footer"></footer>
+</body>
 <script src="./assets/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" class="./assets/css/all.min.css" />
 <script src="./assets/js/all.min.js"></script>
 <script src="./assets/js/jquery.js"></script>
+<script src="./assets/css/footer.css"></script>
 
 
 <script>
     $(document).ready(() => {
-
+        $('#head').load('head.html')
         $('#header').load('header.html')
         $('#login').load('login.html')
         $('#registraton').load('registration.html')
@@ -31,91 +70,5 @@
 
     });
 </script>
-</head>
-
-<body class="overflow-hidden ">
-    <header id="header"></header>
-    <div class="container-fluid mt-2">
-        <div class="row flex-wrap">
-            <div class=" offset-2 col-sm-8 mt-2">Welcome <strong>User</strong></div>
-            <div class="col-sm-2">
-                <div class=" text-center mt-1 mx-3">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-danger"><i class="fa fa-home"
-                                aria-hidden="true"></i></button>
-                        <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">HOME</span>
-                        </button>
-                        <ul class="dropdown-menu">
-
-                            <li><a class="dropdown-item show active" data-toggle="pill" href="#"><i
-                                        class="fas fa-user mx-3" aria-hidden="true"></i>MyProfile</a></li>
-                            <li><a class="dropdown-item" data-toggle="pill" href="#"> <i class="fa fa-wrench mx-3"
-                                        aria-hidden="true"></i>Setting</a>
-                            </li>
-                            <li>
-
-                                <hr class="dropdown-divider">
-
-                            </li>
-                            <li><a class="dropdown-item" data-toggle="pill" href="#"> <i
-                                        class=" mx-3 fa fa-arrow-circle-left" aria-hidden="true"></i>Logout</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="row py-3 justify-content-center">
-            <div class="col-md-3 ">
-                <!-- <nav class="nav nav-pills text-center flex-column nav-stacked">
-                    <li class="nav-items"> <a href="#" data-bs-toggle="pills" data-target="registration"
-                            class=" nav-link navigate">Demo1</a>
-                    </li>
-                    <li class="nav-items "> <a href="#" data-bs-toggle="pill" data-target="main"
-                            class=" nav-link navigate ">Demo2</a>
-                    </li>
-                    <li class="nav-items"> <a href="#" data-bs-toggle="pill" data-target="login"
-                            class=" nav-link navigate ">Demo3</a>
-                    </li>
-                    <li class="nav-items"> <a href="#" data-bs-toggle="pill" data-target=""
-                            class=" nav-link navigate ">Demo4</a>
-                    </li>
-
-
-                </nav> -->
-                <ul class="nav nav-pills flex-column  text-center" id=" vertical-tab">
-                    <li class="nav-item ">
-                        <a class="nav-link active  navigate" data-bs-toggle="pill" data-target="registration">
-                            Home
-                        </a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link navigate" data-bs-toggle="pill" data-target="login">
-                            Contact
-                        </a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link navigate" data-bs-toggle="pill" data-target="main">
-                            Profile
-                        </a>
-                    </li>
-                </ul>
-
-            </div>
-            <div class=" col-md-9">
-                <div id="content">
-                    <div id="registraton"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <footer class="footer" id="footer"></footer>
-</body>
 
 </html>

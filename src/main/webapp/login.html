@@ -8,10 +8,10 @@
       <label for="email" class="form-label">UserType:</label>
       <div class="input-group mb-3">
         <span class="input-group-text"><i class="fa fa-users"></i></span>
-        <select title="Select User" class="form-select text-center border-dark  id=" sel1" name="sellist1" required>
-          <option title="Select" class="text-danger text-center">Select</option>
-          <option title="Vendor" class="text-danger text-center" value=" Vendor">Vendor</option>
-          <option title="Division" class="text-danger text-center" value="Division">Division</option>
+        <select  id="usertype" name="usertype" required>
+          <option value="">Select</option>
+          <option value="VENDOR">Vendor</option>
+          <option  value="DIVISIONAL">Division</option>
         </select>
       </div>
 
@@ -23,7 +23,7 @@
 
       <div class="mb-3">
         <label for="pwd" class="form-label">Password:</label>
-        <input type="password" class="form-control border-dark" id="password" placeholder="Enter password" name="pswd"
+        <input type="password" class="form-control border-dark" id="password" placeholder="Enter password" name="password"
           required />
       </div>
 
@@ -42,7 +42,11 @@ $(document).ready(function (e){
 	alert("hello");
 		e.preventDefault();
 		var username=$("#username").val();
+		alert("username  "+username);
 		var password=$("#password").val();
+		alert("password  "+password);
+		var userLoginType=$("#usertype").val();
+		alert("userLoginType  "+userLoginType);
 		var settings = {
 				  "url": "http://203.176.113.183/VendorAppLogin/oauth/token",
 				  "method": "POST",
@@ -55,7 +59,7 @@ $(document).ready(function (e){
 				    "username":username ,
 				    "password": password,
 				    "grant_type": "password",
-				    "userLoginType": "DIVISIONAL"
+				    "userLoginType": userLoginType
 				  }
 				};
 
@@ -69,12 +73,16 @@ $(document).ready(function (e){
 				 // document.cookie=access_token; 
 				 // document.cookie = "user = 'access_token'; max-age=60";
 				 // alert( document.cookie);
+				    
+				 
 				 if(access_token!=''){
 				  sessionStorage.setItem('key', access_token); 
 				    //A value meant to expire in 5 minutes
+				    
 				    sessionStorage.setItem('username', username);
 				    sessionStorage.setItem('password', password);
-				    sessionStorage.setItem('usertype', "DIVISIONAL");
+				    sessionStorage.setItem('usertype', userLoginType);
+				   
 					 $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/",2))+'/dashboard.html');	
 				 }
 				 else{

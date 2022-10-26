@@ -17,64 +17,139 @@
 <script>
     $(document).ready(() => {
       $('#header').load('header.html')
-      $('#main').load('main.html')
+    
       $('#footer').load('footer.html')
     });
   </script>
 
 <script>
 $(document).ready(function (e){
-
+	var username=sessionStorage.getItem('username');
 	checksession();
-var USER_TYPE=sessionStorage.getItem('usertype');
-var username=sessionStorage.getItem('username');
+	 fetchbasicdetails();// response
+	
+
+
+
+	
 //alert(username);
 
-if(USER_TYPE!='' &&USER_TYPE!=null  && USER_TYPE=='DIVISIONAL'){
 
-   var accesstoken=sessionStorage.getItem('key');
-   $.ajax( {
-			  url: "http://203.176.113.183/VendorAppServices/divisional/userdetails/"+username,
-			  method: "GET",
-			  timeout: 0,
-			  headers: {
-			    "Authorization": "Bearer "+accesstoken
-			  },
+ function fetchbasicdetails()
+	  {
+		  var accesstoken = sessionStorage.getItem('key');
+
+			alert("accesstoken1"+accesstoken);
+			   $.ajax( {
+						  url: "http://203.176.113.183/VendorAppServices/divisional/userdetails/"+username,
+						  method: "GET",
+						  timeout: 0,
+						  headers: {
+						    "Authorization": "Bearer "+accesstoken
+						  },
+			    success: function(response){
+				console.log(JSON.stringify(response));
+				$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
+				    vendorcategorylist(); /// wait
+					vendorconstitutionlist();
+					 trainlist(); 
+				
+				
+			},
+			 error:function(xhr,status){
+				if(xhr.status=='401'){
+					alert("access denied, please refresh the page again fachebasicdetails");
+					refreshToken();
+					fetchbasicdetails();
+					 
+					}
+			}  
+			});
+			   
+			   
+			
+			// return accesstoken;  
+
+  }
+
+
+
+
+  function  commongetmoethod(url)
+  {
+	  var accesstoken = sessionStorage.getItem('key');
+
+	  $.ajax( {
+		  url: url,
+		  method: "GET",
+		  timeout: 0,
+		  headers: {
+		    "Authorization": "Bearer "+accesstoken
+		  },
 success: function(response){
-	console.log(JSON.stringify(response));
-	$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
-	//fetchCataegoryList();
-	
+	return reponse
+
 },
 error:function(xhr,status){
-	if(xhr.status=='401'){
+if(xhr.status=='401'){
+	alert("access denied, please refresh the page again ");
+	refreshToken();
+	common(url);
+	}
+}  
+});
+	  
+  }
+  
+  
+  
+  function  commonpostmoethod(url)
+  {
+	  var accesstoken = sessionStorage.getItem('key');
 
-alert("access denied, please refresh the page again");
-refreshToken();
-		}
+	  $.ajax( {
+		  url: url,
+		  method: "POST",
+		  timeout: 0,
+		  headers: {
+		    "Authorization": "Bearer "+accesstoken
+		  },
+		  "data": {
+			    "username":username ,
+			    "password": password,
+			    "grant_type": "password",
+			    "userLoginType": "DIVISIONAL"
+			  },
+success: function(response){
+	return reponse
+
+},
+error:function(xhr,status){
+if(xhr.status=='401'){
+	alert("access denied, please refresh the page again 8ii");
+	refreshToken();
+	common(url);
+	}
+}  
+});
+	  
+  }
+  
 	
-}
-
-			  
-			});
-
-   
 	
-
-
-}
-
-
-
 $("#logoutlink").on("click",function(){
+	
 	sessionStorage.clear();
 	 $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/",2))+'/index.html');	
 		
 	
 });
 	
-
+ 
+function vendorcategorylist(){
+	
 var accesstoken = sessionStorage.getItem('key');
+ alert("vendorcategorylist "+accesstoken);
 
 $.ajax( {
 	  url: "http://203.176.113.183/VendorAppServices/divisional/vendorcategorylist",
@@ -85,28 +160,34 @@ $.ajax( {
 	  },
 success: function(response){
 console.log(JSON.stringify(response));
-$('#vendorcategoryInput').empty();
-$('#vendorcategoryInput').append($('<option></option>').val("").html("---select---"));
+$('#vendorCategoryId').empty();
+$('#vendorCategoryId').append($('<option></option>').val("").html("---select---"));
 
 $.each(response, function(i, p) {
 
-$('#vendorcategoryInput').append($('<option></option>').val(p.id).html(p.categoryName));
+$('#vendorCategoryId').append($('<option></option>').val(p.id).html(p.categoryName));
 });	
 //$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
 
 },
-error:function(xhr,status){
+ error:function(xhr,status){
 if(xhr.status=='401'){
-
-alert("access denied, please refresh the page again");
-refreshToken();
+	console.log("test5");
+	//alert("ffff"+vendorcategorylist);
+//	refreshToken();
+//	fetchbasicdetails();
+	//vendorcategorylist();
 }
 
-}
+} 
 });
 
+}
 
-
+function vendorconstitutionlist(){
+	
+	var accesstoken = sessionStorage.getItem('key');
+	alert("vendorconstitutionlist "+accesstoken);
 $.ajax( {
 	  url: "http://203.176.113.183/VendorAppServices/divisional/vendorconstitutionlist",
 	  method: "GET",
@@ -116,32 +197,37 @@ $.ajax( {
 	  },
 success: function(response){
 console.log(JSON.stringify(response));
-$('#venderconstitutionlist').empty();
-$('#venderconstitutionlist').append($('<option></option>').val("").html("---Select---"));
+$('#vendorConstitutionId').empty();
+$('#vendorConstitutionId').append($('<option></option>').val("").html("---Select---"));
 
 $.each(response, function(i, p) {
 
-$('#venderconstitutionlist').append($('<option></option>').val(p.id).html(p.constitutionName));
+$('#vendorConstitutionId').append($('<option></option>').val(p.id).html(p.constitutionName));
 });	
 //$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
 
 },
-error:function(xhr,status){
+  error:function(xhr,status){
 if(xhr.status=='401'){
+	console.log("test6");
+//alert("access denied, please refresh the page again vendorconstitutionlist ");
+//refreshToken();
+//fetchbasicdetails();
+//vendorconstitutionlist();
 
-alert("access denied, please refresh the page again");
-refreshToken();
+
 }
 
-}
+}  
 
 });
+}
+ 
 
-
-
-//http://203.176.113.183/VendorAppServices/divisional/trainlist trainlistapi 
-
-
+function trainlist(){
+	
+var accesstoken = sessionStorage.getItem('key');
+alert("trainlist "+accesstoken);
 	  $.ajax( {
 		  url: "http://203.176.113.183/VendorAppServices/divisional/trainlist",
 		  method: "GET",
@@ -151,39 +237,108 @@ refreshToken();
 		  },
 success: function(response){
 console.log(JSON.stringify(response));
-$('#trainlistapi').empty();
+$('#trainsId').empty();
 /* $('#trainlistapi').append($('<option></option>').val("").html("---select---")); */
 
 $.each(response, function(i, p) {
 
-    $('#trainlistapi').append($('<option></option>').val(p.trainNo).html(p.trainNo+" - "+p.trainName));
-    $('#trainlistapi').multiselect('rebuild');
+    $('#trainsId').append($('<option></option>').val(p.trainNo).html(p.trainNo+" - "+p.trainName));
+    $('#trainsId').multiselect('rebuild');
 });	
 
 //$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
 
 },
-error:function(xhr,status){
+ error:function(xhr,status){
 if(xhr.status=='401'){
+//alert("access denied, please refresh the page again trainlist");
+//refreshToken();
+//fetchbasicdetails();
+//trainlist();
 
-alert("access denied, please refresh the page again");
-refreshToken();
 	}
-
 }
 
 	});
 	  
-	  $('#trainlistapi').multiselect(
+}	 
+
+$('#trainsId').multiselect(
 				{
 					includeSelectAllOption: true,
 					 enableFiltering: true,
 			          
-				});  	  
+				});  
+
+
+
+
+
+
+$("#vendorRegistrationForm").submit(function(e){
+	  
+	//alert("hello");
+	var nameofvendor = $('#firstName').val();
+	alert(nameofvendor);
+	var trainNoId=[];
+		e.preventDefault();
+		 accesstoken = sessionStorage.getItem('key');
+		 var serializedReturn = $(this).serializeArray(); 
+		//console.log("/////"+serializedReturn);
+		 var train=$("#trainsId").val();
+          alert("train"+train);
+                for(var k=0;k<train.length;k++){
+
+trainNoId[k]=parseInt(train[k]);
+                    }
+console.log(trainNoId);
+			
+		 var loginFormObject = {};
+		 $.each(serializedReturn,
+		     function(i, v) {
+		         loginFormObject[v.name] = v.value;
+		     });
+		 loginFormObject["trainsId"]=trainNoId;
+	     //console.log(JSON.stringify(loginFormObject));
+		  $.ajax( {
+			  url: "http://203.176.113.183/VendorAppServices/divisional/registernewvendor",
+			  method: "POST",
+			
+			  headers: {
+			    "Authorization": "Bearer "+accesstoken,
+			    "Content-Type": "application/json"
+			  },
+			  data: JSON.stringify(loginFormObject),
+	success: function(response){
+		alert("successfully register");
+		alert(response.message);
+	//$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
+
+	},
+	error:function(xhr,status){
+	if(xhr.status=='401'){
+
+	alert("access denied, please refresh the page again");
+	refreshToken();
+		}
+
+	},
 	
+	
+	
+
+		});
+
+
+		
+		
+  });
+
 
 	
 });
+
+
 
 
 
@@ -194,7 +349,7 @@ refreshToken();
  <header id="header"></header>
 <div class="ajax-loader" 
 style="display:none">
-<img src='../images/ajax-loader.gif'  />
+<!-- <img src='../images/ajax-loader.gif'  /> -->
 <br>Loading..</div> 
 <div class="row customheight m-0 h-100"  >
 <div class="col-12 p-2 bg-white h-100 no-print"  >
@@ -221,49 +376,61 @@ style="display:none">
 </div>
 		
 		<div class="row m-0 p-2 ml-2 dashboardmainsection custom-height-main-content" style="background-color:#f4f6f9;overflow:auto"  id="dashboardmainsection">
-			<form>
+		<form  method="post" id="vendorRegistrationForm" name="vendorRegistrationForm">
                 <div class="note">
                    <p> Vendor Registration Form </p>
                 </div>
   <div class="form-row">
     <div class="form-group col-md-6">
-      <label for="inputnameofvendor">Name of the Vendor</label>
-      <input type="text" class="form-control" id="nameofvendor" placeholder="Name of Vendor" required>
+      <label for="inputnameofvendor">First Name</label>
+      <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Name of Vendor" >
     </div>
     
-    
      <div class="form-group col-md-6">
+       <div class="form-group col-md-6">
+      <label for="inputnameofvendor">Last Name</label>
+      <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Name of Vendor" >
+    </div>
+    </div>
+    
+  </div>
+  <div class="form-row">
+   <div class="form-group col-md-6">
       <label for="inputconstitution">Constitution of the Vendor</label>
       <div class="dropdown">
-      <select id="venderconstitutionlist" name="venderconstitutionlist" class="form-control">
+      <select id="vendorConstitutionId" name="vendorConstitutionId" class="form-control">
       </select>
       </div>
     </div>
-  </div>
+        <div class="form-group col-md-6">
+      <label for="inputpanoftheBusiness">Vendor HSN Code</label>
+      <input type="text" class="form-control" id="vendorHsnCode" name="vendorHsnCode" placeholder="" >
+    </div>
+    </div>
   
    <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputpanoftheBusiness">Pan of the Business</label>
-      <input type="text" class="form-control" id="panoftheBusiness" name="panoftheBusiness" placeholder="" required>
+      <input type="text" class="form-control" id="vendorPan" name="vendorPan" placeholder="" >
     </div>
     
     
       <div class="form-group col-md-6">
       <label for="inputDetailsofgoods"> Details of Goods</label>
-      <input type="text" class="form-control" id="Detailsofgoods" name="Detailsofgoods" placeholder="" required>
-    </div>
+      <input type="text" class="form-control" id="goodsDetails" name="goodsDetails" placeholder="" >
+    </div> 
   </div>
   
   <div class="form-row">
-    <div class="form-group col-md-6">
+   <!--  <div class="form-group col-md-6">
       <label for="inputdetailsofservice">Details of service</label>
-      <input type="text" class="form-control" id="detailsofservice" name="detailsofservice" placeholder="" required>
-    </div>
+      <input type="text" class="form-control" id="detailsofservice" name="detailsofservice" placeholder="" >
+    </div> -->
     
     
       <div class="form-group col-md-6">
       <label for="inputcategoryofvendor">Category of Vendor </label>
-      <select id="vendorcategoryInput" name="vendorcategoryInput" class="form-control" >
+      <select id="vendorCategoryId" name="vendorCategoryId" class="form-control" >
       </select>
     </div>
     
@@ -274,7 +441,7 @@ style="display:none">
     <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputtrainlistapi">Train Number</label>
-      <select id="trainlistapi" name="trainlistapi" class="form-control"  multiple="multiple">
+      <select id="trainsId" name="trainsId" class="form-control"  multiple="multiple">
       </select>
     </div>
     
@@ -285,29 +452,26 @@ style="display:none">
   
   <div class="form-group">
     <label for="inputAddress">Address</label>
-    <input type="text" class="form-control" id="inputAddress"  name="inputAddress" placeholder="please enter address ">
+    <input type="text" class="form-control" id="address"  name="address" placeholder="please enter address ">
   </div>
  
   
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputcontactno">Latest Contact No.</label>
-      <input type="number" class="form-control" id="contactno" name="contactno" required>
+      <input type="number" class="form-control" id="contactNo" name="contactNo" >
     </div>
-    <div class="form-group col-md-6">
-      <label for="inputfaxno">Latest Fax No.(if any)</label>
-      <input type="number" class="form-control" id="faxno" name="faxno" >
-    </div>
+   
   </div>
   
    <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputemailId">Latest email-Id (if any)</label>
-      <input type="email" class="form-control" id="inputemailIdCity" name="emailId">
+      <input type="email" class="form-control" id="email" name="email">
     </div>
     <div class="form-group col-md-6">
       <label for="inputgstinBygov">GSTIN alloted by the Govt</label>
-      <input type="text" class="form-control" id="gstinBygov" name="gstinBygov">
+      <input type="text" class="form-control" id="gstin" name="gstin">
     </div>
   </div>
   <div class="form-row">
@@ -316,13 +480,17 @@ style="display:none">
    </div>
    
   <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputbankBranchName">Bank & Branch Name</label>
-      <input type="text" class="form-control" id="bankBranchName" name="bankBranchName" required>
+    <div class="form-group col-md-4">
+      <label for="inputbankBranchName">Bank Name</label>
+      <input type="text" class="form-control" id="bankName" name="bankName" >
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-4">
+      <label for="inputbankBranchName">Bank Branch</label>
+      <input type="text" class="form-control" id="bankBranch" name="bankBranch" >
+    </div>
+    <div class="form-group col-md-4">
       <label for="inputbanAaccountNo">Bank Account Number</label>
-      <input type="text" class="form-control" id="banAaccountNo" name="banAaccountNo" required>
+      <input type="text" class="form-control" id="bankAccountNo" name="bankAccountNo" >
     </div>
   </div>
   
@@ -330,18 +498,17 @@ style="display:none">
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputifscCodes">IFSC</label>
-      <input type="text" class="form-control" id="ifscCode" name="ifscCode" required>
+      <input type="text" class="form-control" id="bankIfsc" name="bankIfsc" >
     </div>
     <div class="form-group col-md-6">
       <label for="inputmicrNo">MICR</label>
-      <input type="text" class="form-control" id="micrNo" name="micrNo" required>
+      <input type="text" class="form-control" id="bankMicr" name="bankMicr" >
     </div>
   </div>
   
   
   <div>
-        <button class="btn btn-lg btn-primary btn-block" type="button"  onclick="sendData()">Submit</button>
-         <a href="signin.html" class="vertify-register">Sign in</a>
+        <button class="btn btn-lg btn-primary btn-block" type="submit"  >Submit</button>
  <!--  <button type="submit" class="btn btn-primary">Sign in</button> -->
  </div>
 </form>

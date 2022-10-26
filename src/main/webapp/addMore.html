@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+ <script type="text/javascript">
+
+    var countInput = 1;
+
+    function showInput(){
+        document.getElementById("stop"+(countInput +1)).style.display = 'block';
+    }
+
+
+function onLoadFunction(){
+    var inputs = document.getElementsByTagName("input");
+
+    for (var i = 0; i < inputs.length; i++) { 
+        var id = inputs[i].getAttribute("id"); 
+        if ( id != "stop1" ) { 
+            document.getElementById("stop"+countInput).style.display = 'block';
+        }
+    countInput++;
+    }
+
+    countInput = 1;
+
+}
+</script>
+</head>
+<body>
+
+
+
+
+<label for="stop1">Stop 1 :</label>
+ <input type="text" id="stop1" name="stop1" /><br />
+<label for="stop2">Stop 2 :</label>
+ <input type="text" id="stop2" name="stop2" /><br />
+<label for="stop3">Stop 3 :</label>
+ <input type="text" id="stop3" name="stop3" /><br />
+<label for="stop4">Stop 4 :</label>
+ <input type="text" id="stop4" name="stop4" /><br />
+<label for="stop4">Stop 5 :</label>
+ <input type="text" id="stop5" name="stop5" /><br />
+<label for="stop6">Stop 6 :</label>
+ <input type="text" id="stop6" name="stop6" /><br />
+<label for="stop7">Stop 7 :</label>
+ <input type="text" id="stop7" name="stop7" /><br />
+<label for="stop8">Stop 8 :</label>
+ <input type="text" id="stop8" name="stop8" /><br />
+
+<button type="button" onclick="showInput"></button>
+</body>
+</html>
