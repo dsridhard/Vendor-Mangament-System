@@ -12,15 +12,11 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
 
     <script src="assets/js/commonJs.js"></script>
-    <style>
-        .fm {
-            overflow: hidden;
-            overflow-y: scroll;
-        }
-    </style>
+
 </head>
 <script>
 
@@ -63,7 +59,7 @@
                     }
                 }
             });
-    // return accesstoken;  
+            // return accesstoken;  
 
         }
 
@@ -94,167 +90,167 @@
             });
 
 
-	  $.ajax( {
-		  url: url,
-		  method: "POST",
-		  timeout: 0,
-		  headers: {
-		    "Authorization": "Bearer "+accesstoken
-		  },
-		  "data": {
-			    "username":username ,
-			    "password": password,
-			    "grant_type": "password",
-			    "userLoginType": "DIVISIONAL"
-			  },
-success: function(response){
-	return reponse
+            $.ajax({
+                url: url,
+                method: "POST",
+                timeout: 0,
+                headers: {
+                    "Authorization": "Bearer " + accesstoken
+                },
+                "data": {
+                    "username": username,
+                    "password": password,
+                    "grant_type": "password",
+                    "userLoginType": "DIVISIONAL"
+                },
+                success: function (response) {
+                    return reponse
 
-},
-error:function(xhr,status){
-if(xhr.status=='401'){
-	//alert("access denied, please refresh the page again 8ii");
-	refreshToken();
-	common(url);
-	}
-}  
-});
-	  
-  }
-  
-	
-	
-$("#logoutlink").on("click",function(){
-	
-	sessionStorage.clear();
-	 $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/",2))+'/index.html');	
-		
-	
-});
-	
- 
-function vendorcategorylist(){
-	
-var accesstoken = sessionStorage.getItem('key');
-// alert("vendorcategorylist "+accesstoken);
+                },
+                error: function (xhr, status) {
+                    if (xhr.status == '401') {
+                        //alert("access denied, please refresh the page again 8ii");
+                        refreshToken();
+                        common(url);
+                    }
+                }
+            });
 
-$.ajax( {
-	  url: "http://203.176.113.183/VendorAppServices/divisional/vendorcategorylist",
-	  method: "GET",
-	  timeout: 0,
-	  headers: {
-	    "Authorization": "Bearer "+accesstoken
-	  },
-success: function(response){
-console.log(JSON.stringify(response));
-$('#vendorCategoryId').empty();
-$('#vendorCategoryId').append($('<option></option>').val("").html("---select---"));
-
-$.each(response, function(i, p) {
-
-$('#vendorCategoryId').append($('<option></option>').val(p.id).html(p.categoryName));
-});	
-//$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
-
-},
- error:function(xhr,status){
-if(xhr.status=='401'){
-	console.log("test5");
-	//alert("ffff"+vendorcategorylist);
-//	refreshToken();
-//	fetchbasicdetails();
-	//vendorcategorylist();
-}
-
-} 
-});
-
-}
-
-function vendorconstitutionlist(){
-	
-	var accesstoken = sessionStorage.getItem('key');
-	//alert("vendorconstitutionlist "+accesstoken);
-$.ajax( {
-	  url: "http://203.176.113.183/VendorAppServices/divisional/vendorconstitutionlist",
-	  method: "GET",
-	  timeout: 0,
-	  headers: {
-	    "Authorization": "Bearer "+accesstoken
-	  },
-success: function(response){
-console.log(JSON.stringify(response));
-$('#vendorConstitutionId').empty();
-$('#vendorConstitutionId').append($('<option></option>').val("").html("---Select---"));
-
-$.each(response, function(i, p) {
-
-$('#vendorConstitutionId').append($('<option></option>').val(p.id).html(p.constitutionName));
-});	
-//$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
-
-},
-  error:function(xhr,status){
-if(xhr.status=='401'){
-	console.log("test6");
-//alert("access denied, please refresh the page again vendorconstitutionlist ");
-//refreshToken();
-//fetchbasicdetails();
-//vendorconstitutionlist();
+        }
 
 
-}
 
-}  
+        $("#logoutlink").on("click", function () {
 
-});
-}
- 
+            sessionStorage.clear();
+            $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2)) + '/index.html');
 
-function trainlist(){
-	
-var accesstoken = sessionStorage.getItem('key');
-//alert("trainlist "+accesstoken);
-	  $.ajax( {
-		  url: "http://203.176.113.183/VendorAppServices/divisional/trainlist",
-		  method: "GET",
-		  timeout: 0,
-		  headers: {
-		    "Authorization": "Bearer "+accesstoken
-		  },
-success: function(response){
-console.log(JSON.stringify(response));
-$('#trainsId').empty();
-/* $('#trainlistapi').append($('<option></option>').val("").html("---select---")); */
 
-$.each(response, function(i, p) {
+        });
 
-    $('#trainsId').append($('<option></option>').val(p.trainNo).html(p.trainNo+" - "+p.trainName));
-    $('#trainsId').multiselect('rebuild');
-});	
 
-//$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
+        function vendorcategorylist() {
 
-},
- error:function(xhr,status){
-if(xhr.status=='401'){
-//alert("access denied, please refresh the page again trainlist");
-//refreshToken();
-//trainlist();
+            var accesstoken = sessionStorage.getItem('key');
+            // alert("vendorcategorylist "+accesstoken);
 
-	}
-}
+            $.ajax({
+                url: "http://203.176.113.183/VendorAppServices/divisional/vendorcategorylist",
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "Authorization": "Bearer " + accesstoken
+                },
+                success: function (response) {
+                    console.log(JSON.stringify(response));
+                    $('#vendorCategoryId').empty();
+                    $('#vendorCategoryId').append($('<option></option>').val("").html("---select---"));
 
-	});
-	  
-}	 
+                    $.each(response, function (i, p) {
 
- $('#trainsId').multiselect(
-				{
-					includeSelectAllOption: true,
-					 enableFiltering: true,
-					});  
-         //     }
+                        $('#vendorCategoryId').append($('<option></option>').val(p.id).html(p.categoryName));
+                    });
+                    //$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
+
+                },
+                error: function (xhr, status) {
+                    if (xhr.status == '401') {
+                        console.log("test5");
+                        //alert("ffff"+vendorcategorylist);
+                        //	refreshToken();
+                        //	fetchbasicdetails();
+                        //vendorcategorylist();
+                    }
+
+                }
+            });
+
+        }
+
+        function vendorconstitutionlist() {
+
+            var accesstoken = sessionStorage.getItem('key');
+            //alert("vendorconstitutionlist "+accesstoken);
+            $.ajax({
+                url: "http://203.176.113.183/VendorAppServices/divisional/vendorconstitutionlist",
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "Authorization": "Bearer " + accesstoken
+                },
+                success: function (response) {
+                    console.log(JSON.stringify(response));
+                    $('#vendorConstitutionId').empty();
+                    $('#vendorConstitutionId').append($('<option></option>').val("").html("---Select---"));
+
+                    $.each(response, function (i, p) {
+
+                        $('#vendorConstitutionId').append($('<option></option>').val(p.id).html(p.constitutionName));
+                    });
+                    //$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
+
+                },
+                error: function (xhr, status) {
+                    if (xhr.status == '401') {
+                        console.log("test6");
+                        //alert("access denied, please refresh the page again vendorconstitutionlist ");
+                        //refreshToken();
+                        //fetchbasicdetails();
+                        //vendorconstitutionlist();
+
+
+                    }
+
+                }
+
+            });
+        }
+
+
+        function trainlist() {
+
+            var accesstoken = sessionStorage.getItem('key');
+            //alert("trainlist "+accesstoken);
+            $.ajax({
+                url: "http://203.176.113.183/VendorAppServices/divisional/trainlist",
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "Authorization": "Bearer " + accesstoken
+                },
+                success: function (response) {
+                    console.log(JSON.stringify(response));
+                    $('#trainsId').empty();
+                    /* $('#trainlistapi').append($('<option></option>').val("").html("---select---")); */
+
+                    $.each(response, function (i, p) {
+
+                        $('#trainsId').append($('<option></option>').val(p.trainNo).html(p.trainNo + " - " + p.trainName));
+                        $('#trainsId').multiselect('rebuild');
+                    });
+
+                    //$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
+
+                },
+                error: function (xhr, status) {
+                    if (xhr.status == '401') {
+                        //alert("access denied, please refresh the page again trainlist");
+                        //refreshToken();
+                        //trainlist();
+
+                    }
+                }
+
+            });
+
+        }
+
+        $('#trainsId').multiselect(
+            {
+                includeSelectAllOption: true,
+                enableFiltering: true,
+            });
+        //     }
 
 
 
@@ -431,72 +427,73 @@ if(xhr.status=='401'){
 </script>
 
 <style>
-.fm{
-overflow: scroll;
-}
-
-
-
+    .fm {
+        overflow: scroll;
+    }
 </style>
-<body  >
+
+<body>
     <div class="container-lg fm">
         <div class="row">
             <div class="col">
                 <div class="shadow-lg ">
-                   <div class="col-12 p-2 bg-white h-100 no-print"  >
-                    <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
+                    <div class="col-12 p-2 bg-white h-100 no-print">
+                        <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
 
-     	               <h5 class=" font-14 text-center vendorRegistered" id="vendorRegistered"></h5></div>
+                        <h5 class=" font-14 text-center vendorRegistered" id="vendorRegistered"></h5>
+                    </div>
                     <div class="text-light bg-danger text-center shadow-lg">Vendor Registration Form</div>
-                    <form  method="post" id="vendorRegistrationForm" name="vendorRegistrationForm">
-                   <!--  <form action="" class="was-validated"> -->
+                    <form method="post" id="vendorRegistrationForm" name="vendorRegistrationForm">
+                        <!--  <form action="" class="was-validated"> -->
                         <div class=" row px-3 mx-3">
                             <div class=" col-md-4 ">
                                 <div class="mb-3 mt-3">
-                                   <span style="color: #f05f40">*</span>
+                                    <span style="color: #f05f40">*</span>
                                     <label for="inputnameofvendor">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Name of Vendor" required >
-                                  </div>
+                                    <input type="text" class="form-control" id="firstName" name="firstName"
+                                        placeholder="Name of Vendor" required>
+                                </div>
 
 
-                               <!--  <label for="inputnameofvendor">First Name</label>
+                                <!--  <label for="inputnameofvendor">First Name</label>
                                 <input type="text" class="form-control" id="firstName" name="firstName"
                                     placeholder="Name of Vendor" required> -->
 
                             </div>
-                       
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                                <!--   <label for="uname" class="form-label">Constitution of the Vendor:</label>
+
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+                                    <!--   <label for="uname" class="form-label">Constitution of the Vendor:</label>
                                     <input type="text" class="form-control" id="uname" placeholder="Enter username"
                                         name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
-                                <label for="inputnameofvendor">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName"
-                                    placeholder="Last Name of Vendor">
+                                    <label for="inputnameofvendor">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" name="lastName"
+                                        placeholder="Last Name of Vendor">
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                                <!--  <label for="uname" class="form-label">Pan of the Business:</label>
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+                                    <!--  <label for="uname" class="form-label">Pan of the Business:</label>
                                     <input type="text" class="form-control" id="uname"
                                         placeholder="Enter Pan of the Business" name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
 
-                                     <span style="color: #f05f40">*</span>
-                                     <label for="inputpanoftheBusiness">Pan of the Business</label>
-                                     <input type="text" class="form-control" id="vendorPan" name="vendorPan" placeholder="" required>
+                                    <span style="color: #f05f40">*</span>
+                                    <label for="inputpanoftheBusiness">Pan of the Business</label>
+                                    <input type="text" class="form-control" id="vendorPan" name="vendorPan"
+                                        placeholder="" required>
                                 </div>
-                         </div>
+                            </div>
                         </div>
-                   
-                    <div class="row px-3 mx-3 ">
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                                <!-- <label for="uname" class="form-label">Details of Goods:</label>
+
+                        <div class="row px-3 mx-3 ">
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+                                    <!-- <label for="uname" class="form-label">Details of Goods:</label>
                                     <input type="text" class="form-control" id="uname"
                                         placeholder="Enter Details of Goods" name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
@@ -505,202 +502,205 @@ overflow: scroll;
                                     <span style="color: #f05f40">*</span>
                                     <label for="inputconstitution">Constitution of the Vendor</label>
                                     <div class="dropdown">
-                                    <select id="vendorConstitutionId" name="vendorConstitutionId" class="form-control" required>
-                                    </select>
-                                </div>
+                                        <select id="vendorConstitutionId" name="vendorConstitutionId"
+                                            class="form-control" required>
+                                        </select>
+                                    </div>
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                                <!--  <label for="uname" class="form-label">Detail of service:</label>
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+                                    <!--  <label for="uname" class="form-label">Detail of service:</label>
                                     <input type="text" class="form-control" id="uname"
                                         placeholder="Enter Detail of service" name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
-                                <label for="inputpanoftheBusiness">Vendor HSN Code</label>
-                                <input type="text" class="form-control" id="vendorHsnCode" name="vendorHsnCode"
-                                    placeholder="">
+                                    <label for="inputpanoftheBusiness">Vendor HSN Code</label>
+                                    <input type="text" class="form-control" id="vendorHsnCode" name="vendorHsnCode"
+                                        placeholder="">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                                <!--  <label for="uname" class="form-label">Train Number:</label>
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+                                    <!--  <label for="uname" class="form-label">Train Number:</label>
                                     <input type="text" class="form-control" id="uname" placeholder="Enter Train Number"
                                         name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
-                                <label for="inputDetailsofgoods"> Details of Goods</label>
-                                <input type="text" class="form-control" id="goodsDetails" name="goodsDetails"
-                                    placeholder="">
+                                    <label for="inputDetailsofgoods"> Details of Goods</label>
+                                    <input type="text" class="form-control" id="goodsDetails" name="goodsDetails"
+                                        placeholder="">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row px-3 mx-3">
-                        <div class="col-sm-4  ">
-                            <div class="mb-3 mt-3">
-                                <span style="color: #f05f40">*</span>
+                        <div class="row px-3 mx-3">
+                            <div class="col-sm-4  ">
+                                <div class="mb-3 mt-3">
+                                    <span style="color: #f05f40">*</span>
                                     <label for="inputcategoryofvendor">Category of Vendor </label>
                                     <select id="vendorCategoryId" name="vendorCategoryId" class="form-control" required>
                                     </select>
                                 </div>
-                               </div>
-                        
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                                <span style="color: #f05f40">*</span>
-                                     <label  class="form-label" for="inputtrainlistapi">Train Number</label>
-                                     <select   id="trainsId" name="trainsId" class="form-control"  multiple="multiple" required>
+                            </div>
+
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+                                    <span style="color: #f05f40">*</span>
+                                    <label class="form-label" for="inputtrainlistapi">Train Number</label>
+                                    <select id="trainsId" name="trainsId" class="form-control" multiple="multiple"
+                                        required>
                                     </select>
-                                  </div>
-                          </div>
-                        
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                                  <span style="color: #f05f40">*</span>
-                                     <label for="inputgstinBygov">GSTIN alloted by the Govt</label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+                                    <span style="color: #f05f40">*</span>
+                                    <label for="inputgstinBygov">GSTIN alloted by the Govt</label>
                                     <input type="text" class="form-control" id="gstin" name="gstin" required>
-                                    </div>
-                              </div>
+                                </div>
+                            </div>
                         </div>
-                    
-                    <div class="row px-3 mx-3">
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                             <span style="color: #f05f40">*</span>
-                                      <label for="inputAddress">Address</label>
-                                      <input type="text" class="form-control" id="address"  name="address" placeholder="please enter address" required>
-                                 </div>
-                        </div>
-                        <div class="col-sm-4  ">
-                            <div class="mb-3 mt-3">
-                                <span style="color: #f05f40">*</span>
+
+                        <div class="row px-3 mx-3">
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+                                    <span style="color: #f05f40">*</span>
+                                    <label for="inputAddress">Address</label>
+                                    <input type="text" class="form-control" id="address" name="address"
+                                        placeholder="please enter address" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-4  ">
+                                <div class="mb-3 mt-3">
+                                    <span style="color: #f05f40">*</span>
                                     <label for="inputcontactno">Latest Contact No.</label>
-                                     <input type="number" class="form-control" id="contactNo" name="contactNo" required>
-                               </div>
-                          </div>
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                                <label for="inputemailId">Latest email-Id (if any)</label>
-                                 <input type="email" class="form-control" id="email" name="email">
-                             </div>
-                        </div>
-                   </div>
-
-                    <div class="row px-3 mx-3">
-                        <div class="col-sm-4">
-                            <div class="mb-3 mt-3">
-                             <label for="inputupiId">UPI ID</label>
-                                <input type="text" class="form-control" id="upiId" name="upiId">
+                                    <input type="number" class="form-control" id="contactNo" name="contactNo" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                                <label for="inputbanAaccountNo">Bank Account Number</label>
-                                <input type="text" class="form-control" id="bankAccountNo" name="bankAccountNo">
-                           </div>
-                        </div>
-                        <div class="col-sm-4  ">
-                            <div class="mb-3 mt-3">
-                               <label for="inputbankBranchName">Bank Name</label>
-                                <input type="text" class="form-control" id="bankName" name="bankName">
-                            </div>
-                        </div>
-                   </div>
-                   
-                    <div class="row px-3 mx-3">
-                        <div class="col-sm-4">
-                            <div class="mb-3 mt-3">
-                               <label for="inputbankBranchName">Bank Branch</label>
-                                <input type="text" class="form-control" id="bankBranch" name="bankBranch">
-                            </div>
-                        </div>
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                               
-                                <label for="inputifscCodes">IFSC</label>
-                                <input type="text" class="form-control" id="bankIfsc" name="bankIfsc">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="mb-3 mt-3">
-                               
-                                <label for="inputmicrNo">MICR</label>
-                                <input type="text" class="form-control" id="bankMicr" name="bankMicr">
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+                                    <label for="inputemailId">Latest email-Id (if any)</label>
+                                    <input type="email" class="form-control" id="email" name="email">
+                                </div>
                             </div>
                         </div>
 
-                    </div>
+                        <div class="row px-3 mx-3">
+                            <div class="col-sm-4">
+                                <div class="mb-3 mt-3">
+                                    <label for="inputupiId">UPI ID</label>
+                                    <input type="text" class="form-control" id="upiId" name="upiId">
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+                                    <label for="inputbanAaccountNo">Bank Account Number</label>
+                                    <input type="text" class="form-control" id="bankAccountNo" name="bankAccountNo">
+                                </div>
+                            </div>
+                            <div class="col-sm-4  ">
+                                <div class="mb-3 mt-3">
+                                    <label for="inputbankBranchName">Bank Name</label>
+                                    <input type="text" class="form-control" id="bankName" name="bankName">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row px-3 mx-3">
+                            <div class="col-sm-4">
+                                <div class="mb-3 mt-3">
+                                    <label for="inputbankBranchName">Bank Branch</label>
+                                    <input type="text" class="form-control" id="bankBranch" name="bankBranch">
+                                </div>
+                            </div>
+                            <div class="col-sm-4 ">
+                                <div class="mb-3 mt-3">
+
+                                    <label for="inputifscCodes">IFSC</label>
+                                    <input type="text" class="form-control" id="bankIfsc" name="bankIfsc">
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="mb-3 mt-3">
+
+                                    <label for="inputmicrNo">MICR</label>
+                                    <input type="text" class="form-control" id="bankMicr" name="bankMicr">
+                                </div>
+                            </div>
+
+                        </div>
 
 
-                    <div class="row px-3 mx-3">
-                        <center class="col-lg-12 mb-3">
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-                        </center>
-                    </div>
-                </form>
+                        <div class="row px-3 mx-3">
+                            <center class="col-lg-12 mb-3">
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+                            </center>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    $(document).ready(function (e) {
+    <script>
+        $(document).ready(function (e) {
 
-        $("#vendorRegistrationForm").submit(function (e) {
+            $("#vendorRegistrationForm").submit(function (e) {
 
-            //alert("hello");
-            var nameofvendor = $('#firstName').val();
-            alert(nameofvendor);
-            var trainNoId = [];
-            e.preventDefault();
-            accesstoken = sessionStorage.getItem('key');
-            var serializedReturn = $(this).serializeArray();
-            //console.log("/////"+serializedReturn);
-            var train = $("#trainsId").val();
-            alert("train" + train);
-            for (var k = 0; k < train.length; k++) {
+                //alert("hello");
+                var nameofvendor = $('#firstName').val();
+                alert(nameofvendor);
+                var trainNoId = [];
+                e.preventDefault();
+                accesstoken = sessionStorage.getItem('key');
+                var serializedReturn = $(this).serializeArray();
+                //console.log("/////"+serializedReturn);
+                var train = $("#trainsId").val();
+                alert("train" + train);
+                for (var k = 0; k < train.length; k++) {
 
-                trainNoId[k] = parseInt(train[k]);
-            }
-            console.log(trainNoId);
+                    trainNoId[k] = parseInt(train[k]);
+                }
+                console.log(trainNoId);
 
-            var loginFormObject = {};
-            $.each(serializedReturn,
-                function (i, v) {
-                    loginFormObject[v.name] = v.value;
+                var loginFormObject = {};
+                $.each(serializedReturn,
+                    function (i, v) {
+                        loginFormObject[v.name] = v.value;
+                    });
+                loginFormObject["trainsId"] = trainNoId;
+                //console.log(JSON.stringify(loginFormObject));
+                $.ajax({
+                    url: "http://203.176.113.183/VendorAppServices/divisional/registernewvendor",
+                    method: "POST",
+
+                    headers: {
+                        "Authorization": "Bearer " + accesstoken,
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify(loginFormObject),
+                    success: function (response) {
+                        //alert("successfully register");
+                        alert(response.message);
+
+                        $("#vendorRegistered").html(" your successfully registered   :" + response.message);
+
+                    },
+                    error: function (xhr, status) {
+                        if (xhr.status == '401') {
+
+                            alert("access denied, please refresh the page again");
+                            refreshToken();
+                        }
+
+                    },
+
                 });
-            loginFormObject["trainsId"] = trainNoId;
-            //console.log(JSON.stringify(loginFormObject));
-            $.ajax({
-                url: "http://203.176.113.183/VendorAppServices/divisional/registernewvendor",
-                method: "POST",
-
-                headers: {
-                    "Authorization": "Bearer " + accesstoken,
-                    "Content-Type": "application/json"
-                },
-                data: JSON.stringify(loginFormObject),
-                success: function (response) {
-                    //alert("successfully register");
-                    alert(response.message);
-
-                    $("#vendorRegistered").html(" your successfully registered   :" + response.message);
-
-                },
-                error: function (xhr, status) {
-                    if (xhr.status == '401') {
-
-                        alert("access denied, please refresh the page again");
-                        refreshToken();
-                    }
-
-                },
 
             });
-
         });
-    });
-</script>
+    </script>
 
 
 </html>
