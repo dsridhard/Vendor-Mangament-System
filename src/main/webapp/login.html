@@ -1,104 +1,106 @@
 <link rel="stylesheet" href="./assets/css/all.min.css">
 <script src="./assets/js/all.min.js"></script>
 <div class=" mx-3 card border  rounded-3 shadow-lg">
-  <div class="card-title text-center border border-danger shadow-lg bg-danger text-white">Login</div>
-  <div class=" card-body">
-   <!--  <form action="" method="post"> -->
-    <form action="" class=" form-group text-dark" id="vendorloginform">
-      <label for="email" class="form-label">UserType:</label>
-      <div class="input-group mb-3">
-        <span class="input-group-text"><i class="fa fa-users"></i></span>
-        <select class="form-select" id="usertype" name="usertype" required>
-          <option>Select</option>
-          <option value="VENDOR">Vendor</option>
-          <option value="DIVISIONAL">Division</option>
+	<div class="card-title text-center border border-danger shadow-lg bg-danger text-white">Login</div>
+	<div class=" card-body">
+		<!--  <form action="" method="post"> -->
+		<form action="" class=" form-group text-dark" id="vendorloginform">
+			<label for="email" class="form-label">UserType:</label>
+			<div class="input-group mb-3">
+				<span class="input-group-text"><i class="fa fa-users"></i></span>
+				<select class="form-select" id="usertype" name="usertype" required>
+					<option>Select</option>
+					<option value="VENDOR">Vendor</option>
+					<option value="DIVISIONAL">Division</option>
 
-        </select>
-        </div>
+				</select>
+			</div>
 
-      <label for="email" class="form-label">UserName:</label>
-      <div class="input-group mb-3">
-        <span class="input-group-text">@</span>
-        <input type="text" class="form-control" placeholder="Enter username"id="username" name="username" required>
-      </div>
+			<label for="email" class="form-label">UserName:</label>
+			<div class="input-group mb-3">
+				<span class="input-group-text">@</span>
+				<input type="text" class="form-control" placeholder="Enter username" id="username" name="username"
+					required>
+			</div>
 
-      <div class="mb-3">
-        <label for="pwd" class="form-label">Password:</label>
-        <input type="password" class="form-control" placeholder="Enter password" id="password" name="password" required>
-      </div>
-      <div class="form-check mb-3">
-        <label class="form-check-label">
-          <input class="form-check-input" type="checkbox" name="remember"> Remember me
+			<div class="mb-3">
+				<label for="pwd" class="form-label">Password:</label>
+				<input type="password" class="form-control" placeholder="Enter password" id="password" name="password"
+					required>
+			</div>
+			<div class="form-check mb-3">
+				<label class="form-check-label">
+					<input class="form-check-input" type="checkbox" name="remember"> Remember me
 
-        </label>
+				</label>
 
-      </div>
-      <div class="mb-3 text-center">
-        <a href="" class="text-decoration-none">forget password</a>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit <i class="fas fa-sign-in-alt    "></i></i></button>
-    </form>
-  </div>
+			</div>
+			<div class="mb-3 text-center">
+				<a href="" class="text-decoration-none">forget password</a>
+			</div>
+			<button type="submit" class="btn btn-primary">Submit <i class="fas fa-sign-in-alt    "></i></i></button>
+		</form>
+	</div>
 
 </div>
 
 <script>
 
-$(document).ready(function (e){
-	$("#vendorloginform").submit(function(e){
-	alert("hello");
-		e.preventDefault();
-		var username=$("#username").val();
-		//alert("username  "+username);
-		var password=$("#password").val();
-		//alert("password  "+password);
-		var userLoginType=$("#usertype").val();
-		//alert("userLoginType  "+userLoginType);
-		var settings = {
-				  "url": "http://203.176.113.183/VendorAppLogin/oauth/token",
-				  "method": "POST",
-				  "timeout": 0,
-				  "headers": {
-				    "Authorization": "Basic dmVuZG9yYXBwOnNlY3JldA==",
-				    "Content-Type": "application/x-www-form-urlencoded"
-				  },
-				  "data": {
-				    "username":username ,
-				    "password": password,
-				    "grant_type": "password",
-				    "userLoginType": userLoginType
-				  }
-				};
+	$(document).ready(function (e) {
+		$("#vendorloginform").submit(function (e) {
+			alert("hello");
+			e.preventDefault();
+			var username = $("#username").val();
+			//alert("username  "+username);
+			var password = $("#password").val();
+			//alert("password  "+password);
+			var userLoginType = $("#usertype").val();
+			//alert("userLoginType  "+userLoginType);
+			var settings = {
+				"url": "http://203.176.113.183/VendorAppLogin/oauth/token",
+				"method": "POST",
+				"timeout": 0,
+				"headers": {
+					"Authorization": "Basic dmVuZG9yYXBwOnNlY3JldA==",
+					"Content-Type": "application/x-www-form-urlencoded"
+				},
+				"data": {
+					"username": username,
+					"password": password,
+					"grant_type": "password",
+					"userLoginType": userLoginType
+				}
+			};
 
-				$.ajax(settings).done(function (response) {
-					//alert("inside response");
-				  //console.log(response);
-				  var access_token=response.access_token;
-				  console.log(access_token);
-				  
-				 // sessionStorage.setItem("access_token" , access_token);
-				 // document.cookie=access_token; 
-				 // document.cookie = "user = 'access_token'; max-age=60";
-				 // alert( document.cookie);
-				    
-				 
-				 if(access_token!=''){
-				  sessionStorage.setItem('key', access_token); 
-				    //A value meant to expire in 5 minutes
-				    
-				    sessionStorage.setItem('username', username);
-				    sessionStorage.setItem('password', password);
-				    sessionStorage.setItem('usertype', userLoginType);
-				   
-					 $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/",2))+'/welcome.html');	
-				 }
-				 else{
+			$.ajax(settings).done(function (response) {
+				//alert("inside response");
+				//console.log(response);
+				var access_token = response.access_token;
+				console.log(access_token);
 
-	                      alert("invalid credentials");
+				// sessionStorage.setItem("access_token" , access_token);
+				// document.cookie=access_token; 
+				// document.cookie = "user = 'access_token'; max-age=60";
+				// alert( document.cookie);
 
-					 }
-	});
-	});
+
+				if (access_token != '') {
+					sessionStorage.setItem('key', access_token);
+					//A value meant to expire in 5 minutes
+
+					sessionStorage.setItem('username', username);
+					sessionStorage.setItem('password', password);
+					sessionStorage.setItem('usertype', userLoginType);
+
+					$(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2)) + '/welcome.html');
+				}
+				else {
+
+					alert("invalid credentials");
+
+				}
+			});
+		});
 	});
 
 
