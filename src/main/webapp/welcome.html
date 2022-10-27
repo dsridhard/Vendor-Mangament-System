@@ -7,21 +7,25 @@
 <style>
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
     color: #fff;
-    background-color: #a1a59a !important;
-}
+    background-color:#a1a59a !important;
+    }
+ .hori{
+/* overflow-y:hidden; */
+}   
+
 </style>
 <div id="head"></div>
 
-<body>
+<body class="hori">
     <header id="header"></header>
     <div class="container-fluid mt-2 py-5 ">
         <div class="row mt-5">
             <div class="col-md-5"> 
-            <span data-bs-toggle="tooltip" title="User" class="badge bg-primary"><h5 class="font-14 text-center" id="welcomeP"></h5></span>
+            <span data-bs-toggle="tooltip" title="User" ><strong class="font-14 text-center" id="welcomeP"></strong></span>
             </div>
             
           <div class="col offset-6">
-                <button class='btn btn-outline-success'>Logout</button>
+             <a href="#" id="logoutlink">   <button class='btn btn-outline-success'>Logout</button></a>
             </div>
 
         </div>
@@ -46,7 +50,7 @@
                 </ul>
 
             </div>
-            <div class=" col rounded-5 ">
+            <div class=" col hori rounded-5 ">
                 <div class="col" id="content">
                     <div id="registraton"></div>
                 </div>
@@ -65,6 +69,18 @@
 
 
 <script>
+
+$(document).ready(()=>{
+	$("#logoutlink").on("click",function(){
+		
+		sessionStorage.clear();
+		 $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/",2))+'/index.html');	
+			
+		
+	});
+	
+});
+
     $(document).ready(() => {
         $('#head').load('head.html')
         $('#header').load('header.html')

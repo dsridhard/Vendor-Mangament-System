@@ -262,6 +262,7 @@ if(xhr.status=='401'){
 				{
 					includeSelectAllOption: true,
 					 enableFiltering: true,
+					 
 			          
 				});  
 
@@ -271,15 +272,23 @@ if(xhr.status=='401'){
 
 </script>
 
+<style>
+.fm{
+overflow: scroll;
+}
 
-<body class="">
-    <div class="container-lg">
+
+</style>
+<body  >
+    <div class="container-lg fm">
         <div class="row">
             <div class="col">
                 <div class="shadow-lg ">
                    <div class="col-12 p-2 bg-white h-100 no-print"  >
+                    <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
+
      	               <h5 class=" font-14 text-center vendorRegistered" id="vendorRegistered"></h5></div>
-                    <div class="text-light bg-danger text-center">Vendor Registration Form</div>
+                    <div class="text-light bg-danger text-center shadow-lg">Vendor Registration Form</div>
                     <form  method="post" id="vendorRegistrationForm" name="vendorRegistrationForm">
                    <!--  <form action="" class="was-validated"> -->
                         <div class=" row px-3 mx-3">
@@ -290,7 +299,7 @@ if(xhr.status=='401'){
                                         placeholder="Enter Name of Vendor" name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
-                                    
+                                    <span style="color: #f05f40">*</span>
                                     <label for="inputnameofvendor">First Name</label>
                                     <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Name of Vendor" required >
                                   </div>
@@ -314,7 +323,7 @@ if(xhr.status=='401'){
                                         placeholder="Enter Pan of the Business" name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
-                                    
+                                     <span style="color: #f05f40">*</span>
                                      <label for="inputpanoftheBusiness">Pan of the Business</label>
                                      <input type="text" class="form-control" id="vendorPan" name="vendorPan" placeholder="" required>
                                 </div>
@@ -328,6 +337,7 @@ if(xhr.status=='401'){
                                         placeholder="Enter Details of Goods" name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
+                                    <span style="color: #f05f40">*</span>
                                     <label for="inputconstitution">Constitution of the Vendor</label>
                                     <div class="dropdown">
                                     <select id="vendorConstitutionId" name="vendorConstitutionId" class="form-control" required>
@@ -367,6 +377,7 @@ if(xhr.status=='401'){
                                         name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
+                                    <span style="color: #f05f40">*</span>
                                     <label for="inputcategoryofvendor">Category of Vendor </label>
                                     <select id="vendorCategoryId" name="vendorCategoryId" class="form-control" required>
                                     </select>
@@ -382,8 +393,9 @@ if(xhr.status=='401'){
                                     <label for="inputtrainlistapi">Train Number</label>
                                     <select id="trainsId" name="trainsId" class="form-control"  multiple="multiple" required>
                                      </select> -->
-                                     <label for="inputtrainlistapi">Train Number</label>
-                                     <select id="trainsId" name="trainsId" class="form-control"  multiple="multiple" required>
+                                     <span style="color: #f05f40">*</span>
+                                     <label  class="form-label" for="inputtrainlistapi">Train Number</label>
+                                     <select   id="trainsId" name="trainsId" class="form-control"  multiple="multiple" required>
                                     </select>
                                   </div>
                             </div>
@@ -394,6 +406,7 @@ if(xhr.status=='401'){
                                         placeholder="Enter Train Number" name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
+                                    <span style="color: #f05f40">*</span>
                                      <label for="inputgstinBygov">GSTIN alloted by the Govt</label>
                                     <input type="text" class="form-control" id="gstin" name="gstin" required>
                                     </div>
@@ -410,6 +423,7 @@ if(xhr.status=='401'){
                                     <label for="inputtrainlistapi">Train Number</label>
                                     <select id="trainsId" name="trainsId" class="form-control"  multiple="multiple" required>
                                      </select> -->
+                                     <span style="color: #f05f40">*</span>
                                       <label for="inputAddress">Address</label>
                                       <input type="text" class="form-control" id="address"  name="address" placeholder="please enter address" required>
                                  </div>
@@ -421,6 +435,7 @@ if(xhr.status=='401'){
                                         name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
+                                    <span style="color: #f05f40">*</span>
                                     <label for="inputcontactno">Latest Contact No.</label>
                                      <input type="number" class="form-control" id="contactNo" name="contactNo" required>
                                
@@ -433,6 +448,7 @@ if(xhr.status=='401'){
                                         name="uname" required>
                                     <div class="valid-feedback">Valid.</div>
                                     <div class="invalid-feedback">Please fill out this field.</div> -->
+                                    
                                     <label for="inputemailId">Latest email-Id (if any)</label>
                                     <input type="email" class="form-control" id="email" name="email">
                                     
