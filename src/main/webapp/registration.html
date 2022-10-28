@@ -456,23 +456,12 @@ overflow: scroll;
                                    <span style="color: #f05f40">*</span>
                                     <label for="inputnameofvendor">First Name</label>
                                     <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Name of Vendor" required >
-                                     <div class="invalid-tooltip">Pleas username.</div>
+                                     <div class="invalid-tooltip">Please username.</div>
                                   </div>
-
-
-                               <!--  <label for="inputnameofvendor">First Name</label>
-                                <input type="text" class="form-control" id="firstName" name="firstName"
-                                    placeholder="Name of Vendor" required> -->
-
-                            </div>
+                           </div>
                        
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
-                                <!--   <label for="uname" class="form-label">Constitution of the Vendor:</label>
-                                    <input type="text" class="form-control" id="uname" placeholder="Enter username"
-                                        name="uname" required>
-                                    <div class="valid-feedback">Valid.</div>
-                                    <div class="invalid-feedback">Please fill out this field.</div> -->
                                 <label for="inputnameofvendor">Last Name</label>
                                 <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name of Vendor">
 
@@ -480,12 +469,6 @@ overflow: scroll;
                         </div>
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
-                                <!--  <label for="uname" class="form-label">Pan of the Business:</label>
-                                    <input type="text" class="form-control" id="uname"
-                                        placeholder="Enter Pan of the Business" name="uname" required>
-                                    <div class="valid-feedback">Valid.</div>
-                                    <div class="invalid-feedback">Please fill out this field.</div> -->
-
                                      <span style="color: #f05f40">*</span>
                                      <label for="inputpanoftheBusiness">Pan of the Business</label>
                                      <input type="text" class="form-control" id="vendorPan" name="vendorPan" placeholder="" required>
@@ -497,13 +480,7 @@ overflow: scroll;
                     <div class="row px-3 mx-3 ">
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
-                                <!-- <label for="uname" class="form-label">Details of Goods:</label>
-                                    <input type="text" class="form-control" id="uname"
-                                        placeholder="Enter Details of Goods" name="uname" required>
-                                    <div class="valid-feedback">Valid.</div>
-                                    <div class="invalid-feedback">Please fill out this field.</div> -->
-
-                                    <span style="color: #f05f40">*</span>
+                                <span style="color: #f05f40">*</span>
                                     <label for="inputconstitution">Constitution of the Vendor</label>
                                     <div class="dropdown">
                                     <select id="vendorConstitutionId" name="vendorConstitutionId" class="form-control" required>
@@ -514,11 +491,7 @@ overflow: scroll;
                         </div>
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
-                                <!--  <label for="uname" class="form-label">Detail of service:</label>
-                                    <input type="text" class="form-control" id="uname"
-                                        placeholder="Enter Detail of service" name="uname" required>
-                                    <div class="valid-feedback">Valid.</div>
-                                    <div class="invalid-feedback">Please fill out this field.</div> -->
+                               
                                 <label for="inputpanoftheBusiness">Vendor HSN Code</label>
                                 <input type="text" class="form-control" id="vendorHsnCode" name="vendorHsnCode"
                                     placeholder="">
@@ -527,11 +500,7 @@ overflow: scroll;
                         </div>
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
-                                <!--  <label for="uname" class="form-label">Train Number:</label>
-                                    <input type="text" class="form-control" id="uname" placeholder="Enter Train Number"
-                                        name="uname" required>
-                                    <div class="valid-feedback">Valid.</div>
-                                    <div class="invalid-feedback">Please fill out this field.</div> -->
+                               
                                 <label for="inputDetailsofgoods"> Details of Goods</label>
                                 <input type="text" class="form-control" id="goodsDetails" name="goodsDetails"
                                     placeholder="">
@@ -552,10 +521,13 @@ overflow: scroll;
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
                                 <span style="color: #f05f40">*</span>
-                                     <label  class="form-label" for="inputtrainlistapi">Train Number</label>
-                                     <select   id="trainsId" name="trainsId" class="form-control"  multiple="multiple" required>
-                                    </select>
-                                     <div class="invalid-tooltip">Please select train list.</div>
+                                     <label for="trainsId">Train Number</label>
+                                     <div>
+                                     <select id="trainsId" name="trainsId" class="form-control"  multiple="multiple" required>
+                                    </select> 
+                                      <div class="invalid-tooltip">Please select train list.</div>
+                                    </div>
+                                   
                                   </div>
                           </div>
                         
@@ -563,7 +535,7 @@ overflow: scroll;
                             <div class="mb-3 mt-3">
                                   <span style="color: #f05f40">*</span>
                                      <label for="inputgstinBygov">GSTIN alloted by the Govt</label>
-                                    <input type="text" class="form-control" id="gstin" name="gstin" required>
+                                    <input type="number" class="form-control" id="gstin" name="gstin" required>
                                      <div class="invalid-tooltip">Please enter GSTIN .</div>
                                     </div>
                               </div>
@@ -583,16 +555,17 @@ overflow: scroll;
                             <div class="mb-3 mt-3">
                                 <span style="color: #f05f40">*</span>
                                     <label for="inputcontactno">Latest Contact No.</label>
-                                     <input type="number" class="form-control" id="contactNo" name="contactNo" required>
+                                     <input type="number" class="form-control" maxlength="10" pattern="([0-9])" id="contactNo" name="contactNo" required>
                                       <div class="invalid-tooltip">Please enter contact no .</div>
                              
                                </div>
                           </div>
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
-                                <label for="inputemailId">Latest email-Id (if any)</label>
-                                 <input type="email" class="form-control" id="email" name="email">
-                                                                      <div class="invalid-tooltip">Please enter GSTIN .</div>
+                                 <span style="color: #f05f40">*</span>
+                                 <label for="inputemailId">Latest email-Id (if any)</label>
+                                 <input type="email" class="form-control" id="email" name="email" required>
+                                 <div class="invalid-tooltip">Please enter email-id .</div>
                                  
                              </div>
                         </div>
@@ -716,4 +689,3 @@ overflow: scroll;
 
 </html>
 
-//
