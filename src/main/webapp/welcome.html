@@ -43,29 +43,23 @@
             </div>
 
 
-            <div class="col offset-6">
+            <div class="col offset-6 p-2">
                 <a href="#" id="logoutlink"> <button class='btn btn-outline-success'>Logout</button></a>
             </div>
             <div class="row py-3">
-                <div class="col-md-3 col-sm-5">
-                    <ul class="nav nav-pills flex-column  text-center" id=" vertical-tab">
-                        <li class="nav-item ">
-                            <a class="nav-link active  navigate" data-bs-toggle="pill" data-target="registration">
-                                Home
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link navigate" data-bs-toggle="pill" data-target="login">
-                                Contact
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link navigate" data-bs-toggle="pill" data-target="index">
-                                Profile
-                            </a>
-                        </li>
-                    </ul>
-
+            <div class="pos-f-t d-block d-md-none d-lg-none">
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4 sidebar">
+    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+</div>
+                <div class="d-none d-md-block col-md-3 col-sm-5 sidebar">
+                    
                 </div>
                 <div class=" col scroll ">
                     <div class="col" id="content">
@@ -99,19 +93,14 @@
     });
 
     $(document).ready(() => {
+        $('.sidebar').load('sidebar.html')
+
         $('#head').load('head.html')
         $('#header').load('header.html')
         $('#login').load('login.html')
         $('#registraton').load('registration.html')
         $('#footer').load('footer.html')
-        $(".navigate").on('click', function () {
-            var $this = $(this)
-            target = $this.data('target');
-
-            $('#content').load(target + '.html');
-            return false;
-        })
-
+       
     });
 </script>
 
