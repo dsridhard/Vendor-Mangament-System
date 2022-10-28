@@ -80,7 +80,7 @@
 
     <footer class="footer" id="footer"></footer>
 </body>
-<script src="./assets/js/bootstrap.min.js"></script>
+<script src="./assets/js/bootstrap.js"></script>
 <script src="./assets/js/all.min.js"></script>
 <script src="./assets/js/jquery.js"></script>
 <script src="./assets/css/footer.css"></script>
@@ -92,8 +92,6 @@
 
     $(document).ready(() => {
     	
-    	
-    	alert($(window).height());
     	
     	$(".scroll").css("height", $(window).height()-200);
 
@@ -113,7 +111,13 @@
         $('#head').load('head.html')
         $('#header').load('header.html')
         $('#login').load('login.html')
-        $('#registraton').load('registration.html')
+        var userType=sessionStorage.getItem("usertype");
+        if(userType=='DIVISIONAL'){
+        	$('#registraton').load('registration.html')
+    	}else if(userType=='VENDOR'){
+    		$('#content').load('blank.html')
+    	}
+        
         $('#footer').load('footer.html')
        
     });
