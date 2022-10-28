@@ -209,7 +209,6 @@ $('#trainsId').empty();
 /* $('#trainlistapi').append($('<option></option>').val("").html("---select---")); */
 
 $.each(response, function(i, p) {
-
     $('#trainsId').append($('<option></option>').val(p.trainNo).html(p.trainNo+" - "+p.trainName));
     $('#trainsId').multiselect('rebuild');
 });	
@@ -236,178 +235,12 @@ if(xhr.status=='401'){
 					 enableFiltering: true,
 					});  
          //     }
-
-
-
-
-        function commonpostmoethod(url) {
-            var accesstoken = sessionStorage.getItem('key');
-
-            $.ajax({
-                url: url,
-                method: "POST",
-                timeout: 0,
-                headers: {
-                    "Authorization": "Bearer " + accesstoken
-                },
-                "data": {
-                    "username": username,
-                    "password": password,
-                    "grant_type": "password",
-                    "userLoginType": "DIVISIONAL"
-                },
-                success: function (response) {
-                    return reponse
-
-                },
-                error: function (xhr, status) {
-                    if (xhr.status == '401') {
-                        //alert("access denied, please refresh the page again 8ii");
-                        refreshToken();
-                        common(url);
-                    }
-                }
-            });
-
-        }
-
-
-
-        $("#logoutlink").on("click", function () {
-
-            sessionStorage.clear();
-            $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2)) + '/index.html');
-
-
-        });
-
-
-        function vendorcategorylist() {
-
-            var accesstoken = sessionStorage.getItem('key');
-            // alert("vendorcategorylist "+accesstoken);
-
-            $.ajax({
-                url: "http://203.176.113.183/VendorAppServices/divisional/vendorcategorylist",
-                method: "GET",
-                timeout: 0,
-                headers: {
-                    "Authorization": "Bearer " + accesstoken
-                },
-                success: function (response) {
-                    console.log(JSON.stringify(response));
-                    $('#vendorCategoryId').empty();
-                    $('#vendorCategoryId').append($('<option></option>').val("").html("---select---"));
-
-                    $.each(response, function (i, p) {
-
-                        $('#vendorCategoryId').append($('<option></option>').val(p.id).html(p.categoryName));
-                    });
-                    //$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
-
-                },
-                error: function (xhr, status) {
-                    if (xhr.status == '401') {
-                        console.log("test5");
-                        //alert("ffff"+vendorcategorylist);
-                        //	refreshToken();
-                        //	fetchbasicdetails();
-                        //vendorcategorylist();
-                    }
-
-                }
-            });
-
-        }
-
-        function vendorconstitutionlist() {
-
-            var accesstoken = sessionStorage.getItem('key');
-            //alert("vendorconstitutionlist "+accesstoken);
-            $.ajax({
-                url: "http://203.176.113.183/VendorAppServices/divisional/vendorconstitutionlist",
-                method: "GET",
-                timeout: 0,
-                headers: {
-                    "Authorization": "Bearer " + accesstoken
-                },
-                success: function (response) {
-                    console.log(JSON.stringify(response));
-                    $('#vendorConstitutionId').empty();
-                    $('#vendorConstitutionId').append($('<option></option>').val("").html("---Select---"));
-
-                    $.each(response, function (i, p) {
-
-                        $('#vendorConstitutionId').append($('<option></option>').val(p.id).html(p.constitutionName));
-                    });
-                    //$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
-
-                },
-                error: function (xhr, status) {
-                    if (xhr.status == '401') {
-                        console.log("test6");
-                        //alert("access denied, please refresh the page again vendorconstitutionlist ");
-                        //refreshToken();
-                        //fetchbasicdetails();
-                        //vendorconstitutionlist();
-
-
-                    }
-
-                }
-
-            });
-        }
-
-
-        function trainlist() {
-
-            var accesstoken = sessionStorage.getItem('key');
-            //alert("trainlist "+accesstoken);
-            $.ajax({
-                url: "http://203.176.113.183/VendorAppServices/divisional/trainlist",
-                method: "GET",
-                timeout: 0,
-                headers: {
-                    "Authorization": "Bearer " + accesstoken
-                },
-                success: function (response) {
-                    console.log(JSON.stringify(response));
-                    $('#trainsId').empty();
-                    /* $('#trainlistapi').append($('<option></option>').val("").html("---select---")); */
-
-                    $.each(response, function (i, p) {
-
-                        $('#trainsId').append($('<option></option>').val(p.trainNo).html(p.trainNo + " - " + p.trainName));
-                        $('#trainsId').multiselect('rebuild');
-                    });
-
-                    //$("#welcomeP").html("Welcome "+username+" Zone: "+response.zoneName+" Division: "+response.divName);
-
-                },
-                error: function (xhr, status) {
-                    if (xhr.status == '401') {
-                        //alert("access denied, please refresh the page again trainlist");
-                        //refreshToken();
-                        //trainlist();
-
-                    }
-                }
-
-            });
-
-        }
-
-        $('#trainsId').multiselect(
-            {
-                includeSelectAllOption: true,
-                enableFiltering: true,
-
-            });
-
-
+$('.multiselect').click(function() {
+  $('.multiselect-container').addClass("show");
+});
 
     });
+
 
 </script>
 
