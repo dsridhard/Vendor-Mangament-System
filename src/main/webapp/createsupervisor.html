@@ -14,7 +14,7 @@
                                 <div class="mb-3 mt-3">
                                    <span style="color: #f05f40">*</span>
                                     <label for="firstName">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name of Supervisor" required >
+                                    <input type="text" class="form-control required" id="firstName" name="firstName" placeholder="First Name of Supervisor"  >
                                      <div class="invalid-tooltip">Please Enter First Name.</div>
                                   </div>
                            </div>
@@ -23,7 +23,7 @@
                             <div class="mb-3 mt-3">
                                 <span style="color: #f05f40">*</span>
                                 <label for="lastName">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name of Supervisor" required >
+                                <input type="text" class="form-control required" id="lastName" name="lastName" placeholder="Last Name of Supervisor" >
                                 <div class="invalid-tooltip">Please Enter Last Name.</div>
 
                             </div>
@@ -34,7 +34,7 @@
                                 <div class="mb-3 mt-3">
                                    <span style="color: #f05f40">*</span>
                                     <label for="mobileNo">Mobile No.</label>
-                                    <input type="text" class="form-control" id="mobileNo" name="mobileNo" placeholder="Enter Mobile Number" required >
+                                    <input type="text" class="form-control required" id="mobileNo" maxlength="10" name="mobileNo" placeholder="Enter Mobile Number" >
                                      <div class="invalid-tooltip">Please Enter Mobile Number.</div>
                                   </div>
                            </div>
@@ -43,7 +43,7 @@
                             <div class="mb-3 mt-3">
                                 <span style="color: #f05f40">*</span>
                                 <label for="email">Email</label>
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email Address" required >
+                                <input type="text" class="form-control required" id="email" name="email" placeholder="Enter Email Address"  >
                                 <div class="invalid-tooltip">Please Enter Email Address.</div>
 
                             </div>
@@ -60,5 +60,44 @@
             </div>
         </div>
     </div>
-
-
+    <script>
+$('#supervisorRegistrationForm').on('submit', function(event) {
+	event.preventDefault();
+	 $('.err').remove();
+	var sel = document.querySelectorAll('.required'); 
+    for (var i=0;i<sel.length;i++){
+    if(sel[i].value.trim()==""){
+		var errNode = document.createElement('div');
+		errNode.className = "err";
+		errNode.innerHTML = '<small style="color:red"><i>Please fill!</i></small>';
+		sel[i].after(errNode);
+		return false;
+        }
+    }
+});
+$('#mobileNo').on('input',function (){
+	  $('.errValid').remove();
+	  this.value = this.value.trim();
+	  this.value = this.value.replace("+","");
+	  if(this.value.includes(".")){
+	  	this.value = this.value.replace(".","");
+	  	 var errNode = document.createElement('div');
+		  errNode.className = "errValid";
+		  errNode.innerHTML = '<small style="color:red"><i>Please enter valid input!</i></small>';
+		  this.after(errNode);
+		  return;
+	  }
+	  if(isNaN(this.value)){
+		  this.value = this.value.replace(/\D/g, "");		  
+		  var errNode = document.createElement('div');
+		  errNode.className = "errValid";
+		  errNode.innerHTML = '<small style="color:red"><i>Please enter valid input!</i></small>';
+		  this.after(errNode);
+	  }else{
+		  var placeholder = this.nextElementSibling;
+		  if (placeholder!=null&&placeholder.classList.contains('err')) {
+			  placeholder.remove();
+			  }
+	  }
+});
+</script>

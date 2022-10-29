@@ -6,53 +6,32 @@
                    <div class="col-12 p-2 bg-white h-100 no-print"  >
                     <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
 
-                    <div class="text-light bg-danger text-center shadow-lg">Supervisor Registration Form</div>
+                    <div class="text-light bg-danger text-center shadow-lg">E-catering Details Form</div>
                     <form  method="post" id="ecateringForm" name="ecateringForm">
                    <!--  <form action="" class="was-validated"> -->
                           <div class=" row px-3 mx-3">
                             <div class=" col-md-12 ">
-                                <table class="table table-bordered" style="border-radius: 4px;width:100%" >
+                                <table id="itemList" class="table table-bordered" style="border-radius: 4px;width:100%" >
+  	<tr class="headRow">
+  		<th><b>S.No.</b></th>
+  		<th><b><span style="color: #f05f40">*</span>Item</b></th>
+  		<th><b><span style="color: #f05f40">*</span>Price</b></th>
+  	</tr>
   	<tr>
-  		<th><b>Coach Class</b></th>
-  		<th><b>Package Type</b></th>
-  		<th><b>Amount</b></th>
+  		<td>1</td>
+  		<td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td>
+  		<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td>
   	</tr>
   	</table>
                            </div>
-                       
-                        <div class="col-sm-6 ">
-                            <div class="mb-3 mt-3">
-                                <span style="color: #f05f40">*</span>
-                                <label for="lastName">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name of Supervisor" required >
-                                <div class="invalid-tooltip">Please Enter Last Name.</div>
-
-                            </div>
-                        </div>
-                        </div>
-                     <div class=" row px-3 mx-3">
-                            <div class=" col-md-6 ">
-                                <div class="mb-3 mt-3">
-                                   <span style="color: #f05f40">*</span>
-                                    <label for="mobileNo">Mobile No.</label>
-                                    <input type="text" class="form-control" id="mobileNo" name="mobileNo" placeholder="Enter Mobile Number" required >
-                                     <div class="invalid-tooltip">Please Enter Mobile Number.</div>
-                                  </div>
                            </div>
-                       
-                        <div class="col-sm-6 ">
-                            <div class="mb-3 mt-3">
-                                <span style="color: #f05f40">*</span>
-                                <label for="email">Email</label>
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email Address" required >
-                                <div class="invalid-tooltip">Please Enter Email Address.</div>
-
-                            </div>
-                        </div>
-                        </div>
-
-
-                    <div class="row px-3 mx-3">
+                           <div class=" row px-3 mx-3">
+                           <div class=" col-md-12 ">
+                          	 <button type="button" class="btn-sm btn-info" id="addItems" style="border: 2px solid rgba(0,0,0,.05);border-radius: 4px;color:white">Add more</button>&nbsp;&nbsp;
+                          	 <button type="button" class="btn-sm btn-danger" id="delItems" style="border: 2px solid rgba(0,0,0,.05);border-radius: 4px;">Delete</button>
+                           </div>
+                           </div>
+               <div class="row px-3 mx-3">
                         <center class="col-lg-12 mb-3">
                             <button class="btn btn-md btn-primary btn-block" type="submit">Submit</button>
                         </center>
@@ -61,5 +40,60 @@
             </div>
         </div>
     </div>
-
+<script>
+$("#addItems").click(function(){
+	var html = "";
+	var sno = $('#itemList tr:last td').html();
+	html = '<tr><td>'+(+sno+1)+'</td><td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td><td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td></tr>';
+	$('#itemList').append(html);
+});
+$("#delItems").click(function(){
+    var itemNo = document.getElementById("itemList").rows.length;
+    if(itemNo>2){
+		$('#itemList tr:last-child').remove();
+	}else{
+		alert("Please add at least one item details");
+	}
+});
+$('#ecateringForm').on('submit', function(event) {
+	event.preventDefault();
+	 $('.err').remove();
+	var sel = document.querySelectorAll('.required'); 
+    for (var i=0;i<sel.length;i++){
+    if(sel[i].value.trim()==""){
+		var errNode = document.createElement('div');
+		errNode.className = "err";
+		errNode.innerHTML = '<small style="color:red"><i>Please fill!</i></small>';
+		sel[i].after(errNode);
+		return false;
+        }
+    }
+    var data = $('tr:not(.headRow').map(function() {
+    	var obj = {};
+    	$(this).find('input').each(function() {
+        	obj[this.name] = $(this).val();
+        });
+        return obj;
+    }).get();
+    
+    alert(JSON.stringify(data));
+});
+$('.price').on('input',function (){
+	  $('.errValid').remove();
+	  this.value = this.value.trim();
+	  this.value = this.value.replace("+","");
+	  if(isNaN(this.value)){
+		  this.value = this.value.replace(/\D/g, "");		  
+		  var errNode = document.createElement('div');
+		  errNode.className = "errValid";
+		  errNode.innerHTML = '<small style="color:red"><i>Please enter valid input!</i></small>';
+		  this.after(errNode);
+	  }else{
+		  var placeholder = this.nextElementSibling;
+		  if (placeholder!=null&&placeholder.classList.contains('err')) {
+			  placeholder.remove();
+			  }
+	  }
+});
+</script>
 
