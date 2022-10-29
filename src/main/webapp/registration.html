@@ -235,10 +235,19 @@ if(xhr.status=='401'){
 					 enableFiltering: true,
 					});  
          //     }
-$('.multiselect').click(function() {
-  $('.multiselect-container').addClass("show");
-});
 
+$(function() {
+
+$(".multiselect").on("click", function(e) {
+    $(".multiselect-container").addClass("show");
+    e.stopPropagation()
+  });
+  $(document).on("click", function(e) {
+    if ($(e.target).is(".multiselect-container") === false) {
+      $(".multiselect-container").removeClass("show");
+    }
+  });
+});
     });
 
 
