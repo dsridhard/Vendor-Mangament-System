@@ -12,6 +12,7 @@ $(document).ready(function (e) {
 	
 	
     $("#vendorRegistrationForm").submit(function (e) {
+        //alert("called");
 console.log("//inside vendor registration form submit");
         ////alert("hello");
         var nameofvendor = $('#firstName').val();
@@ -22,7 +23,7 @@ console.log("//inside vendor registration form submit");
         var serializedReturn = $(this).serializeArray();
         //console.log("/////"+serializedReturn);
         var train = $("#trainsId").val();
-        alert("train" + train);
+        //alert("train" + train);
         for (var k = 0; k < train.length; k++) {
 
             trainNoId[k] = parseInt(train[k]);
@@ -49,22 +50,26 @@ console.log("//inside vendor registration form submit");
                 ////alert("successfully register");
                 //alert(response.message);
 
-                $("#vendorRegistered").html(":" + response.message+ ":");
-
+                $("#vendorRegistered").html( response.message);
+                document.getElementById("vendorRegistrationForm").reset();
             },
             error: function (xhr, status) {
                 if (xhr.status == '401') {
                   
-                	  $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+                	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
                     //alert("access denied, please refresh the page again");
-                    refreshToken();
+                	  refreshToken().then((res) => {
+                      	console.log(res);
+                      	setSessionStorageItems(res);
+                        $("#vendorRegistrationForm").submit();
+                         });
                 }
 
             },
 
         });
         
-       // document.getElementById("vendorRegistrationForm").reset();
+      
 
     });
 
@@ -96,9 +101,11 @@ function fetchbasicdetails() {
                 error: function (xhr, status) {
                     if (xhr.status == '401') {
                         //	//alert("access denied, please refresh the page again fachebasicdetails");
-                        refreshToken();
-                       /*  sessionStorage.setItem('key', access_token);  */
-                        fetchbasicdetails();
+                    	  refreshToken().then((res) => {
+                          	console.log(res);
+                          	setSessionStorageItems(res);
+                          	fetchbasicdetails();
+                             });
                      }
                 }
             });
@@ -218,7 +225,18 @@ $.each(response, function(i, p) {
 				{
 					 includeSelectAllOption: true,
 					 enableFiltering: true,
-					 numberDisplayed: 3,
+					  buttonWidth: '400px',
+					     buttonText: function (options) {
+					         if (options.length == 0) {
+					             return 'None selected';
+					         } else {
+					             var selected = 0;
+					             options.each(function () {
+					                 selected += 1;
+					             });
+					             return selected +  ' Selected ';
+					         }
+					     }
 
 					});  
  
