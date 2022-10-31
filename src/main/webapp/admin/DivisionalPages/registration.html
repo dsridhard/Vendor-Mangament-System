@@ -15,6 +15,59 @@
         //alert(username);
 
 
+        $("#vendorRegistrationForm").submit(function (e) {
+
+            //alert("hello");
+            var nameofvendor = $('#firstName').val();
+            alert(nameofvendor);
+            var trainNoId = [];
+            e.preventDefault();
+            accesstoken = sessionStorage.getItem('key');
+            var serializedReturn = $(this).serializeArray();
+            //console.log("/////"+serializedReturn);
+            var train = $("#trainsId").val();
+            alert("train" + train);
+            for (var k = 0; k < train.length; k++) {
+
+                trainNoId[k] = parseInt(train[k]);
+            }
+            console.log(trainNoId);
+
+            var loginFormObject = {};
+            $.each(serializedReturn,
+                function (i, v) {
+                    loginFormObject[v.name] = v.value;
+                });
+            loginFormObject["trainsId"] = trainNoId;
+            //console.log(JSON.stringify(loginFormObject));
+            $.ajax({
+                url: "http://203.176.113.183/VendorAppServices/divisional/registernewvendor",
+                method: "POST",
+
+                headers: {
+                    "Authorization": "Bearer " + accesstoken,
+                    "Content-Type": "application/json"
+                },
+                data: JSON.stringify(loginFormObject),
+                success: function (response) {
+                    //alert("successfully register");
+                    alert(response.message);
+
+                    $("#vendorRegistered").html(" your successfully registered   :" + response.message);
+
+                },
+                error: function (xhr, status) {
+                    if (xhr.status == '401') {
+
+                        alert("access denied, please refresh the page again");
+                        refreshToken();
+                    }
+
+                },
+
+            });
+
+        });
         function fetchbasicdetails() {
             var accesstoken = sessionStorage.getItem('key');
 
@@ -38,8 +91,12 @@
                 error: function (xhr, status) {
                     if (xhr.status == '401') {
                         //	alert("access denied, please refresh the page again fachebasicdetails");
-                        refreshToken();
-                        fetchbasicdetails();
+                        refreshToken().then((res) => {
+                        	console.log(res);
+                        	setSessionStorageItems(res);
+                        	fetchbasicdetails();
+                           });
+                        
 
                     }
                 }
@@ -209,7 +266,7 @@ $('#trainsId').empty();
 /* $('#trainlistapi').append($('<option></option>').val("").html("---select---")); */
 
 $.each(response, function(i, p) {
-    $('#trainsId').append($('<option></option>').val(p.trainNo).html(p.trainNo+" - "+p.trainName));
+    $('#trainsId').append($('<option></option>').val(p.id).html(p.trainNo+" - "+p.trainName));
     $('#trainsId').multiselect('rebuild');
 });	
 
@@ -439,64 +496,10 @@ $(".multiselect").on("click", function(e) {
             </div>
         </div>
     </div>
-<script>
-    $(document).ready(function (e) {
+    
 
-        $("#vendorRegistrationForm").submit(function (e) {
 
-            //alert("hello");
-            var nameofvendor = $('#firstName').val();
-            alert(nameofvendor);
-            var trainNoId = [];
-            e.preventDefault();
-            accesstoken = sessionStorage.getItem('key');
-            var serializedReturn = $(this).serializeArray();
-            //console.log("/////"+serializedReturn);
-            var train = $("#trainsId").val();
-            alert("train" + train);
-            for (var k = 0; k < train.length; k++) {
-
-                trainNoId[k] = parseInt(train[k]);
-            }
-            console.log(trainNoId);
-
-            var loginFormObject = {};
-            $.each(serializedReturn,
-                function (i, v) {
-                    loginFormObject[v.name] = v.value;
-                });
-            loginFormObject["trainsId"] = trainNoId;
-            //console.log(JSON.stringify(loginFormObject));
-            $.ajax({
-                url: "http://203.176.113.183/VendorAppServices/divisional/registernewvendor",
-                method: "POST",
-
-                headers: {
-                    "Authorization": "Bearer " + accesstoken,
-                    "Content-Type": "application/json"
-                },
-                data: JSON.stringify(loginFormObject),
-                success: function (response) {
-                    //alert("successfully register");
-                    alert(response.message);
-
-                    $("#vendorRegistered").html(" your successfully registered   :" + response.message);
-
-                },
-                error: function (xhr, status) {
-                    if (xhr.status == '401') {
-
-                        alert("access denied, please refresh the page again");
-                        refreshToken();
-                    }
-
-                },
-
-            });
-
-        });
-    });
-</script>
+   
 
 
 

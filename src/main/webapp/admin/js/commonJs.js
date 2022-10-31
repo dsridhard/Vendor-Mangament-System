@@ -33,9 +33,9 @@ var key=sessionStorage.getItem('key');
 
 
 
-	
+/*	
 
-function refreshToken(){
+  function refreshToken(){
 	var username=sessionStorage.getItem('username');
 	var password=sessionStorage.getItem('password');
 	var usertype=sessionStorage.getItem('usertype');
@@ -56,7 +56,7 @@ function refreshToken(){
 			  }
 			};
 
-			$.ajax(settings).done(function (response) {
+			 $.ajax(settings).done(function (response) {
 				
 			  var access_token=response.access_token;
 			  console.log(access_token);
@@ -69,5 +69,40 @@ function refreshToken(){
 });
 	
 }
+*/
 
-
+  function refreshToken(){
+	var username=sessionStorage.getItem('username');
+	var password=sessionStorage.getItem('password');
+	var usertype=sessionStorage.getItem('usertype');
+	//alert("user name::::::"+username+" "+password+"usertype");
+	
+	  return $.ajax({
+		    url: "http://203.176.113.183/VendorAppLogin/oauth/token",
+		    type: 'POST',
+		    timeout: 0,
+			  headers: {
+			    "Authorization": "Basic dmVuZG9yYXBwOnNlY3JldA==",
+			    "Content-Type": "application/x-www-form-urlencoded"
+			  },
+			  data: {
+			    "username":username ,
+			    "password": password,
+			    "grant_type": "password",
+			    "userLoginType": usertype
+			  }
+		  });
+	
+	
+}
+  function setSessionStorageItems(response){
+	  var access_token=response.access_token;
+	  console.log(access_token);
+	 
+	 if(access_token!=''){
+		//alert("session token set");
+	  sessionStorage.setItem('key', access_token); 
+	   // alert("session token get");
+	    }
+	  
+  }

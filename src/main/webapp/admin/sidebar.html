@@ -19,20 +19,20 @@ $(document).ready(() => {
 	var userType=sessionStorage.getItem("usertype");
 	var sideHtml="";
 	if(userType=='DIVISIONAL'){
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="registration">Vendor Registration</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="DivisionalPages/registration">Vendor Registration</a></li>';
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="blank">List of Registered Vendors</a></li>';
 	}else if(userType=='VENDOR'){
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="blank">Concierge</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="blank">Bed Roll</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="createsupervisor">Create Supervisor</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="ecatering">E-Catering</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/bedr">Bed Roll</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/createsupervisor">Create Supervisor</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/ecatering">E-Catering</a></li>';
 	}
 	$('.nav').html(sideHtml);
     $(".navigate").on('click', function () {
         var $this = $(this)
         target = $this.data('target');
 
-        $('#content').load(target + '.html');
+        $('#maincontent').load(target + '.html');
         return false;
     })
 
