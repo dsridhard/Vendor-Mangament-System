@@ -13,7 +13,8 @@
 </head>
 
 <body>
-      <div>  <span id="msg"></span></div>
+      <h5 class=" font-14 text-center vendorRegistered " id="supRegistered" style="color:green"></h5>
+     	               <h5 class=" font-14 text-center vendorRegisterederror " id="supRegisterederror" style="color:red"></h5>
     <div class="container text-center bg-danger text-light my-1 ">
          
         <strong>BedRoll</strong>
@@ -97,14 +98,32 @@
             	        
             	        
 
-            	        var loginFormObject = {};
+             	        var loginFormObject = {};
             	        $.each(serializedReturn,
             	            function (i, v) {
             	                loginFormObject[v.name] = v.value;
-            	            });
+            	            }); 
             	       // loginFormObject["trainsId"] = trainNoId;
-            	        console.log(JSON.stringify({"service": 2,"bedRoll":data}));
-            	        $.ajax({
+            	     /*  console.log(JSON.stringify({"service": 2,"bedRoll":data})); */
+            	       commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/savebedrolldetails",JSON.stringify({"service": 2,"bedRoll":data})).then((response)=>{
+	                   alert(response.message);
+
+                       $("#supRegistered").html( response.message);
+                       document.getElementById("tafa").reset();
+                     })
+       .fail((xhr,status)=>{
+	  if (xhr.status == '401') {
+          
+     	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+         //alert("access denied, please refresh the page again");
+     	  refreshToken().then((res) => {
+           	console.log(res);
+           	setSessionStorageItems(res);
+             $("#tafa").submit();
+              });
+     }
+});
+            	       /*  $.ajax({
             	            url: "http://203.176.113.183/VendorAppServices/vendor/savebedrolldetails",
             	            method: "POST",
 
@@ -133,7 +152,7 @@
 
             	            },
 
-            	        });
+            	        }); */
             	        
             	       // document.getElementById("vendorRegistrationForm").reset();
 
@@ -141,7 +160,7 @@
 
 
             
-    })
+    });
 
 </script>
 
