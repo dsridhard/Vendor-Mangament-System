@@ -13,23 +13,25 @@
 </head>
 
 <body>
+      <div>  <span id="msg"></span></div>
     <div class="container text-center bg-danger text-light my-1 ">
+         
         <strong>BedRoll</strong>
     </div>
     <div class="container">
-        <form action="" method="post" name="tafa" onsubmit='return validateForm()'>
+        <form  method="post" name="tafa" id="tafa">
             <table class="table">
                 <thead>
-                    <tr>
-                        <th>Taxi</th>
+                    <tr class="headRow">
+                        <th>BedType</th>
                         <th>Fare</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="dynamicallyadd">
                     <tr>
-                        <td><input type="text" name="taxi" id="taxi" class="form-control"></td>
-                        <td><input type="text" name="taxi" id="fare" class="form-control"></td>
+                        <td><input type="text" name="type" id="type" class="form-control"></td>
+                        <td><input type="text" name="fare" id="fare" class="form-control"></td>
                         <td><button type="button" id="add" class="btn btn-success">+</button></td>
                     </tr>
                 </tbody>
@@ -39,23 +41,15 @@
     </div>
 </body>
 <script type="text/javascript">
-    function validateForm() {
-        var tname = document.forms.tafa.taxi.value;
-        alert(tname)
-
-
-
-        return false
-
-    }
+  
     $(document).ready(() => {
         var i = 1;
         $('#add').click(() => {
             i++;
             $('#dynamicallyadd').append(
                 '<tr id="row' + i + '">' +
-                '<td><input type="text" name="" id="taxi" class="form-control"></td>' +
-                '<td><input type="text" name="" id="fare" class="form-control"></td>' +
+                '<td><input type="text" name="type" id="type" class="form-control"></td>' +
+                '<td><input type="text" name="fare" id="fare" class="form-control"></td>' +
                 '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row">-</button></td>' +
                 '</tr>');
         });
@@ -63,6 +57,90 @@
             var row_id = $(this).attr("id");
             $('#row' + row_id + '').remove();
         });
+       
+            var tname = document.forms.tafa.type.value;
+            var fare = document.forms.tafa.fare.value;
+            
+        
+            
+            $("#tafa").submit(function (e) {
+            	console.log("//inside bedroll form submit");
+            	        ////alert("hello");
+            	      //  var tname = $('#tname').val();
+            	       // alert(tname);
+            	       // var trainNoId = [];
+            	        e.preventDefault();
+            	        accesstoken = sessionStorage.getItem('key');
+            	        var serializedReturn = $(this).serializeArray();
+            	        //console.log("/////"+serializedReturn);
+            	      /*   var train = $("#trainsId").val();
+            	       // alert("train" + train);
+            	        for (var k = 0; k < train.length; k++) {
+
+            	            trainNoId[k] = parseInt(train[k]);
+            	        }
+            	        console.log(trainNoId); */
+            	        
+            	        
+            	        var data = $('tr:not(.headRow').map(function() {
+            	        	var obj = {};
+            	        	$(this).find('input').each(function() {
+            	            	obj[this.name] = $(this).val();
+            	            });
+            	            return obj;
+            	        }).get();
+            	        
+            	       // alert(JSON.stringify(data));
+            	        
+            	        //alert(JSON.stringify({"service": 2,"bedRoll":data}));
+            	        
+            	        
+            	        
+
+            	        var loginFormObject = {};
+            	        $.each(serializedReturn,
+            	            function (i, v) {
+            	                loginFormObject[v.name] = v.value;
+            	            });
+            	       // loginFormObject["trainsId"] = trainNoId;
+            	        console.log(JSON.stringify(loginFormObject));
+            	        $.ajax({
+            	            url: "http://203.176.113.183/VendorAppServices/vendor/savebedrolldetails",
+            	            method: "POST",
+
+            	            headers: {
+            	                "Authorization": "Bearer " + accesstoken,
+            	                "Content-Type": "application/json"
+            	            },
+            	            data:JSON.stringify({"service": 2,"bedRoll":data}),
+            	            	
+            	            	
+            	            	//JSON.stringify(loginFormObject),
+            	            success: function (response) {
+            	                ////alert("successfully register");
+            	              //alert(response.message);
+
+            	                $("#msg").html(":" + response.message+ ":");
+
+            	            },
+            	            error: function (xhr, status) {
+            	                if (xhr.msg == '401') {
+            	                  
+            	                	  $("#msg").html("Error :" +xhr.status+ "");
+            	                  //  alert("access denied, please refresh the page again");
+            	                    refreshToken();
+            	                }
+
+            	            },
+
+            	        });
+            	        
+            	       // document.getElementById("vendorRegistrationForm").reset();
+
+            	    });
+
+
+            
     })
 
 </script>
