@@ -1,7 +1,5 @@
 <script>
 
-
-
 $(document).ready(function (e) {
 
 checksession();
@@ -9,6 +7,7 @@ inputFormContent();
 
 
 var supervisorArr=[];
+var trainListLength=0;
 function inputFormContent(){
 	 getsupervisorList().then((response) => {
 		 //alert("list response"+response);
@@ -90,6 +89,48 @@ function getMappingList(){
 function frameInputContent(res){
 
 console.log(res);
+
+var innerHtml="";
+for(k=0;k<res.length;k++){
+	//alert("inside loop");
+	trainListLength++;
+	 innerHtml+=" <div class='row px-3 mx-3'> "+
+     "<div class=' col-md-4 '> "+
+        " <div class='mb-3 mt-3'> "+
+            
+            " <label for='inputnameofvendor'>Train No</label>"+
+           
+           "  <input class='form-control' id='trainNo_"+k+"' idno='"+res[k].mstTrainsVendorModel.id+"' name='trainNo_"+k+"' value='"+res[k].mstTrainsVendorModel.trainNo+"-"+res[k].mstTrainsVendorModel.trainName+"' readonly >";
+       
+          var supOpt="";
+      
+
+innerHtml+="</div></div>";
+innerHtml+= "<div class=' col-md-4 '> "+
+" <div class='mb-3 mt-3'> "+
+
+" <label for='inputnameofvendor'>Supervisor</label>"+
+" <div class='dropdown'>"+
+"  <select class='form-control' id='supervisor_"+k+"' name='supervisor_"+k+"'  >";
+supOpt+="<option value=''>--select--</option>";
+for(p=0;p<supervisorArr.length;p++){
+	//alert("inside another loop");
+	if(supervisorArr[p].superVisorId==res[k].mstSupervisorUsersId)
+	supOpt+="<option value='"+supervisorArr[p].superVisorId+"' selected>"+supervisorArr[p].firstName+" "+supervisorArr[p].lastName+"</option>";
+	else
+	supOpt+="<option value='"+supervisorArr[p].superVisorId+"' >"+supervisorArr[p].firstName+" "+supervisorArr[p].lastName+"</option>";
+	
+	          }
+innerHtml+=supOpt+"</select></div></div></div></div>";
+}
+
+
+
+
+$(".inputContent").html(innerHtml)
+
+
+
 	
 }
 
@@ -100,21 +141,107 @@ console.log(res);
 $("#mappingForm").submit(function (e) {
 
 	e.preventDefault();
-	
+	//alert(trainListLength);
+	if(!checkUniqueValidation()){
+
+var formJson=[];
+
+$("input").each(function(index){
+
+var subJson={};
+if($("#supervisor_"+index).val()==""){
+	subJson["superVisorId"]=null;
+}
+else
+subJson["superVisorId"]=parseInt($("#supervisor_"+index).val());
+
+subJson["trainId"]=  parseInt($("#trainNo_"+index).attr("idno"));
+
+formJson.push(subJson) ;
+});
+
+
+console.log(JSON.stringify(formJson));
+
+var accesstoken = sessionStorage.getItem('key');
+$.ajax({
+    url: "http://203.176.113.183/VendorAppServices/vendor/data/submitsupervisortraindata",
+    method: "POST",
+
+    headers: {
+        "Authorization": "Bearer " + accesstoken,
+        "Content-Type": "application/json"
+    },
+    data: JSON.stringify(formJson),
+    success: function (response) {
+        ////alert("successfully register");
+        //alert(response.message);
+
+        $("#mappingRegistered").html( response.message);
+        document.getElementById("mappingForm").reset();
+    },
+    error: function (xhr, status) {
+        if (xhr.status == '401') {
+          
+        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+            //alert("access denied, please refresh the page again");
+        	  refreshToken().then((res) => {
+              	console.log(res);
+              	setSessionStorageItems(res);
+                $("#mappingForm").submit();
+                 });
+        }
+
+    },
+
+});
+
+		
+		}
+	else{
+
+alert("One supervisor can't serve in multiple trains, please select unique supervisor ");
+		}
 	
 });
+
+function checkUniqueValidation(){
+var arr=[];
+var error=false;
+$("select").removeClass("duplicate");
+$("select").each(function(){
+    var value = $(this).val();
+    if(value!=""){
+    if (arr.indexOf(value) == -1)
+        arr.push(value);
+    else{
+        $(this).addClass("duplicate");
+        error=true;
+    }
+    }
+});
+
+	return error;
+}
+
 	
 });
 
 </script>
 
 
-
+<style>
+.duplicate {
+    border: 1px solid red;
+    color: red;
+}
+</style>
+<h5 class=" font-14 text-center vendorRegistered " id="mappingRegistered" style="color:green"></h5>
 
 <div class="row">
             <div class="col">
                 <div class="shadow-lg ">
-                 <div class="text-light bg-danger text-center shadow-lg">Vendor Registration Form</div>
+                 <div class="text-light bg-danger text-center shadow-lg">Supervisor-Train Mapping</div>
                     <form  method="post" id="mappingForm" name="mappingForm">
                     <div class="inputContent">
                     
