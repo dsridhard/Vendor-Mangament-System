@@ -37,188 +37,114 @@ console.log("//inside vendor registration form submit");
             });
         loginFormObject["trainsId"] = trainNoId;
         //console.log(JSON.stringify(loginFormObject));
-        $.ajax({
-            url: "http://203.176.113.183/VendorAppServices/divisional/registernewvendor",
-            method: "POST",
-
-            headers: {
-                "Authorization": "Bearer " + accesstoken,
-                "Content-Type": "application/json"
-            },
-            data: JSON.stringify(loginFormObject),
-            success: function (response) {
-                ////alert("successfully register");
-                //alert(response.message);
-
-                $("#vendorRegistered").html( response.message);
-                document.getElementById("vendorRegistrationForm").reset();
-            },
-            error: function (xhr, status) {
-                if (xhr.status == '401') {
-                  
-                	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
-                    //alert("access denied, please refresh the page again");
-                	  refreshToken().then((res) => {
-                      	console.log(res);
-                      	setSessionStorageItems(res);
-                        $("#vendorRegistrationForm").submit();
-                         });
-                }
-
-            },
-
-        });
         
-      
+        
+        commonpostmethod("http://203.176.113.183/VendorAppServices/divisional/registernewvendor",JSON.stringify(loginFormObject)).then((response)=>{
+	 //alert(response.message);
 
+	 $("#vendorRegistered").html( response.message);
+     document.getElementById("vendorRegistrationForm").reset();
+})
+.fail((xhr,status)=>{
+	  if (xhr.status == '401') {
+          
+     	  refreshToken().then((res) => {
+           	console.log(res);
+           	setSessionStorageItems(res);
+             $("#vendorRegistrationForm").submit();
+              });
+     }
+});
+        
+        
+   
     });
 
 
 	
 	
-        var username = sessionStorage.getItem('username');
         checksession();
-        fetchbasicdetails();
+        vendorcategorylist();
 
-function fetchbasicdetails() {
- var accesstoken = sessionStorage.getItem('key');
- $.ajax({
-         url: "http://203.176.113.183/VendorAppServices/divisional/userdetails/" + username,
-                method: "GET",
-                timeout: 0,
-                headers: {
-                    "Authorization": "Bearer " + accesstoken
-                },
-                success: function (response) { 
-                    console.log(JSON.stringify(response));
-                    $("#welcomeP").html("Welcome " + username + " Zone: " + response.zoneName + " Division: " + response.divName);
-                    vendorcategorylist(); /// wait
-                    vendorconstitutionlist();
-                    trainlist();
-
-
-                },
-                error: function (xhr, status) {
-                    if (xhr.status == '401') {
-                        //	//alert("access denied, please refresh the page again fachebasicdetails");
-                    	  refreshToken().then((res) => {
-                          	console.log(res);
-                          	setSessionStorageItems(res);
-                          	fetchbasicdetails();
-                             });
-                     }
-                }
-            });
-        }
-
-
-        
-async function commongetmethoderrorhandling(url)
- {
-	 //alert(url);
-	 response=commongetmoethod(url);//xhr.status
-	  var response1=JSON.stringify(response);
-	  console.log(JSON.stringify(response.status));
-		console.log(JSON.stringify(response1));
-    //alert("response.statuscode "+JSON.stringify(response));
-  // //alert("xhr.status"+xhr.status);
-    if(response1=="401" || response1=="400")
-     {
-       //alert("response :::::::::::::: "+response1);
-       await refreshToken();
-       response=commongetmoethod(url);
-     }
-    if(response1=="401" || response1=="400")
-    {
-     $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/",2))+'/index.html');	
-
-    }
-    if(!response1=="401" || !response1=="400")
-    {
-    	$(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/",2))+'/index.html');	
-	
-    }
-    
-   
-     return response
-}
-
-function commongetmoethod(url) {
-////alert("commongetmethod :::"+url);
-var accesstoken = sessionStorage.getItem('key');
-var result='';
-//alert("commongetmethod :accesstoken  ::  "+accesstoken);
-$.ajax({
-          url: url,
-           method: "GET",
-           timeout: 0,
-           async:false,
-           headers: {
-                       "Authorization": "Bearer " + accesstoken
-                      },
-            success: function (response, xhr,status) {
-            	if(xhr.status=='200'){
-            	console.log(JSON.stringify(response.status));	
-            	console.log(JSON.stringify(response));
-            	}
-                    result = response;
-                   // //alert("------------"+xhr.status);
-                    },
-            error: function (xhr, status) {
-            	if(xhr.status=='401'){
-            		console.log("test5");
-            		////alert("ffff"+vendorcategorylist);
-
-            	} 
-            	result = xhr.status;
-                }
-            });
-       return result;
-         }
-  	
-$("#logoutlink").on("click",function(){
-	 sessionStorage.clear();
-	 $(location).attr('href', window.location.pathname.substring(0, window.location.pathname.indexOf("/",2))+'/index.html');	
-});
-	
- 
-async function vendorcategorylist(){	
+ function vendorcategorylist(){	
 	////alert("vendorcategary");
-var accesstoken = sessionStorage.getItem('key');
-response=await commongetmethoderrorhandling("http://203.176.113.183/VendorAppServices/divisional/vendorcategorylist");
-console.log(JSON.stringify(response));
-$('#vendorCategoryId').empty();
-$('#vendorCategoryId').append($('<option></option>').val("").html("---select---"));
-$.each(response, function(i, p) {
-$('#vendorCategoryId').append($('<option></option>').val(p.id).html(p.categoryName)); 
-});
+	commongetmethod("http://203.176.113.183/VendorAppServices/divisional/vendorcategorylist").then((response) => {
+     	//console.log(res);
+     	//alert("mapping response"+res);
+     	$('#vendorCategoryId').empty();
+     	$('#vendorCategoryId').append($('<option></option>').val("").html("---select---"));
+     	$.each(response, function(i, p) {
+     	$('#vendorCategoryId').append($('<option></option>').val(p.id).html(p.categoryName)); 
+     	});
+     	vendorconstitutionlist();
+     	trainlist();
+     
+        }) .fail(function(xhr, err) { 
+
+      	  if(xhr.status=="401"){
+      		  refreshToken().then((res) => {
+      	        	console.log(res);
+      	        	setSessionStorageItems(res);
+      	        	vendorcategorylist();
+      	           });
+      		  }
+      	});
 }
 
-async function vendorconstitutionlist(){	
+ function vendorconstitutionlist(){	
 	////alert("vendorconstitutionlist");
-var accesstoken = sessionStorage.getItem('key');
-response=await commongetmethoderrorhandling("http://203.176.113.183/VendorAppServices/divisional/vendorconstitutionlist");	
-console.log(JSON.stringify(response));
+	
+	
+	commongetmethod("http://203.176.113.183/VendorAppServices/divisional/vendorconstitutionlist").then((response) => {
+     	//console.log(res);
+     	//alert("mapping response"+res);
+     	
 $('#vendorConstitutionId').empty();
 $('#vendorConstitutionId').append($('<option></option>').val("").html("---Select---"));
 $.each(response, function(i, p) {
 $('#vendorConstitutionId').append($('<option></option>').val(p.id).html(p.constitutionName));
 });	
+     	
+     
+        }) .fail(function(xhr, err) { 
+
+      	  if(xhr.status=="401"){
+      		  refreshToken().then((res) => {
+      	        	console.log(res);
+      	        	setSessionStorageItems(res);
+      	        	vendorconstitutionlist();
+      	           });
+      		  }
+      	});
+	
+
 }
  
-async function trainlist(){	
-//alert("trainlist");
-var accesstoken = sessionStorage.getItem('key');
-response=await commongetmethoderrorhandling("http://203.176.113.183/VendorAppServices/divisional/trainlist");	 
-console.log(JSON.stringify(response));
-//alert(sJSON.stringify(response));
-$('#trainsId').empty();
-$.each(response, function(i, p) {
-    $('#trainsId').append($('<option></option>').val(p.id).html(p.trainNo+" - "+p.trainName));
-    $('#trainsId').multiselect('rebuild');
-    
+ function trainlist(){	
 
-});		  
+commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist").then((response) => {
+ 
+	$('#trainsId').empty();
+	$.each(response, function(i, p) {
+	    $('#trainsId').append($('<option></option>').val(p.id).html(p.trainNo+" - "+p.trainName));
+	    $('#trainsId').multiselect('rebuild');
+	    
+
+	});		  
+     	
+     
+        }) .fail(function(xhr, err) { 
+
+      	  if(xhr.status=="401"){
+      		  refreshToken().then((res) => {
+      	        	console.log(res);
+      	        	setSessionStorageItems(res);
+      	        	trainlist();
+      	           });
+      		  }
+      	});
+
+
 }	 
 
  $('#trainsId').multiselect(
@@ -258,14 +184,6 @@ $.each(response, function(i, p) {
 	 });
  
  
- 
- 
-/*  
-  $('.multiselect').click(function() {
-  $('.multiselect-container').addClass("show");
-});
-   */
-  
   
   
 

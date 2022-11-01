@@ -103,7 +103,7 @@
             	                loginFormObject[v.name] = v.value;
             	            });
             	       // loginFormObject["trainsId"] = trainNoId;
-            	        console.log(JSON.stringify(loginFormObject));
+            	        console.log(JSON.stringify({"service": 2,"bedRoll":data}));
             	        $.ajax({
             	            url: "http://203.176.113.183/VendorAppServices/vendor/savebedrolldetails",
             	            method: "POST",

@@ -110,6 +110,7 @@
      
         var userType=sessionStorage.getItem("usertype");
         if(userType=='DIVISIONAL'){
+        	printDivisionalUserDetail();
         	$('#maincontent').load('DivisionalPages/registration.html')
     	}else if(userType=='VENDOR'){
         	printVendorUserDetail();
@@ -129,15 +130,39 @@
             	
             	})
             	.fail((xhr,status)=>{
+            		if (xhr.status == '401') {
             		refreshToken().then((res) => {
                       	console.log(res);
                       	setSessionStorageItems(res);
                       	printVendorUserDetail();
                 	});
-        	
+            		}
         });
 
         }  
+
+        function printDivisionalUserDetail() {
+
+        	 var username = sessionStorage.getItem('username');
+        	commongetmethod("http://203.176.113.183/VendorAppServices/divisional/userdetails/" + username).then((response)=>{
+                
+                $("#welcomeP").html("Welcome " + username + " Zone: " + response.zoneName + " Division: " + response.divName);
+
+            	
+            	})
+            	.fail((xhr,status)=>{
+            		if (xhr.status == '401') {
+            		refreshToken().then((res) => {
+                      	console.log(res);
+                      	setSessionStorageItems(res);
+                      	printDivisionalUserDetail();
+                	});
+            		}
+        });
+
+
+        	        }
+        	        
     });
 </script>
 
