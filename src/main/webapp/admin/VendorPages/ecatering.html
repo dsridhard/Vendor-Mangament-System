@@ -4,31 +4,34 @@
             <div class="col">
                 <div class="shadow-lg ">
                    <div class="col-12 p-2 bg-white h-100 no-print"  >
+                   <h5 class=" font-14 text-center vendorRegistered " id="ecateringRes" style="color:green"></h5>
                     <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
 
                     <div class="text-light bg-danger text-center shadow-lg">E-catering Details Form</div>
                     <form  method="post" id="ecateringForm" name="ecateringForm">
                    <!--  <form action="" class="was-validated"> -->
+                   <div class=" row p-3 mx-3">
+                   		<div class=" col-md-6 ">
+                   			<b><span style="color: #f05f40">*</span>Sub Service Type</b>
+                   		</div>
+                   		<div class=" col-md-6 ">
+                   		<select class="form-control required" id="subServicetype" name="subServicetype" style="width:100%"></select>
+                   		</div>
+                   </div>
                           <div class=" row px-3 mx-3">
                             <div class=" col-md-12 ">
-                                <table id="itemList" class="table table-bordered" style="border-radius: 4px;width:100%" >
+                                <table id="itemList" class="table" style="border-radius: 4px;width:100%" >
   	<tr class="headRow">
-  		<th><b>S.No.</b></th>
   		<th><b><span style="color: #f05f40">*</span>Item</b></th>
   		<th><b><span style="color: #f05f40">*</span>Price</b></th>
+  		<th><b>Action</b></th>
   	</tr>
   	<tr>
-  		<td>1</td>
   		<td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td>
   		<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td>
+  		<td><button type="button" id="addItems" class="btn btn-success">+</button></td>
   	</tr>
   	</table>
-                           </div>
-                           </div>
-                           <div class=" row px-3 mx-3"> 
-                           <div class=" col-md-12 ">
-                          	 <button type="button" class="btn-sm btn-info" id="addItems" style="border: 2px solid rgba(0,0,0,.05);border-radius: 4px;color:white">Add more</button>&nbsp;&nbsp;
-                          	 <button type="button" class="btn-sm btn-danger" id="delItems" style="border: 2px solid rgba(0,0,0,.05);border-radius: 4px;">Delete</button>
                            </div>
                            </div>
                <div class="row px-3 mx-3">
@@ -41,59 +44,116 @@
         </div>
     </div>
 <script>
-$("#addItems").click(function(){
-	var html = "";
-	var sno = $('#itemList tr:last td').html();
-	html = '<tr><td>'+(+sno+1)+'</td><td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td><td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td></tr>';
-	$('#itemList').append(html);
-});
-$("#delItems").click(function(){
-    var itemNo = document.getElementById("itemList").rows.length;
-    if(itemNo>2){
-		$('#itemList tr:last-child').remove();
-	}else{
-		alert("Please add at least one item details");
+$(document).ready(function(){
+	checksession();
+	getSubServiceList();
+	$("#addItems").click(function(){
+		var html = "";
+		var sno = document.getElementById('itemList').rows.length;
+		html = html + '<tr id="row' +(+sno)+ '"><td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td>';
+		html = html + '<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td>';
+		html = html + '<td><button type="button" id="' +(+sno)+'" class="btn btn-danger remove_row">-</button></td></tr>';
+		$('#itemList').append(html);
+	});
+	$(document).on('click', '.remove_row', function () {
+	    var row_id = $(this).attr("id");
+	    $('#row' + row_id + '').remove();
+	});
+	$('#ecateringForm').on('submit', function(event) {
+		event.preventDefault();
+		 $('.err').remove();
+		var sel = document.querySelectorAll('.required'); 
+	    for (var i=0;i<sel.length;i++){
+	    if(sel[i].value.trim()==""){
+			var errNode = document.createElement('div');
+			errNode.className = "err";
+			errNode.innerHTML = '<small style="color:red"><i>Please fill!</i></small>';
+			sel[i].after(errNode);
+			return false;
+	        }
+	    }
+	    var checkArray =[];
+	    var data = $('tr:not(.headRow').map(function() {
+	    	var obj = {};
+	    	var temp='';
+	    	$(this).find('input').each(function() {
+	    		temp+=$(this).val();
+	    	    obj[this.name] = $(this).val();
+	        });
+	    	if(!checkArray.includes(temp)){
+			   	checkArray.push(temp);
+			    return obj;
+	    	}
+	    }).get();
+	    alert(JSON.stringify({subService:+($("#subServicetype").val()),ecateringList:data}));
+	    commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/savecateringdetails",JSON.stringify({subService:+($("#subServicetype").val()),ecateringList:data})).then((response)=>{
+	   	 alert(response.message);
+
+	        $("#ecateringRes").html( response.message);
+	        document.getElementById("ecateringForm").reset();
+	   })
+	   .fail((xhr,status)=>{
+	   	  if (xhr.status == '401') {
+	             
+	        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+	            //alert("access denied, please refresh the page again");
+	        	  refreshToken().then((res) => {
+	              	console.log(res);
+	              	setSessionStorageItems(res);
+	                $("#ecateringForm").submit();
+	                 });
+	        }
+	   });
+	    
+	});
+	//$('.price').on('input',function (){
+	//	  $('.errValid').remove();
+	//	  this.value = this.value.trim();
+	//	  this.value = this.value.replace("+","");
+	//	  if(isNaN(this.value)){
+//		  this.value = this.value.replace(/\D/g, "");		  
+	//		  var errNode = document.createElement('div');
+	//		  errNode.className = "errValid";
+	//		  errNode.innerHTML = '<small style="color:red"><i>Please enter valid input!</i></small>';
+		//	  this.after(errNode);
+	//	  }else{
+	//		  var placeholder = this.nextElementSibling;
+	//		  if (placeholder!=null&&placeholder.classList.contains('err')) {
+	//			  placeholder.remove();
+	///			  }
+	//	  }
+	//});
+	function getSubServiceList(){
+	var accesstoken = sessionStorage.getItem('key');$.ajax({
+	    url: "http://203.176.113.183/VendorAppServices/vendor/subServicesList/6",
+	    method: "GET",
+
+	    headers: {
+	        "Authorization": "Bearer " + accesstoken,
+	    },
+	    success: function (response) {
+	        	var subList = '';
+	        	for(var i=0;i<response.length;i++){
+	        		subList = subList + '<option value="'+response[i].id+'">'+response[i].name+'</option>';
+	        	}
+	        	$('#subServicetype').append(subList);
+	    },
+	    error: function (xhr, status) {
+	        if (xhr.status == '401') {
+	          
+	        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+	            //alert("access denied, please refresh the page again");
+	        	  refreshToken().then((res) => {
+	              	console.log(res);
+	              	setSessionStorageItems(res);
+	              	getSubServiceList();
+	                 });
+	        }
+
+	    },
+
+	});
 	}
-});
-$('#ecateringForm').on('submit', function(event) {
-	event.preventDefault();
-	 $('.err').remove();
-	var sel = document.querySelectorAll('.required'); 
-    for (var i=0;i<sel.length;i++){
-    if(sel[i].value.trim()==""){
-		var errNode = document.createElement('div');
-		errNode.className = "err";
-		errNode.innerHTML = '<small style="color:red"><i>Please fill!</i></small>';
-		sel[i].after(errNode);
-		return false;
-        }
-    }
-    var data = $('tr:not(.headRow').map(function() {
-    	var obj = {};
-    	$(this).find('input').each(function() {
-        	obj[this.name] = $(this).val();
-        });
-        return obj;
-    }).get();
-    
-    alert(JSON.stringify(data));
-});
-$('.price').on('input',function (){
-	  $('.errValid').remove();
-	  this.value = this.value.trim();
-	  this.value = this.value.replace("+","");
-	  if(isNaN(this.value)){
-		  this.value = this.value.replace(/\D/g, "");		  
-		  var errNode = document.createElement('div');
-		  errNode.className = "errValid";
-		  errNode.innerHTML = '<small style="color:red"><i>Please enter valid input!</i></small>';
-		  this.after(errNode);
-	  }else{
-		  var placeholder = this.nextElementSibling;
-		  if (placeholder!=null&&placeholder.classList.contains('err')) {
-			  placeholder.remove();
-			  }
-	  }
 });
 </script>
 
