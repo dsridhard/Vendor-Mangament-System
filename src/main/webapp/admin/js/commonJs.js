@@ -122,3 +122,34 @@ return $.ajax({
 	    }
 	  
   }
+  
+  function commongetmethod(geturl){
+	  var accesstoken = sessionStorage.getItem('key');
+	  return $.ajax({
+		    url: geturl,
+		    type: 'GET',
+		    timeout: 0,
+		    headers: {
+                "Authorization": "Bearer " + accesstoken
+            }
+			 
+		  });
+	  
+  }
+  
+  function commonpostmethod(posturl,postdata){
+	  var accesstoken = sessionStorage.getItem('key');
+	  return $.ajax({
+		    url: posturl,
+		    method: "POST",
+
+		    headers: {
+		        "Authorization": "Bearer " + accesstoken,
+		        "Content-Type": "application/json"
+		    },
+		    data: postdata
+		
+
+		});
+	  
+  }

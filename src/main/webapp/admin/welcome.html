@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <script src="js/commonJs.js"></script>
+    <script src="js/commonJs.js?version=6"></script>
 </head>
 
 <style>
@@ -91,8 +91,8 @@
 
 <script>
 
+    
     $(document).ready(() => {
-    	
     	checksession();
     	$(".scroll").css("height", $(window).height()-200);
 
@@ -103,10 +103,6 @@
 
 
         });
-
-    });
-
-    $(document).ready(() => {
         $('.sidebar').load('sidebar.html')
 
         $('#head').load(window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2)) + '/head.html')
@@ -116,11 +112,32 @@
         if(userType=='DIVISIONAL'){
         	$('#maincontent').load('DivisionalPages/registration.html')
     	}else if(userType=='VENDOR'){
-    		$('#maincontent').load('VendorPages/blank.html')
+        	printVendorUserDetail();
+    		$('#maincontent').load('VendorPages/taxifare.html')
     	}
         
         $('#footer').load(window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2)) + '/footer.html')
-       
+
+
+
+      function printVendorUserDetail(){
+
+        	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/getprofile").then((response)=>{
+                         
+                $("#welcomeP").html("Welcome " + response.firstName + ", mobile: " + response.contactNo + ", Email: " + response.email);
+
+            	
+            	})
+            	.fail((xhr,status)=>{
+            		refreshToken().then((res) => {
+                      	console.log(res);
+                      	setSessionStorageItems(res);
+                      	printVendorUserDetail();
+                	});
+        	
+        });
+
+        }  
     });
 </script>
 

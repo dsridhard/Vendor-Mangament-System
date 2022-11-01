@@ -122,7 +122,7 @@ $('#supervisorRegistrationForm').on('submit', function(event) {
     }
     
 
-    var accesstoken = sessionStorage.getItem('key');
+   
     var serializedReturn = $(this).serializeArray();
     var formObject = {};
     $.each(serializedReturn,
@@ -131,39 +131,26 @@ $('#supervisorRegistrationForm').on('submit', function(event) {
         });
 
 console.log( JSON.stringify(formObject));
-$.ajax({
-    url: "http://203.176.113.183/VendorAppServices/vendor/data/registersupervisor",
-    method: "POST",
+commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/data/registersupervisor",JSON.stringify(formObject)).then((response)=>{
+	 alert(response.message);
 
-    headers: {
-        "Authorization": "Bearer " + accesstoken,
-        "Content-Type": "application/json"
-    },
-    data: JSON.stringify(formObject),
-    success: function (response) {
-        ////alert("successfully register");
-        alert(response.message);
-
-        $("#supRegistered").html( response.message);
-        document.getElementById("supervisorRegistrationForm").reset();
-    },
-    error: function (xhr, status) {
-        if (xhr.status == '401') {
+     $("#supRegistered").html( response.message);
+     document.getElementById("supervisorRegistrationForm").reset();
+})
+.fail((xhr,status)=>{
+	  if (xhr.status == '401') {
           
-        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
-            //alert("access denied, please refresh the page again");
-        	  refreshToken().then((res) => {
-              	console.log(res);
-              	setSessionStorageItems(res);
-                $("#supervisorRegistrationForm").submit();
-                 });
-        }
-
-    },
-
+     	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+         //alert("access denied, please refresh the page again");
+     	  refreshToken().then((res) => {
+           	console.log(res);
+           	setSessionStorageItems(res);
+             $("#supervisorRegistrationForm").submit();
+              });
+     }
 });
 
-    
+  
 });
 $('#mobile').on('input',function (){
 	  $('.errValid').remove();

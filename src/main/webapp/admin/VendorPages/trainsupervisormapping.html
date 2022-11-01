@@ -9,7 +9,7 @@ inputFormContent();
 var supervisorArr=[];
 var trainListLength=0;
 function inputFormContent(){
-	 getsupervisorList().then((response) => {
+	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getsupervisorlist").then((response) => {
 		 //alert("list response"+response);
        	console.log(response);
  
@@ -36,21 +36,10 @@ function inputFormContent(){
 }
 
 
-function getsupervisorList(){
-	 var accesstoken = sessionStorage.getItem('key');
-	return $.ajax({
-	    url: "http://203.176.113.183/VendorAppServices/vendor/data/getsupervisorlist",
-	    type: 'GET',
-	    timeout: 0,
-		  headers: {
-		    "Authorization": "Bearer "+accesstoken
-		    
-		  }
-	  });
-}
+
 
 function fetchMappingList(){
-	getMappingList().then((res) => {
+	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getsupervisortrainmappinglist").then((res) => {
      	console.log(res);
      	//alert("mapping response"+res);
      	
@@ -73,18 +62,7 @@ function fetchMappingList(){
 
 	
 }
-function getMappingList(){
-	 var accesstoken = sessionStorage.getItem('key');
-	return $.ajax({
-	    url: "http://203.176.113.183/VendorAppServices/vendor/data/getsupervisortrainmappinglist",
-	    type: 'GET',
-	    timeout: 0,
-		  headers: {
-		    "Authorization": "Bearer "+accesstoken
-		    
-		  }
-	  });
-}
+
 
 function frameInputContent(res){
 
@@ -163,38 +141,27 @@ formJson.push(subJson) ;
 
 console.log(JSON.stringify(formJson));
 
-var accesstoken = sessionStorage.getItem('key');
-$.ajax({
-    url: "http://203.176.113.183/VendorAppServices/vendor/data/submitsupervisortraindata",
-    method: "POST",
-
-    headers: {
-        "Authorization": "Bearer " + accesstoken,
-        "Content-Type": "application/json"
-    },
-    data: JSON.stringify(formJson),
-    success: function (response) {
-        ////alert("successfully register");
-        //alert(response.message);
-
-        $("#mappingRegistered").html( response.message);
-        document.getElementById("mappingForm").reset();
-    },
-    error: function (xhr, status) {
-        if (xhr.status == '401') {
-          
-        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
-            //alert("access denied, please refresh the page again");
-        	  refreshToken().then((res) => {
-              	console.log(res);
-              	setSessionStorageItems(res);
-                $("#mappingForm").submit();
-                 });
-        }
-
-    },
-
+commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitsupervisortraindata",JSON.stringify(formJson)).then((response)=>{
+	 $("#mappingRegistered").html( response.message);
+     //document.getElementById("mappingForm").reset();
+})
+.fail((xhr,status)=>{
+	
+	 if (xhr.status == '401') {
+         
+    	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+        //alert("access denied, please refresh the page again");
+    	  refreshToken().then((res) => {
+          	console.log(res);
+          	setSessionStorageItems(res);
+            $("#mappingForm").submit();
+             });
+    }
+	 else{
+		 alert("some internal error occurred");
+		 }
 });
+
 
 		
 		}
