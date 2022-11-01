@@ -70,7 +70,23 @@ var key=sessionStorage.getItem('key');
 	
 }
 */
+function commongetmoethod1(url) {
+////alert("commongetmethod :::"+url);
+var accesstoken = sessionStorage.getItem('key');
 
+//alert("commongetmethod :accesstoken  ::  "+accesstoken);
+return $.ajax({
+          url: url,
+           method: "GET",
+           timeout: 0,
+           async:false,
+           headers: {
+                       "Authorization": "Bearer " + accesstoken
+                      }
+            
+            });
+      
+         }
   function refreshToken(){
 	var username=sessionStorage.getItem('username');
 	var password=sessionStorage.getItem('password');

@@ -4,6 +4,9 @@
             <div class="col">
                 <div class="shadow-lg ">
                    <div class="col-12 p-2 bg-white h-100 no-print"  >
+                   <h5 class=" font-14 text-center vendorRegistered " id="supRegistered" style="color:green"></h5>
+     	               <h5 class=" font-14 text-center vendorRegisterederror " id="supRegisterederror" style="color:red"></h5>
+     	             
                     <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
 
                     <div class="text-light bg-danger text-center shadow-lg">Supervisor Registration Form</div>
@@ -14,16 +17,16 @@
                                 <div class="mb-3 mt-3">
                                    <span style="color: #f05f40">*</span>
                                     <label for="firstName">First Name</label>
-                                    <input type="text" class="form-control required" id="firstName" name="firstName" placeholder="First Name of Supervisor"  >
+                                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name of Supervisor"  required>
                                      <div class="invalid-tooltip">Please Enter First Name.</div>
                                   </div>
                            </div>
                        
                         <div class="col-sm-6 ">
                             <div class="mb-3 mt-3">
-                                <span style="color: #f05f40">*</span>
+                               
                                 <label for="lastName">Last Name</label>
-                                <input type="text" class="form-control required" id="lastName" name="lastName" placeholder="Last Name of Supervisor" >
+                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name of Supervisor" >
                                 <div class="invalid-tooltip">Please Enter Last Name.</div>
 
                             </div>
@@ -33,8 +36,8 @@
                             <div class=" col-md-6 ">
                                 <div class="mb-3 mt-3">
                                    <span style="color: #f05f40">*</span>
-                                    <label for="mobileNo">Mobile No.</label>
-                                    <input type="text" class="form-control required" id="mobileNo" maxlength="10" name="mobileNo" placeholder="Enter Mobile Number" >
+                                    <label for="mobile">Mobile No.</label>
+                                    <input type="text" class="form-control" id="mobile" maxlength="10" name="mobile" placeholder="Enter Mobile Number" required>
                                      <div class="invalid-tooltip">Please Enter Mobile Number.</div>
                                   </div>
                            </div>
@@ -43,14 +46,53 @@
                             <div class="mb-3 mt-3">
                                 <span style="color: #f05f40">*</span>
                                 <label for="email">Email</label>
-                                <input type="text" class="form-control required" id="email" name="email" placeholder="Enter Email Address"  >
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email Address"  required>
                                 <div class="invalid-tooltip">Please Enter Email Address.</div>
 
                             </div>
                         </div>
                         </div> 
+  <div class=" row px-3 mx-3">
+                            <div class=" col-md-6 ">
+                                <div class="mb-3 mt-3">
+                                   <span style="color: #f05f40">*</span>
+                                    <label for="mobileNo">Police Verification</label>
+                                   
+                                    <select  class="form-control required" id="policeVerification" name="policeVerification"  >
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select>
+                                    
+                                     
+                                  
+                           </div>
+                       </div>
+                        <div class="col-sm-6 ">
+                            <div class="mb-3 mt-3">
+                                <span style="color: #f05f40">*</span>
+                                <label for="email">Medically Fit</label>
+                                <select  class="form-control required" id="medicallyFit" name="medicallyFit"  >
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                    </select>
 
-
+                            </div>
+                        </div>
+                        </div> 
+<div class=" row px-3 mx-3">
+                            <div class=" col-md-6 ">
+                                <div class="mb-3 mt-3">
+                                   <span style="color: #f05f40">*</span>
+                                    <label for="mobileNo">Address</label>
+                                   
+                                   <input type="text" class="form-control" id="address"  name="address" placeholder="please enter address" required>
+                                      <div class="invalid-tooltip">Please enter address .</div>
+                                    
+                                     
+                                  
+                           </div>
+                       </div>
+                       </div>
                     <div class="row px-3 mx-3">
                         <center class="col-lg-12 mb-3">
                             <button class="btn btn-md btn-primary btn-block" type="submit">Submit</button>
@@ -61,7 +103,10 @@
         </div>
     </div>
     <script>
+    $(document).ready(function (e) {
+        checksession();
 $('#supervisorRegistrationForm').on('submit', function(event) {
+	 $("#supRegistered").html( "");
 	event.preventDefault();
 	 $('.err').remove();
 	var sel = document.querySelectorAll('.required'); 
@@ -73,9 +118,54 @@ $('#supervisorRegistrationForm').on('submit', function(event) {
 		sel[i].after(errNode);
 		return false;
         }
+   
     }
+    
+
+    var accesstoken = sessionStorage.getItem('key');
+    var serializedReturn = $(this).serializeArray();
+    var formObject = {};
+    $.each(serializedReturn,
+        function (i, v) {
+            formObject[v.name] = v.value;
+        });
+
+console.log( JSON.stringify(formObject));
+$.ajax({
+    url: "http://203.176.113.183/VendorAppServices/vendor/data/registersupervisor",
+    method: "POST",
+
+    headers: {
+        "Authorization": "Bearer " + accesstoken,
+        "Content-Type": "application/json"
+    },
+    data: JSON.stringify(formObject),
+    success: function (response) {
+        ////alert("successfully register");
+        alert(response.message);
+
+        $("#supRegistered").html( response.message);
+        document.getElementById("supervisorRegistrationForm").reset();
+    },
+    error: function (xhr, status) {
+        if (xhr.status == '401') {
+          
+        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+            //alert("access denied, please refresh the page again");
+        	  refreshToken().then((res) => {
+              	console.log(res);
+              	setSessionStorageItems(res);
+                $("#supervisorRegistrationForm").submit();
+                 });
+        }
+
+    },
+
 });
-$('#mobileNo').on('input',function (){
+
+    
+});
+$('#mobile').on('input',function (){
 	  $('.errValid').remove();
 	  this.value = this.value.trim();
 	  this.value = this.value.replace("+","");
@@ -100,4 +190,5 @@ $('#mobileNo').on('input',function (){
 			  }
 	  }
 });
+    });
 </script>

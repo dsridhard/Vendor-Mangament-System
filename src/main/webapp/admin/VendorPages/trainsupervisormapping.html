@@ -1,0 +1,136 @@
+<script>
+
+
+
+$(document).ready(function (e) {
+
+checksession();
+inputFormContent();
+
+
+var supervisorArr=[];
+function inputFormContent(){
+	 getsupervisorList().then((response) => {
+		 //alert("list response"+response);
+       	console.log(response);
+ 
+            fetchMappingList();
+  
+        for(i=0;i<response.length;i++){
+
+        	supervisorArr.push(response[i]);
+
+        		  }
+       	
+          })
+          .fail(function(xhr, err) { 
+
+        	  if(xhr.status=="401"){
+        		  refreshToken().then((res) => {
+        	        	console.log(res);
+        	        	setSessionStorageItems(res);
+        	        	inputFormContent();
+        	           });
+        		  }
+        	});
+
+}
+
+
+function getsupervisorList(){
+	 var accesstoken = sessionStorage.getItem('key');
+	return $.ajax({
+	    url: "http://203.176.113.183/VendorAppServices/vendor/data/getsupervisorlist",
+	    type: 'GET',
+	    timeout: 0,
+		  headers: {
+		    "Authorization": "Bearer "+accesstoken
+		    
+		  }
+	  });
+}
+
+function fetchMappingList(){
+	getMappingList().then((res) => {
+     	console.log(res);
+     	//alert("mapping response"+res);
+     	
+
+     
+     		frameInputContent(res);
+
+
+
+        }) .fail(function(xhr, err) { 
+
+      	  if(xhr.status=="401"){
+      		  refreshToken().then((res) => {
+      	        	console.log(res);
+      	        	setSessionStorageItems(res);
+      	        	fetchMappingList();
+      	           });
+      		  }
+      	});
+
+	
+}
+function getMappingList(){
+	 var accesstoken = sessionStorage.getItem('key');
+	return $.ajax({
+	    url: "http://203.176.113.183/VendorAppServices/vendor/data/getsupervisortrainmappinglist",
+	    type: 'GET',
+	    timeout: 0,
+		  headers: {
+		    "Authorization": "Bearer "+accesstoken
+		    
+		  }
+	  });
+}
+
+function frameInputContent(res){
+
+console.log(res);
+	
+}
+
+//$(".inputContent").html(innerHtml);
+
+
+
+$("#mappingForm").submit(function (e) {
+
+	e.preventDefault();
+	
+	
+});
+	
+});
+
+</script>
+
+
+
+
+<div class="row">
+            <div class="col">
+                <div class="shadow-lg ">
+                 <div class="text-light bg-danger text-center shadow-lg">Vendor Registration Form</div>
+                    <form  method="post" id="mappingForm" name="mappingForm">
+                    <div class="inputContent">
+                    
+                    
+                    
+                    
+                    
+                    </div>
+                      <div class="row px-3 mx-3">
+                        <center class="col-lg-12 mb-3">
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+                        </center>
+                    </div>
+                    </form>
+                
+                
+                </div>
+             </div>
+</div>
