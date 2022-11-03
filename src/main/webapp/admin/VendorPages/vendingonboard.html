@@ -85,9 +85,8 @@ $(document).ready(function(){
 			    return obj;
 	    	}
 	    }).get();
-	    alert(JSON.stringify({subService:+($("#subServicetype").val()),ecateringList:data}));
-	    commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/savecateringdetails",JSON.stringify({subService:+($("#subServicetype").val()),ecateringList:data})).then((response)=>{
-	   	 alert(response.message);
+	    commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/savevendingonboarddetails",JSON.stringify({subService:+($("#subServicetype").val()),vendingOnBoardList:data})).then((response)=>{
+	   	
 
 	        $("#vendingonboardRes").html( response.message);
 	        document.getElementById("vendingonboardForm").reset();

@@ -1,0 +1,261 @@
+
+
+        <div class="row">
+            <div class="col">
+                <div class="shadow-lg ">
+                   <div class="col-12 p-2 bg-white h-100 no-print"  >
+                   <h5 class=" font-14 text-center vendorRegistered " id="vendingonboardRes" style="color:green"></h5>
+                    <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
+
+                    <div class="text-light bg-danger text-center shadow-lg">Vending On-Board Services Form</div>
+                    <form  method="post" id="vendingonboardForm" name="vendingonboardForm">
+                   <!--  <form action="" class="was-validated"> -->
+                   <div class=" row p-3 mx-3">
+                   		<div class=" col-md-6 ">
+                   			<b><span style="color: #f05f40">*</span>Sub Service Type</b>
+                   		</div>
+                   		<div class=" col-md-6 ">
+                   		<select class="form-control required" id="subServicetype" name="subServicetype" style="width:100%"></select>
+                   		</div>
+                   </div>
+                          <div class=" row px-3 mx-3">
+                            <div class=" col-md-12 ">
+                                <table id="itemList" class="table toshow" style="border-radius: 4px;width:100%" ></table>
+                           </div>
+                           </div>
+                     <div class="row px-3 mx-3 toshow">
+                            <button type="button" id="addItems" class="btn btn-success" style="width:auto">+</button>
+                    </div>
+               <div class="row px-3 mx-3">
+                        <center class="col-lg-12 mb-3 toshow">
+                            <button class="btn btn-md btn-primary btn-block" type="submit">Submit</button>
+                        </center>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script>
+$(document).ready(function(){
+	checksession();
+	getSubServiceList();
+	$('.toshow').css('display','none');
+	$("#addItems").click(function(){
+		var html = "";
+		var sno = document.getElementById('itemList').rows.length;
+		html = html + '<tr id="row' +(+sno+1)+ '"><td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td>';
+		html = html + '<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td>';
+		html = html + '<td><button type="button" id="' +(+sno+1)+'" class="btn btn-danger remove_row_vendingonboardedit">-</button></td></tr>';
+		$('#itemList').append(html);
+	});
+	$(document).on('click', '.remove_row_vendingonboardedit', function () {
+		var row_id = $(this).attr("id");
+		if(row_id.startsWith("oldid")){
+			deleteCateringDetails(row_id.replace("oldid",""));
+		}else{
+			var sno = document.getElementById('itemList').rows.length;
+			if(sno>2){
+				$('#row' + row_id).remove();
+			}else{
+				alert("No data to delete");
+			}
+		}
+		var sno = document.getElementById('itemList').rows.length;
+		if(sno==0){
+			var html = '<tbody><tr class="headRow"><th><b><span style="color: #f05f40">*</span>Item</b></th><th><b><span style="color: #f05f40">*</span>Price</b></th><th><b>Action</b></th></tr>';
+			html = html + '<tr id="row' +(+sno+1)+ '"><td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td>';
+			html = html + '<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td>';
+			html = html + '<td><button type="button" id="' +(+sno+1)+'" class="btn btn-danger remove_row_vendingonboardedit">-</button></td></tr>';
+			$('#itemList').append(html);
+		}
+	});
+	$('#vendingonboardForm').on('submit', function(event) {
+		event.preventDefault();
+		 $('.err').remove();
+		var sel = document.querySelectorAll('.required'); 
+	    for (var i=0;i<sel.length;i++){
+	    if(sel[i].value.trim()==""){
+			var errNode = document.createElement('div');
+			errNode.className = "err";
+			errNode.innerHTML = '<small style="color:red"><i>Please fill!</i></small>';
+			sel[i].after(errNode);
+			return false;
+	        }
+	    }
+	    var checkArray =[];
+	    var data = $('tr:not(.headRow').map(function() {
+	    	var obj = {};
+	    	var temp='';
+	    	$(this).find('input').each(function() {
+	    		temp+=$(this).val();
+	    		if(this.name=='id'){
+	    			obj[this.name] = +$(this).val();
+	    		}else{
+	    	    	obj[this.name] = $(this).val();
+	    		}
+	        });
+	    	if(!checkArray.includes(temp)){
+			   	checkArray.push(temp);
+			    return obj;
+	    	}
+	    }).get();
+	   commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/editvendingonboarddetails",JSON.stringify({subService:+($("#subServicetype").val()),vendingOnBoardList:data})).then((response)=>{
+	   	
+
+	        fetchCateringDetails();
+	        $("#vendingonboardRes").html( response.message);
+	   })
+	   .fail((xhr,status)=>{
+	   	  if (xhr.status == '401') {
+	             
+	        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+	            //alert("access denied, please refresh the page again");
+	        	  refreshToken().then((res) => {
+	              	console.log(res);
+	              	setSessionStorageItems(res);
+	                $("#vendingonboardForm").submit();
+	                 });
+	        }
+	   }); 
+	    
+	});
+	//$('.price').on('input',function (){
+	//	  $('.errValid').remove();
+	//	  this.value = this.value.trim();
+	//	  this.value = this.value.replace("+","");
+	//	  if(isNaN(this.value)){
+//		  this.value = this.value.replace(/\D/g, "");		  
+	//		  var errNode = document.createElement('div');
+	//		  errNode.className = "errValid";
+	//		  errNode.innerHTML = '<small style="color:red"><i>Please enter valid input!</i></small>';
+		//	  this.after(errNode);
+	//	  }else{
+	//		  var placeholder = this.nextElementSibling;
+	//		  if (placeholder!=null&&placeholder.classList.contains('err')) {
+	//			  placeholder.remove();
+	///			  }
+	//	  }
+	//});
+	$('#subServicetype').on('change', function(event) {
+		fetchCateringDetails();
+	});
+	function fetchCateringDetails(){
+		var accesstoken = sessionStorage.getItem('key');
+		$('#itemList').empty();
+		$("#vendingonboardRes").empty();
+		$.ajax({
+		    url: "http://203.176.113.183/VendorAppServices/vendor/fetchvendingonboarddetails/"+$('#subServicetype').val(),
+		    method: "GET",
+
+		    headers: {
+		        "Authorization": "Bearer " + accesstoken,
+		    },
+		    async:false,
+		    success: function (response) {
+		        	if(response.vendingOnBoardList!=null){
+	        			var html='<tbody><tr class="headRow"><th><b><span style="color: #f05f40">*</span>Item</b></th><th><b><span style="color: #f05f40">*</span>Price</b></th><th><b>Action</b></th></tr>';
+		        		for(const x of response.vendingOnBoardList){
+		        			html = html + '<tr id="oldrow'+x.id+'"><td><input type="hidden" name="id" value="'+x.id+'"/><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" value="'+x.item+'"/></td>';
+		        			html = html + '<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" value="'+x.price+'"/></td>';
+		        			html = html + '<td><button type="button" id="oldid'+x.id+'" class="btn btn-danger remove_row_vendingonboardedit">-</button></td></tr>';
+		        		}
+		        		html = html + 'tbody';
+		        		$('#itemList').append(html);
+		        		$('.toshow').css('display','');
+		        	}else{
+		        		var sno = document.getElementById('itemList').rows.length;
+		        		if(sno==0){
+		        			var html = '<tbody><tr class="headRow"><th><b><span style="color: #f05f40">*</span>Item</b></th><th><b><span style="color: #f05f40">*</span>Price</b></th><th><b>Action</b></th></tr>';
+		        			html = html + '<tr id="row' +(+sno+1)+ '"><td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td>';
+		        			html = html + '<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td>';
+		        			html = html + '<td><button type="button" id="' +(+sno+1)+'" class="btn btn-danger remove_row_vendingonboardedit">-</button></td></tr>';
+		        			$('#itemList').append(html);
+		        		}
+		        		$('.toshow').css('display','');
+		        		$("#vendingonboardRes").html( 'No data found for selected sub service');
+		        	}
+		    },
+		    error: function (xhr, status) {
+		        if (xhr.status == '401') {
+		          
+		        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+		            //alert("access denied, please refresh the page again");
+		        	  refreshToken().then((res) => {
+		              	console.log(res);
+		              	setSessionStorageItems(res);
+		              	fetchCateringDetails();
+		                 });
+		        }
+
+		    },
+
+		});
+	}
+	function deleteCateringDetails(id){
+		var accesstoken = sessionStorage.getItem('key');
+		$('#itemList').empty();
+		$("#vendingonboardRes").empty();
+		$.ajax({
+		    url: "http://203.176.113.183/VendorAppServices/vendor/deletevendingonboarddetails/"+$('#subServicetype').val()+"/"+id,
+		    method: "GET",
+
+		    headers: {
+		        "Authorization": "Bearer " + accesstoken,
+		    },
+		    success: function (response) {
+		        	if(response.error==false){
+		        		fetchCateringDetails();
+		    	        $("#vendingonboardRes").html( response.message);
+		        	}
+		    },
+		    error: function (xhr, status) {
+		        if (xhr.status == '401') {
+		          
+		        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+		            //alert("access denied, please refresh the page again");
+		        	  refreshToken().then((res) => {
+		              	console.log(res);
+		              	setSessionStorageItems(res);
+		              	deleteCateringDetails(id);
+		                 });
+		        }
+
+		    },
+
+		});
+	}
+	function getSubServiceList(){
+	var accesstoken = sessionStorage.getItem('key');
+	$.ajax({
+	    url: "http://203.176.113.183/VendorAppServices/vendor/subServicesList/5",
+	    method: "GET",
+
+	    headers: {
+	        "Authorization": "Bearer " + accesstoken,
+	    },
+	    success: function (response) {
+	        	var subList = '<option value="">--Select Sub Service--</option>';
+	        	for(var i=0;i<response.length;i++){
+	        		subList = subList + '<option value="'+response[i].id+'">'+response[i].name+'</option>';
+	        	}
+	        	$('#subServicetype').append(subList);
+	    },
+	    error: function (xhr, status) {
+	        if (xhr.status == '401') {
+	          
+	        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+	            //alert("access denied, please refresh the page again");
+	        	  refreshToken().then((res) => {
+	              	console.log(res);
+	              	setSessionStorageItems(res);
+	              	getSubServiceList();
+	                 });
+	        }
+
+	    },
+
+	});
+	}
+});
+</script>
+
