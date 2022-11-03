@@ -1,0 +1,102 @@
+
+
+ 
+
+<script>
+$(document).ready(function() {
+
+
+	
+    $('#tableID').DataTable({
+    	 responsive: true
+    });
+
+    fetchInquiries();
+    function fetchInquiries(){
+        var tbodyHtml="";
+     commongetmethod("http://203.176.113.183/VendorAppServices//divisional/getVendors").then((response)=>{
+             console.log(JSON.stringify(response));
+             for(i=0;i<response.length;i++){
+            	 tbodyHtml+="<tr>"
+                 tbodyHtml+="<td>"+response[i].firstName+" </td>"+
+                 "<td>"+response[i].contactNo+" </td>"+
+                 "<td>"+response[i].email+" </td>"+
+                 "<td>"+response[i].vendorConstitutionName+" </td>"+
+                 "<td>"+'<button type="button"  class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#myModal">View</button>'+" </td>"+
+                 "<td class='d-none'>"+response[i].psgnName+" </td></tr>";
+                          
+                 }
+    	 $("#tbodyid").html(tbodyHtml);
+         })
+         .fail((xhr,status)=>{
+        	 if(xhr.status=="401"){
+         		  refreshToken().then((res) => {
+         	        	console.log(res);
+         	        	setSessionStorageItems(res);
+         	        	fetchInquiries();
+         	           });
+         		  }
+             });
+    	
+    }
+    
+});
+
+
+
+
+</script>
+
+<div class="container">
+
+<div class="row">
+  <div class="col">
+   <table id="tableID" class="display hover" style="width:100%">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Contact No</th>
+        <th>Email</th>
+        <th>VendorCategory</th>
+    </tr>
+</thead>
+ <tfoot>
+ <tr>
+        <th>Name</th>
+        <th>Contact No</th>
+        <th>Email</th>
+        <th>VendorCategory</th>
+    </tr>
+  </tfoot>
+<tbody id="tbodyid">
+
+           
+</tbody>
+
+</table>
+  </div>
+</div>
+</div>
+<div class="modal" id="myModal">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">VendorDetail</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Modal body..
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
