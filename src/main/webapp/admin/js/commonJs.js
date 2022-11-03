@@ -33,60 +33,6 @@ var key=sessionStorage.getItem('key');
 
 
 
-/*	
-
-  function refreshToken(){
-	var username=sessionStorage.getItem('username');
-	var password=sessionStorage.getItem('password');
-	var usertype=sessionStorage.getItem('usertype');
-	//alert("user name::::::"+username+" "+password+"usertype");
-	var settings = {
-			  "url": "http://203.176.113.183/VendorAppLogin/oauth/token",
-			  "method": "POST",
-			  "timeout": 0,
-			  "headers": {
-			    "Authorization": "Basic dmVuZG9yYXBwOnNlY3JldA==",
-			    "Content-Type": "application/x-www-form-urlencoded"
-			  },
-			  "data": {
-			    "username":username ,
-			    "password": password,
-			    "grant_type": "password",
-			    "userLoginType": usertype
-			  }
-			};
-
-			 $.ajax(settings).done(function (response) {
-				
-			  var access_token=response.access_token;
-			  console.log(access_token);
-			 
-			 if(access_token!=''){
-				//alert("session token set");
-			  sessionStorage.setItem('key', access_token); 
-			   // alert("session token get");
-			    }
-});
-	
-}
-*/
-function commongetmoethod1(url) {
-////alert("commongetmethod :::"+url);
-var accesstoken = sessionStorage.getItem('key');
-
-//alert("commongetmethod :accesstoken  ::  "+accesstoken);
-return $.ajax({
-          url: url,
-           method: "GET",
-           timeout: 0,
-           async:false,
-           headers: {
-                       "Authorization": "Bearer " + accesstoken
-                      }
-            
-            });
-      
-         }
   function refreshToken(){
 	var username=sessionStorage.getItem('username');
 	var password=sessionStorage.getItem('password');
@@ -153,3 +99,11 @@ return $.ajax({
 		});
 	  
   }
+  
+  
+  
+  function alphaOnly(event) {
+	  var key = event.keyCode;
+	  return ((key >= 65 && key <= 90) || key == 8|| key==32);
+	};
+  

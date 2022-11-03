@@ -43,7 +43,11 @@ console.log("//inside vendor registration form submit");
 	 //alert(response.message);
 
 	 $("#vendorRegistered").html( response.message);
+	 if(!response.error){
      document.getElementById("vendorRegistrationForm").reset();
+	 }
+    /* $('#trainsId').multiselect('refresh');
+    trainlist(); */
 })
 .fail((xhr,status)=>{
 	  if (xhr.status == '401') {
@@ -210,7 +214,7 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                                 <div class="mb-3 mt-3">
                                    <span style="color: #f05f40">*</span>
                                     <label for="inputnameofvendor">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Name of Vendor" required >
+                                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Name of Vendor" onkeydown="return alphaOnly(event);" required >
                                      <div class="invalid-tooltip">Please username.</div>
                                   </div>
                            </div>
@@ -218,14 +222,14 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
                                 <label for="inputnameofvendor">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name of Vendor">
+                                <input type="text" class="form-control" id="lastName" name="lastName" onkeydown="return alphaOnly(event);" placeholder="Last Name of Vendor">
 
                             </div>
                         </div>
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
                                      <span style="color: #f05f40">*</span>
-                                     <label for="inputpanoftheBusiness">Pan of the Business</label>
+                                     <label for="inputpanoftheBusiness">PAN of the Business</label>
                                      <input type="text" class="form-control" id="vendorPan" name="vendorPan" placeholder="" required>
                                      <div class="invalid-tooltip">Please enter PAN number.</div>
                                 </div>
@@ -318,7 +322,7 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
                                  <span style="color: #f05f40">*</span>
-                                 <label for="inputemailId">Latest email-Id (if any)</label>
+                                 <label for="inputemailId">Latest Email-Id (if any)</label>
                                  <input type="email" class="form-control" id="email" name="email" required>
                                  <div class="invalid-tooltip">Please enter email-id .</div>
                                  
