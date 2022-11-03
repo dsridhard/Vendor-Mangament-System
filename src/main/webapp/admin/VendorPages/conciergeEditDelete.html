@@ -66,7 +66,7 @@
 <div class="row">
 <table id="tableID" class="display" style="width:100%">
 <thead>
-    <tr>
+    <tr class="headRow">
         <th>Taxi Details Id</th>
         <th>Vendor Service Id</th>
         <th>Slab </th>
@@ -113,7 +113,7 @@ function gettaxidetails(){
     var accesstoken = sessionStorage.getItem('key');
    response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/gettaxidetails/98").then((response)=>{
    //acNonAc=JSON.stringify(response);//acNonAc
-   	   console.log(JSON.stringify(response));
+   console.log(JSON.stringify(response));
    alert("gettaxidetails ::::: "+response+response.length);
    var tbodyHtml ='';
    	for(i=0;i<response.length;i++){
@@ -163,7 +163,7 @@ $("#tbodyid").html(tbodyHtml);
    }
 
 function gettaxidetailsEdit(){
-	
+	alert("gettaxidetailsEdit");
 	  var form = document.querySelector('#conciergeForm');
       var formData = new FormData(form);
       var data = $('tr:not(.headRow').map(function() {
@@ -179,13 +179,35 @@ function gettaxidetailsEdit(){
       	});
           return obj;
       }).get();
+    //alert(JSON.stringify(data));
+      //alert(JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data}));
+     
+     commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/data/edittaxidetails",JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data})).then((response)=>{
+    		 $("#msg").html( response.message);
+    	}).fail((xhr,status)=>{
+    		 if (xhr.status == '401') 
+    		 {                             //// $("#msg").html("Error :" +xhr.status+ "");
+    	            refreshToken().then((res) => {
+    	         	console.log(res);
+    	         	setSessionStorageItems(res);
+    	         	gettaxidetailsEdit();
+    	            });
+    	      }
+    		 else{
+    			 alert("some internal error occurred");
+    			 }
+    	});    	
+    	document.getElementById("conciergeForm").reset();  
+        $(formid).remove();
 	
-	
-	alert("gettaxidetailsEdit");
 	
 }
 
-
+function gettaxidetailsDelete(){
+	
+	alert("under development");
+	
+}
 
 
 function acNonacList(){	
