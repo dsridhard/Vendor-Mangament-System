@@ -1,5 +1,5 @@
 <ul class="nav nav-pills flex-column  text-center">
-                        <li class="nav-item ">
+                        <!-- <li class="nav-item ">
                             <a class="nav-link active  navigate" data-bs-toggle="pill" data-target="registration">
                                 Vendor Registration
                             </a>
@@ -8,7 +8,7 @@
                             <a class="nav-link navigate" data-bs-toggle="pill" data-target="blank">
                                 List of Registered Vendors
                             </a>
-                        </li>
+                        </li> -->
                       
                     </ul>
 <script>
@@ -33,6 +33,8 @@ $(document).ready(() => {
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/inquiryList">Service Inquiry</a></li>';
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboard">Vending On-Board Services</a></li>';
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboardedit">Modify Vending On-Board Services</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/grievanceList">Grievance List</a></li>';
+		
 		
 	}
 	$('.nav').html(sideHtml);

@@ -1,0 +1,199 @@
+
+ 
+<body>
+<div class="row">
+
+<table id="tableID" class="table" style="width:100%">
+<thead>
+    <tr>
+        <th>Service</th>
+        <th>Passenger Name</th>
+        <th>Contact No</th>
+        <th>Train No</th>
+        
+         <th>Grievance</th>
+        <th>Created On</th>
+        <th>Status</th>
+        <th>Closed On</th>
+        <th>Closed/Pending With</th>
+        <th>Action</th>
+    </tr>
+</thead>
+<tbody id="tbodyid">
+
+           
+</tbody>
+
+</table>
+
+<script>
+$(document).ready(function() {
+	
+    
+
+   
+    fetchGrievance();
+    function fetchGrievance(){
+    	$('#tableID').DataTable().destroy();
+    	var tbodyHtml="";
+
+    	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getvendorsupervisorsgrievancelist").then((response)=>{
+    		
+    		   for (i=0;i<response.length;i++){
+
+    			   tbodyHtml+="<tr>";
+    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.serviceName+" </td>";
+    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.psgnName+" </td>";
+    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.mobileNo+" </td>";
+    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.trainNo+" </td>";
+
+    			   tbodyHtml+="<td>"+response[i].grievanceType+" </td>";
+
+    			   tbodyHtml+="<td>"+response[i].createdOn+" </td>";
+
+    			   tbodyHtml+="<td>"+response[i].grievanceStatus+" </td>";
+    		if(response[i].grievanceStatus=="Closed")
+    			   tbodyHtml+="<td>"+response[i].closedOn+" </td>";
+    			   else
+    				   tbodyHtml+="<td>- </td>";  
+        			   tbodyHtml+="<td>"+response[i].pendingWith+" </td>";
+        			   if(response[i].grievanceStatus!="Closed")
+    		tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-success update' id='"+response[i].grievanceId+"' >Close</button> </td>";
+    		else
+    			  tbodyHtml+="<td>- </td>";
+    		tbodyHtml+="</tr>";
+    			   
+
+    			   }
+    		   $("#tbodyid").html(tbodyHtml);
+    			 
+    			 var t= $('#tableID').DataTable( {
+    		     "bDestroy":true
+    		      } );
+    		  	
+    		  	 t.draw();
+   	
+        })
+        .fail((xhr,status)=>{
+       	 if(xhr.status=="401"){
+        		  refreshToken().then((res) => {
+        	        	console.log(res);
+        	        	setSessionStorageItems(res);
+        	        	fetchGrievance();
+        	           });
+        		  }
+            });
+    
+
+    	/* 
+        var tbodyHtml="";
+     commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getvendorsupervisorstxnlist").then((response)=>{
+             console.log(JSON.stringify(response));
+             for(i=0;i<response.length;i++){
+            	 tbodyHtml+="<tr>";
+            	 if(response[i].serviceName==null){
+            		 tbodyHtml+="<td>"+response[i].obhsTypeName+" </td>";
+                	 }
+            	 else{
+            		 tbodyHtml+="<td>"+response[i].serviceName+" </td>";
+                	 }
+            	 if(response[i].subServiceName==null&&response[i].obhsSubTypeName!=null){
+            		 tbodyHtml+="<td>"+response[i].obhsSubTypeName+" </td>";
+                	 }
+            	 else{
+            		 tbodyHtml+="<td>"+response[i].subServiceName+" </td>";
+                	 }
+
+            	 
+                 tbodyHtml+= "<td>"+response[i].mobileNo+" </td>"+
+                 "<td>"+response[i].trainNo+" </td>"+
+                 "<td>"+response[i].stationName+" </td>"+
+                 "<td>"+response[i].psgnName+" </td>"+
+                 "<td>"+response[i].txnDateTime+" </td>"+
+                 "<td>"+response[i].inquiryStatusName+" </td>"+
+                 "<td>"+response[i].pendingWith+" </td>";
+                 if(response[i].inquiryStatusName!="Inquiry Closed")
+                	 tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-success updatestatus' id='"+response[i].transactionId+"' >Close</button> </td>";
+                	 else
+                    	 tbodyHtml+= "<td></td>";
+                 	 
+                	 tbodyHtml+="</tr>";
+                          
+                 }
+           
+    	 $("#tbodyid").html(tbodyHtml);
+    	 
+    	 var t= $('#tableID').DataTable( {
+	       "bDestroy":true
+	        } );
+	    	
+	    	 t.draw();
+    	
+    	
+         })
+         .fail((xhr,status)=>{
+        	 if(xhr.status=="401"){
+         		  refreshToken().then((res) => {
+         	        	console.log(res);
+         	        	setSessionStorageItems(res);
+         	        	fetchInquiries();
+         	           });
+         		  }
+             });
+    	
+    }
+
+
+    $("#tbodyid").on('click','.updatestatus',function(){
+
+          //alert($(this).attr("id"));
+          var btnid=$(this).attr("id");
+          commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendortxn/"+$(this).attr("id")).then((response)=>{
+                              alert(response.message);
+                             console.log(JSON.stringify(response));
+                             fetchInquiries();
+
+              })
+              .fail((xhr,status)=>{
+            	  if(xhr.status=="401"){
+             		  refreshToken().then((res) => {
+             	        	console.log(res);
+             	        	setSessionStorageItems(res);
+             	        	$('#'+btnid)[0].click();
+             	           });
+             		  }
+                  });
+
+        }); */
+}
+    $("#tbodyid").on('click','.update',function(){
+
+        //alert($(this).attr("id"));
+        var btnid=$(this).attr("id");
+        commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendorgrievance/"+$(this).attr("id")).then((response)=>{
+                            alert(response.message);
+                           console.log(JSON.stringify(response));
+                           fetchGrievance();
+
+            })
+            .fail((xhr,status)=>{
+          	  if(xhr.status=="401"){
+           		  refreshToken().then((res) => {
+           	        	console.log(res);
+           	        	setSessionStorageItems(res);
+           	        	$('#'+btnid)[0].click();
+           	           });
+           		  }
+                });
+
+      });
+});
+
+
+
+
+</script>
+
+
+</div>
+</body>
