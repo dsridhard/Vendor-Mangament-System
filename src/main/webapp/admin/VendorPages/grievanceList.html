@@ -1,5 +1,20 @@
 
- 
+ <style>
+ .close {
+    float: right;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #f05f40;
+    text-shadow: 0 1px 0 #fff;
+}
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+ </style>
 <body>
 <div class="row">
 
@@ -25,7 +40,33 @@
 </tbody>
 
 </table>
-
+<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
+        <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<div class=" row p-3 mx-3">
+             		<div class=" col-md-12 ">
+             			<label for="remarks"><b><span style="color: #f05f40">*</span>Remarks</b></label>
+             		</div>
+             		<div class=" col-md-12">
+             			<input type="hidden" id="closeId" name="closeId">
+             			<textarea id="remarks" name="remarks" rows="4" style="width:100%"></textarea>
+             		</div>
+             </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="updateRemarks">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 $(document).ready(function() {
 	
@@ -170,23 +211,36 @@ $(document).ready(function() {
 
         //alert($(this).attr("id"));
         var btnid=$(this).attr("id");
-        commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendorgrievance/"+$(this).attr("id")).then((response)=>{
-                            alert(response.message);
-                           console.log(JSON.stringify(response));
-                           fetchGrievance();
-
-            })
-            .fail((xhr,status)=>{
-          	  if(xhr.status=="401"){
-           		  refreshToken().then((res) => {
-           	        	console.log(res);
-           	        	setSessionStorageItems(res);
-           	        	$('#'+btnid)[0].click();
-           	           });
-           		  }
-                });
+        $('#remarks').val("");
+        $('#closeId').val(btnid);
+        $('#remarksModal').modal("show");
 
       });
+    $(".closeModal").on('click',function(){
+        $('#remarks').val("");
+        $('#closeId').val("");
+        $('#remarksModal').modal("hide");
+      });
+    $("#updateRemarks").on('click',function(){
+    	var id = $('#closeId').val();
+    	var remarks = $('#remarks').val();
+    	alert(JSON.stringify({id:id,remarks:remarks}));
+  /*   	  commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendorgrievance/"+$(this).attr("id")).then((response)=>{
+        alert(response.message);
+       console.log(JSON.stringify(response));
+       fetchGrievance();
+
+})
+.fail((xhr,status)=>{
+if(xhr.status=="401"){
+ refreshToken().then((res) => {
+   	console.log(res);
+   	setSessionStorageItems(res);
+   	$('#'+btnid)[0].click();
+      });
+ }
+});  */
+    });
 });
 
 

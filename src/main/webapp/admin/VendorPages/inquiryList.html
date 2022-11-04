@@ -1,4 +1,19 @@
-
+<style>
+ .close {
+    float: right;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #f05f40;
+    text-shadow: 0 1px 0 #fff;
+}
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+ </style>
  
 <body>
 <div class="row">
@@ -24,7 +39,33 @@
 </tbody>
 
 </table>
-
+<div class="modal fade" id="inquiryRemarksModal" tabindex="-1" role="dialog" aria-labelledby="inquiryRemarksModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
+        <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<div class=" row p-3 mx-3">
+             		<div class=" col-md-12 ">
+             			<label for="remarks"><b><span style="color: #f05f40">*</span>Remarks</b></label>
+             		</div>
+             		<div class=" col-md-12">
+             			<input type="hidden" id="inquiryId" name="inquiryId">
+             			<textarea id="remarks" name="remarks" rows="4" style="width:100%"></textarea>
+             		</div>
+             </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="updateInquiryRemarks">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 $(document).ready(function() {
 	
@@ -93,7 +134,20 @@ $(document).ready(function() {
 
           //alert($(this).attr("id"));
           var btnid=$(this).attr("id");
-          commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendortxn/"+$(this).attr("id")).then((response)=>{
+          $('#remarks').val("");
+          $('#inquiryId').val(btnid);
+          $('#inquiryRemarksModal').modal("show");
+          });
+    $(".closeModal").on('click',function(){
+        $('#remarks').val("");
+        $('#inquiryId').val("");
+        $('#inquiryRemarksModal').modal("hide");
+      });
+    $("#updateInquiryRemarks").on('click',function(){
+    	var id = $('#inquiryId').val();
+    	var remarks = $('#remarks').val();
+    	alert(JSON.stringify({id:id,remarks:remarks}));
+  /*   	 commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendortxn/"+$(this).attr("id")).then((response)=>{
                               alert(response.message);
                              console.log(JSON.stringify(response));
                              fetchInquiries();
@@ -107,10 +161,8 @@ $(document).ready(function() {
              	        	$('#'+btnid)[0].click();
              	           });
              		  }
-                  });
-
-        });
-    
+                  }); */
+    });
 });
 
 
