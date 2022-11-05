@@ -31,6 +31,7 @@ button.close {
         <th>Status</th>
         <th>Supervisor</th>
         <th>Action</th>
+        <th>hyrty</th>
     </tr>
 </thead>
 <tbody id="tbodyid">
@@ -70,8 +71,10 @@ button.close {
 $(document).ready(function() {
 	
     fetchInquiries();
+    var k=1;
     function fetchInquiries(){
-    	$('#tableID').DataTable().destroy();
+        
+    	
         var tbodyHtml="";
      commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getvendorsupervisorstxnlist").then((response)=>{
              console.log(JSON.stringify(response));
@@ -102,20 +105,36 @@ $(document).ready(function() {
                 	 tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-success updatestatus' id='"+response[i].transactionId+"' >Close</button> </td>";
                 	 else
                     	 tbodyHtml+= "<td></td>";
+
+
+                  if((response[i].pendingWith.split("_")).length==3)  
+                	  tbodyHtml+="<td>1 </td>";
+                  else
+                	  tbodyHtml+="<td>0</td>";
                  	 
                 	 tbodyHtml+="</tr>";
                           
                  }
-           
+        	 $('#tableID').DataTable().destroy();
+             
     	 $("#tbodyid").html(tbodyHtml);
-    	 
     	 var t= $('#tableID').DataTable( {
-	       "bDestroy":true
+    		 
+	       "bDestroy":true,
+	       /* "stateSave": true,*/
+	       order: [[10, 'desc'],[6, 'desc']],
+	      'columnDefs' : [
+	           //hide the second & fourth column
+	           { 'visible': false, 'targets': [10] }
+	       ]  
 	        } );
 	    	
-	    	 t.draw();
+	    	 t.draw(false);
     	
-    	
+    	if(k==1){
+    		createInquiryInterval();
+        	}
+    	k=2;
          })
          .fail((xhr,status)=>{
         	 if(xhr.status=="401"){
@@ -163,6 +182,19 @@ $(document).ready(function() {
              		  }
                   }); */
     });
+
+   
+    
+    function createInquiryInterval(){
+        //alert("timer created");
+    	window.inquiryIntervalTimer=setInterval(function(){
+    		 fetchInquiries();
+    	       
+    	      
+    	     }, 10000);
+    	
+    }
+    
 });
 
 

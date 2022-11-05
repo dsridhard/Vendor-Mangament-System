@@ -39,6 +39,10 @@ $(document).ready(() => {
 	}
 	$('.nav').html(sideHtml);
     $(".navigate").on('click', function () {
+      
+        
+    	timerStopFunction(window.inquiryIntervalTimer);
+    	
         var $this = $(this)
         target = $this.data('target');
 

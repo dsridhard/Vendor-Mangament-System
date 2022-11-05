@@ -106,4 +106,10 @@ var key=sessionStorage.getItem('key');
 	  var key = event.keyCode;
 	  return ((key >= 65 && key <= 90) || key == 8|| key==32);
 	};
-  
+	
+	timerStopFunction(window.inquiryIntervalTimer);
+
+function timerStopFunction(timername) {
+	//alert("stop timer");
+	  clearInterval(timername);
+	}
