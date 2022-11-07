@@ -1,4 +1,4 @@
-<ul class="nav nav-pills flex-column  text-center" id="id1">
+<ul class="nav nav-pills flex-column  text-center">
                         <!-- <li class="nav-item ">
                             <a class="nav-link active  navigate" data-bs-toggle="pill" data-target="registration">
                                 Vendor Registration
@@ -38,7 +38,7 @@ $(document).ready(() => {
 		
 		
 	}
-	$('#id1').html(sideHtml);
+	$('.nav').html(sideHtml);
     $(".navigate").on('click', function () {
         var $this = $(this)
         target = $this.data('target');
