@@ -20,7 +20,7 @@
                 </div>
             </div>
             
-            <div id='manageServices' class="collapse sidebar-manageServices"></div>
+            <ul id='manageServices' class="nav nav-pills collapse flex-column sidebar-manageServices"></ul>
             
             
             <div href="#Services" id="sidebarToggle1" data-toggle="collapse" aria-expanded="false" class="nav bg-secondary nav-pills text-white list-group-item list-group-item-action flex-column align-items-start sidebarToggle">
@@ -28,7 +28,7 @@
                     <span class="menu-collapsed ml-auto">Update Services</span>
                  </div>
             </div>
-             <div id='updateServices' class="collapse sidebar-updateServices"> </div>
+             <ul id='updateServices' class="nav nav-pills collapse flex-column  sidebar-updateServices"> </ul>
             
            
             
@@ -37,7 +37,7 @@
                     <span class="menu-collapsed ml-auto">Manage support Services</span>
                  </div>
             </div>
-             <div id='manageSupportServices' class="collapse sidebar-manageSupportServices"> </div>
+             <ul id='manageSupportServices' class="nav nav-pills collapse flex-column sidebar-manageSupportServices"> </ul>
                 
             
     </div><!-- sidebar-container END -->
@@ -64,28 +64,28 @@ $(document).ready(() => {
 	var sideHtmlupdateServices="";
 	var sideHtmlmanageSupportServices="";
 	if(userType=='DIVISIONAL'){
-		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="DivisionalPages/registration">Service Provider Registration</a></div>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="DivisionalPages/VendorList">Registered Service Provider</div>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="DivisionalPages/registration">Service Provider Registration</a></li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="DivisionalPages/VendorList">Registered Service Provider</div>';
 		}
 	else if(userType=='VENDOR'){
 		
 		
-		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="VendorPages/concierge">Concierge</a></div>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/bedr">Bed Roll</a></div>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/ecatering">Food and Beverages</a></div>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboard">Travel Essentials</a></div>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/concierge">Concierge</a></li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/bedr">Bed Roll</a></div>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/ecatering">Food and Beverages</a></li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboard">Travel Essentials</a></li>';
 		
-		sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/conciergeEditDelete">Modify Concierge </a></div>';
-		/* sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/bedRollEditPage">Modify bedRoll </a></div>';
-		 */
-		sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/ecateringedit">Modify Food and Beverages</a></div>';
-		sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboardedit">Modify Travel Essentials</a></div>';
+		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/conciergeEditDelete">Modify Concierge </a></li>';
+	    sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/BedRollEdit">Modify bedRoll </a></div>';
+		 
+		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/ecateringedit">Modify Food and Beverages</a></li>';
+		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboardedit">Modify Travel Essentials</a></li>';
 		
 		
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/createsupervisor">Create Supervisor</a></div>';
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/trainsupervisormapping">Train Supervisor Mapping</a></div>';
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/inquiryList">Service Inquiry</a></div>';
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/grievanceList">Grievance List</a></div>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/createsupervisor">Create Supervisor</a></li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/trainsupervisormapping">Train Supervisor Mapping</a></li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/inquiryList">Service Inquiry</a></li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/grievanceList">Grievance List</a></li>';
 		
 		
 	
