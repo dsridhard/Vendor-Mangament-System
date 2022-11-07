@@ -1,4 +1,4 @@
-<ul class="nav nav-pills flex-column  text-center">
+<ul class="nav nav-pills flex-column  text-center" id="id1">
                         <!-- <li class="nav-item ">
                             <a class="nav-link active  navigate" data-bs-toggle="pill" data-target="registration">
                                 Vendor Registration
@@ -15,34 +15,31 @@
 
 
 $(document).ready(() => {
-    
+	
+
 	var userType=sessionStorage.getItem("usertype");
 	var sideHtml="";
 	if(userType=='DIVISIONAL'){
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="DivisionalPages/registration">Vendor Registration</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="DivisionalPages/VendorList">List of Registered Vendors</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="DivisionalPages/registration">Service Provider Registration</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="DivisionalPages/VendorList">Registered Service Provider List</a></li>';
 	}else if(userType=='VENDOR'){
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="VendorPages/concierge">Concierge</a></li>';
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link  navigate" data-bs-toggle="pill" data-target="VendorPages/conciergeEditDelete">Concierge Modification</a></li>';
 		
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/bedr">Bed Roll</a></li>';
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/createsupervisor">Create Supervisor</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/ecatering">E-Catering</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/ecateringedit">Modify E-Catering Detail</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/ecatering">Food and Beverages</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/ecateringedit">Modify Food and Beverages</a></li>';
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/trainsupervisormapping">Train Supervisor Mapping</a></li>';
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/inquiryList">Service Inquiry</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboard">Vending On-Board Services</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboardedit">Modify Vending On-Board Services</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboard">Travel Essentials</a></li>';
+		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboardedit">Modify Travel Essentials</a></li>';
 		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/grievanceList">Grievance List</a></li>';
 		
 		
 	}
-	$('.nav').html(sideHtml);
+	$('#id1').html(sideHtml);
     $(".navigate").on('click', function () {
-      
-        
-    	timerStopFunction(window.inquiryIntervalTimer);
-    	
         var $this = $(this)
         target = $this.data('target');
 
