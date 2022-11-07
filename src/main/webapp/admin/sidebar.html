@@ -1,51 +1,148 @@
-<ul class="nav nav-pills flex-column  text-center">
-                        <!-- <li class="nav-item ">
-                            <a class="nav-link active  navigate" data-bs-toggle="pill" data-target="registration">
-                                Vendor Registration
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link navigate" data-bs-toggle="pill" data-target="blank">
-                                List of Registered Vendors
-                            </a>
-                        </li> -->
-                      
-                    </ul>
+<!DOCTYPE html>
+<html>
+<head>
+ 
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+
+</head>
+<body>
+
+<!-- NavBar END -->
+<!-- Bootstrap row -->
+<div class="row" id="body-row">
+    <!-- Sidebar -->
+    <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
+      <div href="#Services" id="sidebarToggle1" data-toggle="collapse" aria-expanded="false" class="nav bg-secondary nav-pills text-white list-group-item list-group-item-action flex-column align-items-start sidebarToggle">
+                <div class=" d-flex w-100 justify-content-start align-items-center">
+                   <span class="menu-collapsed ml-auto">Manage Services</span>
+                </div>
+            </div>
+            
+            <div id='manageServices' class="collapse sidebar-manageServices"></div>
+            
+            
+            <div href="#Services" id="sidebarToggle1" data-toggle="collapse" aria-expanded="false" class="nav bg-secondary nav-pills text-white list-group-item list-group-item-action flex-column align-items-start sidebarToggle">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="menu-collapsed ml-auto">Update Services</span>
+                 </div>
+            </div>
+             <div id='updateServices' class="collapse sidebar-updateServices"> </div>
+            
+           
+            
+    		 <div href="#Services" id="sidebarToggle1" data-toggle="collapse" aria-expanded="false" class="nav bg-secondary nav-pills text-white list-group-item list-group-item-action flex-column align-items-start sidebarToggle">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="menu-collapsed ml-auto">Manage support Services</span>
+                 </div>
+            </div>
+             <div id='manageSupportServices' class="collapse sidebar-manageSupportServices"> </div>
+                
+            
+    </div><!-- sidebar-container END -->
+    <!-- MAIN -->
+    
+</div><!-- body-row END -->
 <script>
+
+
 
 
 $(document).ready(() => {
 	
-
+    $('.sidebarToggle').on('click',function(){
+    	if($(this).next().hasClass("show")){
+    		$(this).next().removeClass('show');
+    	}else{
+    		$(this).next().addClass('show');
+    	}
+    	
+    });
 	var userType=sessionStorage.getItem("usertype");
-	var sideHtml="";
+	var sideHtmlmanageServices="";
+	var sideHtmlupdateServices="";
+	var sideHtmlmanageSupportServices="";
 	if(userType=='DIVISIONAL'){
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="DivisionalPages/registration">Service Provider Registration</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="DivisionalPages/VendorList">Registered Service Provider List</a></li>';
-	}else if(userType=='VENDOR'){
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="VendorPages/concierge">Concierge</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link  navigate" data-bs-toggle="pill" data-target="VendorPages/conciergeEditDelete">Concierge Modification</a></li>';
-		
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/bedr">Bed Roll</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/createsupervisor">Create Supervisor</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/ecatering">Food and Beverages</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/ecateringedit">Modify Food and Beverages</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/trainsupervisormapping">Train Supervisor Mapping</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/inquiryList">Service Inquiry</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboard">Travel Essentials</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboardedit">Modify Travel Essentials</a></li>';
-		sideHtml= sideHtml+'<li class="nav-item "><a class="nav-link navigate" data-bs-toggle="pill" data-target="VendorPages/grievanceList">Grievance List</a></li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="DivisionalPages/registration">Service Provider Registration</a></div>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="DivisionalPages/VendorList">Registered Service Provider</div>';
+		}
+	else if(userType=='VENDOR'){
 		
 		
+		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="VendorPages/concierge">Concierge</a></div>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/bedr">Bed Roll</a></div>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/ecatering">Food and Beverages</a></div>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboard">Travel Essentials</a></div>';
+		
+		sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/conciergeEditDelete">Modify Concierge </a></div>';
+		sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/bedRollEditPage">Modify bedRoll </a></div>';
+		
+		sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/ecateringedit">Modify Food and Beverages</a></div>';
+		sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboardedit">Modify Travel Essentials</a></div>';
+		
+		
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/createsupervisor">Create Supervisor</a></div>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/trainsupervisormapping">Train Supervisor Mapping</a></div>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/inquiryList">Service Inquiry</a></div>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/grievanceList">Grievance List</a></div>';
+		
+		
+	
 	}
-	$('.nav').html(sideHtml);
-    $(".navigate").on('click', function () {
-        var $this = $(this)
-        target = $this.data('target');
+	
+	
 
-        $('#maincontent').load(target + '.html');
-        return false;
-    })
+	$('#body-row .collapse').collapse('hide'); 
 
+	// Collapse/Expand icon
+	$('#collapse-icon').addClass('fa-angle-double-left'); 
+
+	// Collapse click
+	$('[data-toggle=sidebar-colapse]').click(function() {
+	    SidebarCollapse();
+	});
+	//alert(sideHtml);
+	 $('.sidebar-manageServices').html(sideHtmlmanageServices);
+	 $('.sidebar-updateServices').html(sideHtmlupdateServices);
+	 $('.sidebar-manageSupportServices').html(sideHtmlmanageSupportServices);
+	 
+	 
+	  $(".navigate").on('click', function () {
+	        var $this = $(this)
+	        target = $this.data('target');
+
+	        $('#maincontent').load(target + '.html');
+	        return false;
+	    })
+
+	 
+
+	/* function SidebarCollapse () {
+	    $('.menu-collapsed').toggleClass('d-none');
+	    $('.sidebar-submenu').toggleClass('d-none');
+	    $('.submenu-icon').toggleClass('d-none');
+	    $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
+	    
+	    // Treating d-flex/d-none on separators with title
+	    var SeparatorTitle = $('.sidebar-separator-title');
+	    if ( SeparatorTitle.hasClass('d-flex') ) {
+	        SeparatorTitle.removeClass('d-flex');
+	    } else {
+	        SeparatorTitle.addClass('d-flex');
+	    }
+	    
+	    // Collapse/Expand icon
+	    $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
+	} */
+	
+	
 });
+
+
+
+
+
 </script>
+</body>
+</html>

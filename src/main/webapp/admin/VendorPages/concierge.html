@@ -176,7 +176,7 @@ $(document).on('click', '.remove_row', function () {
         var data = $('tr:not(.headRow').map(function() {
         var obj = {};
         $(this).find('input,select').each(function() {
-        	if( this.name=="carTypeId" || this.name=="acNonacId" )
+        	if( this.name=="carTypeId" || this.name=="acNonacId" || this.name=="fare")
         		{
         		 obj[this.name] =parseInt( $(this).val());
         		}
@@ -187,9 +187,13 @@ $(document).on('click', '.remove_row', function () {
             return obj;
         }).get();
     //alert(JSON.stringify(data));
-    //alert(JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data}));
-    commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/data/taxidetails",JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data})).then((response)=>{
-	 $("#msg").html( response.message);
+    alert(JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data}));
+   // commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/data/taxidetails",JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data})).then((response)=>{
+	
+    	 commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/savetaxidetails",JSON.stringify({"stationId":parseInt(StationElement),"taxiDetailsModelList":data})).then((response)=>{
+    			
+    	
+    	$("#msg").html( response.message);
      //document.getElementById("mappingForm").reset();
 }).fail((xhr,status)=>{
 	
