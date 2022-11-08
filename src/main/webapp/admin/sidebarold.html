@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+ 
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+
+</head>
+<body>
+
+<!-- NavBar END -->
+<!-- Bootstrap row -->
+<div class="row" id="body-row">
+    <!-- Sidebar -->
+    <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
+      <div href="#Services" id="sidebarToggle1" data-toggle="collapse" aria-expanded="false" class="nav bg-secondary nav-pills text-white list-group-item list-group-item-action flex-column align-items-start sidebarToggle">
+                <div class=" d-flex w-100 justify-content-start align-items-center">
+                   <span class="menu-collapsed ml-auto">Manage Services</span>
+                </div>
+            </div>
+            
+            <ul id='manageServices' class="nav nav-pills collapse flex-column sidebar-manageServices"></ul>
+            
+            
+            <div href="#Services" id="sidebarToggle1" data-toggle="collapse" aria-expanded="false" class=" userDisp nav bg-secondary nav-pills text-white list-group-item list-group-item-action flex-column align-items-start sidebarToggle">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="menu-collapsed ml-auto">Update Services</span>
+                 </div>
+            </div>
+             <ul id='updateServices' class=" userDisp nav nav-pills collapse flex-column  sidebar-updateServices"> </ul>
+            
+           
+            
+    		 <div href="#Services" id="sidebarToggle1" data-toggle="collapse" aria-expanded="false" class=" userDisp nav bg-secondary nav-pills text-white list-group-item list-group-item-action flex-column align-items-start sidebarToggle">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="menu-collapsed ml-auto">Manage support Services</span>
+                 </div>
+            </div>
+             <ul id='manageSupportServices' class="userDisp nav nav-pills collapse flex-column sidebar-manageSupportServices"> </ul>
+                
+            
+    </div><!-- sidebar-container END -->
+    <!-- MAIN -->
+    
+</div><!-- body-row END -->
+<script>
+
+
+
+
+$(document).ready(() => {
+	
+    $('.sidebarToggle').on('click',function(){
+    	if($(this).next().hasClass("show")){
+    		$(this).next().removeClass('show');
+    	}else{
+    		$(this).next().addClass('show');
+    	}
+    	
+    });
+	var userType=sessionStorage.getItem("usertype");
+	var sideHtmlmanageServices="";
+	var sideHtmlupdateServices="";
+	var sideHtmlmanageSupportServices="";
+	if(userType=='DIVISIONAL'){
+		$(".userDisp").css("display", "none");
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="DivisionalPages/registration">Service Provider Registration</a></li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="DivisionalPages/VendorList">Registered Service Provider</div>';
+		}
+	else if(userType=='VENDOR'){
+		
+		
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/concierge">Concierge</a></li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/bedr">Bed Roll</a></div>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/ecatering">Food and Beverages</a></li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboard">Travel Essentials</a></li>';
+		
+		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/conciergeEditDelete">Modify Concierge </a></li>';
+	    sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/BedRollEdit">Modify bedRoll </a></div>';
+		 
+		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/ecateringedit">Modify Food and Beverages</a></li>';
+		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboardedit">Modify Travel Essentials</a></li>';
+		
+		
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/createsupervisor">Create Supervisor</a></li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/trainsupervisormapping">Train Supervisor Mapping</a></li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/inquiryList">Service Inquiry</a></li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/grievanceList">Grievance List</a></li>';
+		
+		
+	
+	}
+	
+	
+
+	$('#body-row .collapse').collapse('hide'); 
+
+	// Collapse/Expand icon
+	$('#collapse-icon').addClass('fa-angle-double-left'); 
+
+	// Collapse click
+	$('[data-toggle=sidebar-colapse]').click(function() {
+	    SidebarCollapse();
+	});
+	//alert(sideHtml);
+	 $('.sidebar-manageServices').html(sideHtmlmanageServices);
+	 if(userType=='VENDOR'){
+	 $('.sidebar-updateServices').html(sideHtmlupdateServices);
+	 $('.sidebar-manageSupportServices').html(sideHtmlmanageSupportServices);
+	 }
+	 
+	  $(".navigate").on('click', function () {
+	        var $this = $(this)
+	        target = $this.data('target');
+
+	        $('#maincontent').load(target + '.html');
+	        return false;
+	    })
+
+	 
+
+	/* function SidebarCollapse () {
+	    $('.menu-collapsed').toggleClass('d-none');
+	    $('.sidebar-submenu').toggleClass('d-none');
+	    $('.submenu-icon').toggleClass('d-none');
+	    $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
+	    
+	    // Treating d-flex/d-none on separators with title
+	    var SeparatorTitle = $('.sidebar-separator-title');
+	    if ( SeparatorTitle.hasClass('d-flex') ) {
+	        SeparatorTitle.removeClass('d-flex');
+	    } else {
+	        SeparatorTitle.addClass('d-flex');
+	    }
+	    
+	    // Collapse/Expand icon
+	    $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
+	} */
+	
+	
+});
+
+
+
+
+
+</script>
+</body>
+</html>

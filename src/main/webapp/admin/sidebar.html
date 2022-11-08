@@ -1,49 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
- 
-<meta charset="UTF-8">
-<title>Insert title here</title>
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button  bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="color:#e3e8e4">
+        Manage Services
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body ">
+      <ul class="list-group sidebar-manageServices">
+  </ul>  </div>
+    </div>
+  </div>
+  <div class="accordion-item userDisp">
+    <h2 class="accordion-header" id="headingTwo">
+      <button class="accordion-button collapsed bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="color:#e3e8e4">
+       Update Services
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+      <div class="accordion-body ">
+      <ul class="list-group sidebar-updateServices">
+  </ul> 
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item userDisp">
+    <h2 class="accordion-header" id="headingThree">
+      <button class="accordion-button collapsed bg-secondary" style="color:#e3e8e4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        Manage support Services
+      </button>
+    </h2>
+    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+      <div class="accordion-body ">
+      <ul class="list-group sidebar-manageSupportServices">
+  </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
-
-</head>
-<body>
-
-<!-- NavBar END -->
-<!-- Bootstrap row -->
-<div class="row" id="body-row">
-    <!-- Sidebar -->
-    <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
-      <div href="#Services" id="sidebarToggle1" data-toggle="collapse" aria-expanded="false" class="nav bg-secondary nav-pills text-white list-group-item list-group-item-action flex-column align-items-start sidebarToggle">
-                <div class=" d-flex w-100 justify-content-start align-items-center">
-                   <span class="menu-collapsed ml-auto">Manage Services</span>
-                </div>
-            </div>
-            
-            <ul id='manageServices' class="nav nav-pills collapse flex-column sidebar-manageServices"></ul>
-            
-            
-            <div href="#Services" id="sidebarToggle1" data-toggle="collapse" aria-expanded="false" class=" userDisp nav bg-secondary nav-pills text-white list-group-item list-group-item-action flex-column align-items-start sidebarToggle">
-                <div class="d-flex w-100 justify-content-start align-items-center">
-                    <span class="menu-collapsed ml-auto">Update Services</span>
-                 </div>
-            </div>
-             <ul id='updateServices' class=" userDisp nav nav-pills collapse flex-column  sidebar-updateServices"> </ul>
-            
-           
-            
-    		 <div href="#Services" id="sidebarToggle1" data-toggle="collapse" aria-expanded="false" class=" userDisp nav bg-secondary nav-pills text-white list-group-item list-group-item-action flex-column align-items-start sidebarToggle">
-                <div class="d-flex w-100 justify-content-start align-items-center">
-                    <span class="menu-collapsed ml-auto">Manage support Services</span>
-                 </div>
-            </div>
-             <ul id='manageSupportServices' class="userDisp nav nav-pills collapse flex-column sidebar-manageSupportServices"> </ul>
-                
-            
-    </div><!-- sidebar-container END -->
-    <!-- MAIN -->
-    
-</div><!-- body-row END -->
 <script>
 
 
@@ -51,42 +46,41 @@
 
 $(document).ready(() => {
 	
-    $('.sidebarToggle').on('click',function(){
-    	if($(this).next().hasClass("show")){
-    		$(this).next().removeClass('show');
-    	}else{
-    		$(this).next().addClass('show');
-    	}
-    	
-    });
+	jQuery('.accordion-button').click( function(e) {
+	    jQuery('.collapse').collapse('hide');
+	});
+
+		
+
+  
 	var userType=sessionStorage.getItem("usertype");
 	var sideHtmlmanageServices="";
 	var sideHtmlupdateServices="";
 	var sideHtmlmanageSupportServices="";
 	if(userType=='DIVISIONAL'){
 		$(".userDisp").css("display", "none");
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link active  navigate" data-bs-toggle="pill" data-target="DivisionalPages/registration">Service Provider Registration</a></li>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="DivisionalPages/VendorList">Registered Service Provider</div>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item active navigate" data-target="DivisionalPages/registration">Service Provider Registration</li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="DivisionalPages/VendorList">Registered Service Provider</li>';
 		}
 	else if(userType=='VENDOR'){
 		
 		
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/concierge">Concierge</a></li>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/bedr">Bed Roll</a></div>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/ecatering">Food and Beverages</a></li>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboard">Travel Essentials</a></li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item active navigate" data-target="VendorPages/concierge">Concierge</li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="VendorPages/bedr">Bed Roll</li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="VendorPages/ecatering">Food and Beverages</li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="VendorPages/vendingonboard">Travel Essentials</li>';
 		
-		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/conciergeEditDelete">Modify Concierge </a></li>';
-	    sideHtmlupdateServices= sideHtmlupdateServices+'<div class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/BedRollEdit">Modify bedRoll </a></div>';
+		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/conciergeEditDelete">Modify Concierge </li>';
+	    sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/BedRollEdit">Modify bedRoll</li>';
 		 
-		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/ecateringedit">Modify Food and Beverages</a></li>';
-		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/vendingonboardedit">Modify Travel Essentials</a></li>';
+		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/ecateringedit">Modify Food and Beverages</li>';
+		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/vendingonboardedit">Modify Travel Essentials</li>';
 		
 		
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/createsupervisor">Create Supervisor</a></li>';
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/trainsupervisormapping">Train Supervisor Mapping</a></li>';
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/inquiryList">Service Inquiry</a></li>';
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="nav-item "><a class="nav-link   navigate" data-bs-toggle="pill" data-target="VendorPages/grievanceList">Grievance List</a></li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate" data-target="VendorPages/createsupervisor">Create Supervisor</li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate"  data-target="VendorPages/trainsupervisormapping">Train Supervisor Mapping</li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate" data-target="VendorPages/inquiryList">Service Inquiry</li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate" data-target="VendorPages/grievanceList">Grievance List</li>';
 		
 		
 	
@@ -94,15 +88,7 @@ $(document).ready(() => {
 	
 	
 
-	$('#body-row .collapse').collapse('hide'); 
-
-	// Collapse/Expand icon
-	$('#collapse-icon').addClass('fa-angle-double-left'); 
-
-	// Collapse click
-	$('[data-toggle=sidebar-colapse]').click(function() {
-	    SidebarCollapse();
-	});
+	
 	//alert(sideHtml);
 	 $('.sidebar-manageServices').html(sideHtmlmanageServices);
 	 if(userType=='VENDOR'){
@@ -111,6 +97,8 @@ $(document).ready(() => {
 	 }
 	 
 	  $(".navigate").on('click', function () {
+		  $(".list-group-item").removeClass("active");
+			$(this).addClass("active");
 	        var $this = $(this)
 	        target = $this.data('target');
 
@@ -118,33 +106,11 @@ $(document).ready(() => {
 	        return false;
 	    })
 
-	 
 
-	/* function SidebarCollapse () {
-	    $('.menu-collapsed').toggleClass('d-none');
-	    $('.sidebar-submenu').toggleClass('d-none');
-	    $('.submenu-icon').toggleClass('d-none');
-	    $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
-	    
-	    // Treating d-flex/d-none on separators with title
-	    var SeparatorTitle = $('.sidebar-separator-title');
-	    if ( SeparatorTitle.hasClass('d-flex') ) {
-	        SeparatorTitle.removeClass('d-flex');
-	    } else {
-	        SeparatorTitle.addClass('d-flex');
-	    }
-	    
-	    // Collapse/Expand icon
-	    $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
-	} */
 	
 	
 });
 
 
 
-
-
 </script>
-</body>
-</html>
