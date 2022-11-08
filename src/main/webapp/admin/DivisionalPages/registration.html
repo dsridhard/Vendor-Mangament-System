@@ -206,26 +206,20 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
      	               <h5 class=" font-14 text-center vendorRegisterederror " id="vendorRegisterederror" style="color:red"></h5>
      	             
      	               </div>
-                    <div class="text-light bg-danger text-center shadow-lg">Vendor Registration Form</div>
+                    <div class="text-light bg-danger text-center shadow-lg">Service Provider Registration Form</div>
                     <form  method="post" id="vendorRegistrationForm" name="vendorRegistrationForm">
                    <!--  <form action="" class="was-validated"> -->
                         <div class=" row px-3 mx-3">
                             <div class=" col-md-4 ">
                                 <div class="mb-3 mt-3">
                                    <span style="color: #f05f40">*</span>
-                                    <label for="inputnameofvendor">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Name of Vendor" onkeydown="return alphaOnly(event);" required >
-                                     <div class="invalid-tooltip">Please username.</div>
+                                    <label for="inputnameofvendor">Name of the Organization</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Name of Organization" onkeydown="return alphaOnly(event);" required >
+                                     <div class="invalid-tooltip">Please fill name.</div>
                                   </div>
                            </div>
                        
-                        <div class="col-sm-4 ">
-                            <div class="mb-3 mt-3">
-                                <label for="inputnameofvendor">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName" onkeydown="return alphaOnly(event);" placeholder="Last Name of Vendor">
-
-                            </div>
-                        </div>
+                        
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
                                      <span style="color: #f05f40">*</span>
@@ -234,24 +228,25 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                                      <div class="invalid-tooltip">Please enter PAN number.</div>
                                 </div>
                          </div>
-                        </div>
-                   
-                    <div class="row px-3 mx-3 ">
-                        <div class="col-sm-4 ">
+                          <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
                                 <span style="color: #f05f40">*</span>
-                                    <label for="inputconstitution">Constitution of the Vendor</label>
+                                    <label for="inputconstitution">Organization Type</label>
                                     <div class="dropdown">
                                     <select id="vendorConstitutionId" name="vendorConstitutionId" class="form-control" required>
                                     </select>
                                 </div>
-                                <div class="invalid-tooltip">Please select vendor Constitution list.</div>
+                                <div class="invalid-tooltip">Please select Organization Type.</div>
                             </div>
                         </div>
+                        </div>
+                   
+                    <div class="row px-3 mx-3 ">
+                       
                         <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
                                
-                                <label for="inputpanoftheBusiness">Vendor HSN Code</label>
+                                <label for="inputpanoftheBusiness">Service Provider HSN Code</label>
                                 <input type="text" class="form-control" id="vendorHsnCode" name="vendorHsnCode"
                                     placeholder="">
                                     
@@ -265,17 +260,18 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                                     placeholder="">
                             </div>
                         </div>
-                    </div>
-                    <div class="row px-3 mx-3">
-                        <div class="col-sm-4  ">
+                           <div class="col-sm-4  ">
                             <div class="mb-3 mt-3">
                                 <span style="color: #f05f40">*</span>
-                                    <label for="inputcategoryofvendor">Category of Vendor </label>
+                                    <label for="inputcategoryofvendor">Category of Service Provider </label>
                                     <select id="vendorCategoryId" name="vendorCategoryId" class="form-control" required>
                                     </select>
-                                     <div class="invalid-tooltip">Please select vendor Category list.</div>
+                                     <div class="invalid-tooltip">Please select Service Provider Category list.</div>
                                 </div>
                                </div>
+                    </div>
+                    <div class="row px-3 mx-3">
+                     
                         
                         <div class="col-sm-4 ">
                             <div class="container-fluid">
@@ -298,10 +294,7 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                                      <div class="invalid-tooltip">Please enter GSTIN .</div>
                                     </div>
                               </div>
-                        </div>
-                    
-                    <div class="row px-3 mx-3">
-                        <div class="col-sm-4 ">
+                               <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
                              <span style="color: #f05f40">*</span>
                                       <label for="inputAddress">Address</label>
@@ -310,11 +303,24 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                                 
                                  </div>
                         </div>
+                        </div>
+                    
+                    <div class="row px-3 mx-3">
+                       
                         <div class="col-sm-4  ">
                             <div class="mb-3 mt-3">
                                 <span style="color: #f05f40">*</span>
                                     <label for="inputcontactno">Latest Contact No.</label>
                                      <input type="number" class="form-control" maxlength="10" pattern="([0-9])" id="contactNo" name="contactNo" required>
+                                      <div class="invalid-tooltip">Please enter contact no .</div>
+                             
+                               </div>
+                          </div>
+                           <div class="col-sm-4  ">
+                            <div class="mb-3 mt-3">
+                                <span style="color: #f05f40">*</span>
+                                    <label for="inputcontactno">Alternate Contact No.</label>
+                                     <input type="number" class="form-control" maxlength="10" pattern="([0-9])" id="altContactNo" name="contactNo" required>
                                       <div class="invalid-tooltip">Please enter contact no .</div>
                              
                                </div>
@@ -328,9 +334,19 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                                  
                              </div>
                         </div>
+                           
                    </div>
 
                     <div class="row px-3 mx-3">
+                    <div class="col-sm-4 ">
+                            <div class="mb-3 mt-3">
+                                 <span style="color: #f05f40">*</span>
+                                 <label for="inputemailId">Alternate Email-Id (if any)</label>
+                                 <input type="email" class="form-control" id="altemail" name="altemail" required>
+                                 <div class="invalid-tooltip">Please enter email-id .</div>
+                                 
+                             </div>
+                        </div>
                         <div class="col-sm-4">
                             <div class="mb-3 mt-3">
                              <label for="inputupiId">UPI ID</label>
@@ -343,15 +359,16 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                                 <input type="text" class="form-control" id="bankAccountNo" name="bankAccountNo">
                            </div>
                         </div>
-                        <div class="col-sm-4  ">
+                        
+                   </div>
+                   
+                    <div class="row px-3 mx-3">
+                    <div class="col-sm-4  ">
                             <div class="mb-3 mt-3">
                                <label for="inputbankBranchName">Bank Name</label>
                                 <input type="text" class="form-control" id="bankName" name="bankName">
                             </div>
                         </div>
-                   </div>
-                   
-                    <div class="row px-3 mx-3">
                         <div class="col-sm-4">
                             <div class="mb-3 mt-3">
                                <label for="inputbankBranchName">Bank Branch</label>
@@ -365,17 +382,18 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                                 <input type="text" class="form-control" id="bankIfsc" name="bankIfsc">
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        
+
+                    </div>
+                     <div class="row px-3 mx-3">
+<div class="col-sm-4">
                             <div class="mb-3 mt-3">
                                
                                 <label for="inputmicrNo">MICR</label>
                                 <input type="text" class="form-control" id="bankMicr" name="bankMicr">
                             </div>
                         </div>
-
-                    </div>
-
-
+</div>
                     <div class="row px-3 mx-3">
                         <center class="col-lg-12 mb-3">
                             <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
