@@ -11,9 +11,9 @@
     <strong>Info:</strong> Lorem ipsum dolor sit amet2.
   </div> -->
   </div>
-<div class="row">
+<div class="row" >
 
-<table id="tableID" class="table" style="width:100%">
+<table id="tableID" class="table datatable" style="width:100%;">
 <thead>
     <tr>
         <th>Service</th>
@@ -67,6 +67,7 @@ $(document).ready(function() {
 	 var k=1;
     fetchInquiries();
    
+
     var listLength=0;
     function fetchInquiries(){
         
@@ -129,6 +130,7 @@ else{
     	 var t= $('#tableID').DataTable( {
     		 
 	       "bDestroy":true,
+	       
 	       /* "stateSave": true,*/
 	       order: [[10, 'desc'],[6, 'desc']],
 	      'columnDefs' : [
