@@ -140,121 +140,97 @@ $(document).ready(function(){
 		fetchCateringDetails();
 	});
 	function fetchCateringDetails(){
-		var accesstoken = sessionStorage.getItem('key');
 		$('#itemList').empty();
 		$("#ecateringRes").empty();
-		$.ajax({
-		    url: "http://203.176.113.183/VendorAppServices/vendor/fetchcateringdetails/"+$('#subServicetype').val(),
-		    method: "GET",
+	
+		 commongetmethod("http://203.176.113.183/VendorAppServices/vendor/fetchcateringdetails/"+$('#subServicetype').val()).then((response) => {
+             console.log(JSON.stringify(response));
+              /*  alert(JSON.stringify(response))   */
+             if(response.ecateringList!=null){
+     			var html='<tbody><tr class="headRow"><th><b><span style="color: #f05f40">*</span>Item</b></th><th><b><span style="color: #f05f40">*</span>Price</b></th><th><b>Action</b></th></tr>';
+	        		for(const x of response.ecateringList){
+	        			html = html + '<tr id="oldrow'+x.id+'"><td><input type="hidden" name="id" value="'+x.id+'"/><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" value="'+x.item+'"/></td>';
+	        			html = html + '<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" value="'+x.price+'"/></td>';
+	        			html = html + '<td><button type="button" id="oldid'+x.id+'" class="btn btn-danger remove_row_ecateringedit">-</button></td></tr>';
+	        		}
+	        		html = html + 'tbody';
+	        		$('#itemList').append(html);
+	        		$('.toshow').css('display','');
+	        	}else{
+	        		var sno = document.getElementById('itemList').rows.length;
+	        		if(sno==0){
+	        			var html = '<tbody><tr class="headRow"><th><b><span style="color: #f05f40">*</span>Item</b></th><th><b><span style="color: #f05f40">*</span>Price</b></th><th><b>Action</b></th></tr>';
+	        			html = html + '<tr id="row' +(+sno+1)+ '"><td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td>';
+	        			html = html + '<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td>';
+	        			html = html + '<td><button type="button" id="' +(+sno+1)+'" class="btn btn-danger remove_row_ecateringedit">-</button></td></tr>';
+	        			$('#itemList').append(html);
+	        		}
+	        		$('.toshow').css('display','');
+	        		$("#ecateringRes").html( 'No data found for selected sub service');
+	        	}
 
-		    headers: {
-		        "Authorization": "Bearer " + accesstoken,
-		    },
-		    async:false,
-		    success: function (response) {
-		        	if(response.ecateringList!=null){
-	        			var html='<tbody><tr class="headRow"><th><b><span style="color: #f05f40">*</span>Item</b></th><th><b><span style="color: #f05f40">*</span>Price</b></th><th><b>Action</b></th></tr>';
-		        		for(const x of response.ecateringList){
-		        			html = html + '<tr id="oldrow'+x.id+'"><td><input type="hidden" name="id" value="'+x.id+'"/><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" value="'+x.item+'"/></td>';
-		        			html = html + '<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" value="'+x.price+'"/></td>';
-		        			html = html + '<td><button type="button" id="oldid'+x.id+'" class="btn btn-danger remove_row_ecateringedit">-</button></td></tr>';
-		        		}
-		        		html = html + 'tbody';
-		        		$('#itemList').append(html);
-		        		$('.toshow').css('display','');
-		        	}else{
-		        		var sno = document.getElementById('itemList').rows.length;
-		        		if(sno==0){
-		        			var html = '<tbody><tr class="headRow"><th><b><span style="color: #f05f40">*</span>Item</b></th><th><b><span style="color: #f05f40">*</span>Price</b></th><th><b>Action</b></th></tr>';
-		        			html = html + '<tr id="row' +(+sno+1)+ '"><td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td>';
-		        			html = html + '<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td>';
-		        			html = html + '<td><button type="button" id="' +(+sno+1)+'" class="btn btn-danger remove_row_ecateringedit">-</button></td></tr>';
-		        			$('#itemList').append(html);
-		        		}
-		        		$('.toshow').css('display','');
-		        		$("#ecateringRes").html( 'No data found for selected sub service');
-		        	}
-		    },
-		    error: function (xhr, status) {
-		        if (xhr.status == '401') {
-		          
-		        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
-		            //alert("access denied, please refresh the page again");
-		        	  refreshToken().then((res) => {
+         }).fail((xhr, status) => {
+
+             if (xhr.status == '401') {
+            	 refreshToken().then((res) => {
 		              	console.log(res);
 		              	setSessionStorageItems(res);
 		              	fetchCateringDetails();
 		                 });
-		        }
-
-		    },
-
-		});
+             }
+             else {
+                 alert("some internal error occurred");
+             }
+         });
 	}
 	function deleteCateringDetails(id){
-		var accesstoken = sessionStorage.getItem('key');
 		$('#itemList').empty();
 		$("#ecateringRes").empty();
-		$.ajax({
-		    url: "http://203.176.113.183/VendorAppServices/vendor/deletecateringdetails/"+$('#subServicetype').val()+"/"+id,
-		    method: "GET",
+		commongetmethod("http://203.176.113.183/VendorAppServices/vendor/deletecateringdetails/"+$('#subServicetype').val()+"/"+id).then((response) => {
+            console.log(JSON.stringify(response));
+             /*  alert(JSON.stringify(response))   */
+            if(response.error==false){
+        		fetchCateringDetails();
+    	        $("#ecateringRes").html( response.message);
+        	}
 
-		    headers: {
-		        "Authorization": "Bearer " + accesstoken,
-		    },
-		    success: function (response) {
-		        	if(response.error==false){
-		        		fetchCateringDetails();
-		    	        $("#ecateringRes").html( response.message);
-		        	}
-		    },
-		    error: function (xhr, status) {
-		        if (xhr.status == '401') {
-		          
-		        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
-		            //alert("access denied, please refresh the page again");
-		        	  refreshToken().then((res) => {
+        }).fail((xhr, status) => {
+
+            if (xhr.status == '401') {
+            	 refreshToken().then((res) => {
 		              	console.log(res);
 		              	setSessionStorageItems(res);
 		              	deleteCateringDetails(id);
 		                 });
-		        }
-
-		    },
-
-		});
+            }
+            else {
+                alert("some internal error occurred");
+            }
+        });
 	}
 	function getSubServiceList(){
-	var accesstoken = sessionStorage.getItem('key');
-	$.ajax({
-	    url: "http://203.176.113.183/VendorAppServices/vendor/subServicesList/6",
-	    method: "GET",
+		commongetmethod("http://203.176.113.183/VendorAppServices/vendor/subServicesList/6").then((response) => {
+	        console.log(JSON.stringify(response));
+	         /*  alert(JSON.stringify(response))   */
+	        var subList = '<option value="">--Select Sub Service--</option>';
+	    	for(var i=0;i<response.length;i++){
+	    		subList = subList + '<option value="'+response[i].id+'">'+response[i].name+'</option>';
+	    	}
+	    	$('#subServicetype').append(subList);
 
-	    headers: {
-	        "Authorization": "Bearer " + accesstoken,
-	    },
-	    success: function (response) {
-	        	var subList = '<option value="">--Select Sub Service--</option>';
-	        	for(var i=0;i<response.length;i++){
-	        		subList = subList + '<option value="'+response[i].id+'">'+response[i].name+'</option>';
-	        	}
-	        	$('#subServicetype').append(subList);
-	    },
-	    error: function (xhr, status) {
+	    }).fail((xhr, status) => {
+
 	        if (xhr.status == '401') {
-	          
-	        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
-	            //alert("access denied, please refresh the page again");
-	        	  refreshToken().then((res) => {
-	              	console.log(res);
-	              	setSessionStorageItems(res);
-	              	getSubServiceList();
-	                 });
+	        	 refreshToken().then((res) => {
+		              	console.log(res);
+		              	setSessionStorageItems(res);
+		              	getSubServiceList();
+		                 });
 	        }
-
-	    },
-
-	});
+	        else {
+	            alert("some internal error occurred");
+	        }
+	    });
 	}
 });
 </script>

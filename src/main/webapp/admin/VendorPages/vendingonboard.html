@@ -102,7 +102,7 @@ $(document).ready(function(){
 	                $("#vendingonboardForm").submit();
 	                 });
 	        }
-	   });
+	   }); 
 	    
 	});
 	//$('.price').on('input',function (){
@@ -123,35 +123,28 @@ $(document).ready(function(){
 	//	  }
 	//});
 	function getSubServiceList(){
-	var accesstoken = sessionStorage.getItem('key');$.ajax({
-	    url: "http://203.176.113.183/VendorAppServices/vendor/subServicesList/5",
-	    method: "GET",
+		commongetmethod("http://203.176.113.183/VendorAppServices/vendor/subServicesList/5").then((response) => {
+	        console.log(JSON.stringify(response));
+	         /*  alert(JSON.stringify(response))   */
+	        var subList = '<option value="">--Select Sub Service--</option>';
+	    	for(var i=0;i<response.length;i++){
+	    		subList = subList + '<option value="'+response[i].id+'">'+response[i].name+'</option>';
+	    	}
+	    	$('#subServicetype').append(subList);
 
-	    headers: {
-	        "Authorization": "Bearer " + accesstoken,
-	    },
-	    success: function (response) {
-	        	var subList = '';
-	        	for(var i=0;i<response.length;i++){
-	        		subList = subList + '<option value="'+response[i].id+'">'+response[i].name+'</option>';
-	        	}
-	        	$('#subServicetype').append(subList);
-	    },
-	    error: function (xhr, status) {
+	    }).fail((xhr, status) => {
+
 	        if (xhr.status == '401') {
-	          
-	        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
-	            //alert("access denied, please refresh the page again");
-	        	  refreshToken().then((res) => {
-	              	console.log(res);
-	              	setSessionStorageItems(res);
-	              	getSubServiceList();
-	                 });
+	        	 refreshToken().then((res) => {
+		              	console.log(res);
+		              	setSessionStorageItems(res);
+		              	getSubServiceList();
+		                 });
 	        }
-
-	    },
-
-	});
+	        else {
+	            alert("some internal error occurred");
+	        }
+	    });
 	}
 });
 </script>
