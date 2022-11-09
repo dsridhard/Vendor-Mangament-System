@@ -25,7 +25,7 @@
                                 </tbody>
                             </table>
                             <div class="text-center mx-5">
-                                <input type="submit" value="Edit" class="btn btn-primary  btn-block" />
+                                <input type="submit" value="Submit" class="btn btn-primary  btn-block" />
                                        <input type="button" value="AddMore" id="add" class="btn btn-success  btn-block" />
                             </div>
                         </form>
@@ -46,18 +46,20 @@
             commongetmethod("http://203.176.113.183/VendorAppServices/vendor/fetchbedrolldetails/2").then((response) => {
                 console.log(JSON.stringify(response));
                  /*  alert(JSON.stringify(response))   */
+                 if(response.bedRoll!=null){
                 for (i = 0; i < response.bedRoll.length; i++) {
                     bedrollid = response.bedRoll[i].id;
                     /* alert(bedrollid+":::::bedrollid"); */
                     /* alert(response.bedRoll[i].type); */
                     tbodyHtml += '<tr id="row' + i + '">'
-                    tbodyHtml += '<td><input type="text"name="type" id="type" class="form-control" value="' + response.bedRoll[i].type + '"></td>' +
+                    tbodyHtml += '<td><input type="text" name="type" id="type" class="form-control" value="' + response.bedRoll[i].type + '"></td>' +
                         '<td><input type="text"name="fare" id="fare" class="form-control" value="' + response.bedRoll[i].fare + '"> </td>' +
                         '<td><button type="button"name="delbed" id="oldid' + response.bedRoll[i].id + '" class="btn btn-danger remove_row_bed " ">Del</button> </td>' +
                         '<td><input type="hidden"name="id" id="id" class="form-control" value="' + response.bedRoll[i].id + '"> </td>' +
                         '</tr>';
 
                 }
+                 }
                  
                 $('#add').click(() => {
                     i++;
@@ -99,16 +101,17 @@
                 deleteBedRoll(row_id.replace("oldid", ""));
                /*  $('#row' + row_id).remove(); */
             } else {
-                var sno = document.getElementById('bedType').rows.length;
-                if (sno > 2) {
+                var sno = document.getElementById('dynamicallyadd').rows.length;
+                if (sno > 1) {
                     $('#row' + row_id).remove();
                 } else {
                     alert("No data to delete");
                 }
             }
 
-              var row_id = document.getElementById('itemList').rows.length; 
+              var row_id = document.getElementById('dynamicallyadd').rows.length; 
             if(row_id==0){
+                
             	 tbodyHtml += '<tr id="row' + i + '">'
                  tbodyHtml += '<td><input type="text"name="type" id="type" class="form-control" value="' + response.bedRoll[i].type + '"></td>' +
                      '<td><input type="text"name="fare" id="fare" class="form-control" value="' + response.bedRoll[i].fare + '"> </td>' +
@@ -123,12 +126,13 @@
         ///// Delete  starts here 
         function deleteBedRoll(id) {
             var row_id = $(this).attr("id");
+          
             commongetmethod("http://203.176.113.183/VendorAppServices/vendor/deletebedrolldetails/2/" + id).then((response) => {
                 console.log(JSON.stringify(response));
                 /*  alert(JSON.stringify(response))  */
               /*   $('#row' + row_id + '').remove(); */
-               document.getElementById("tableid").deleteRow(row_id);
-                alert("response ::: " + JSON.stringify(response));
+              // document.getElementById("tableid").deleteRow(row_id);
+                //alert("response ::: " + JSON.stringify(response));
 getBedDetail();
   $("#supRegistered").html(response.message);
 
@@ -165,7 +169,7 @@ getBedDetail();
                     return obj;
                 }).get();
 
-                alert(JSON.stringify(data))
+                //alert(JSON.stringify(data))
 
 
                  commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/editbedrolldetails", JSON.stringify({ "service": 2, "bedRoll": data })).then((response) => {
@@ -177,9 +181,10 @@ getBedDetail();
                 }) .fail((xhr,status)=>{
                	 if(xhr.status=="401"){
             		  refreshToken().then((res) => {
-            			  getBedDetail();
+            			  
             	        	console.log(res);
             	        	setSessionStorageItems(res);
+            	        	$("#tafa").submit();
             	           });
             		  }
                 }); 
