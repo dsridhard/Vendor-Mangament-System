@@ -26,8 +26,8 @@
                             </table>
                             <div class="text-center mx-5">
                                 <input type="submit" value="Edit" class="btn btn-primary  btn-block" />
+                                       <input type="button" value="AddMore" id="add" class="btn btn-success  btn-block" />
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -58,6 +58,16 @@
                         '</tr>';
 
                 }
+                 
+                $('#add').click(() => {
+                    i++;
+                    $('#dynamicallyadd').append(
+                        '<tr id="row' + i + '">' +
+                        '<td><input type="text" name="type" id="type" class="form-control"></td>' +
+                        '<td><input type="text" name="fare" id="fare" class="form-control"></td>' +
+                        '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row">Del</button></td>' +
+                        '</tr>');
+                });
 
                 $("#dynamicallyadd").html(tbodyHtml);///Reponse Call here 
 
