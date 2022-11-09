@@ -97,6 +97,9 @@ $(document).ready(() => {
 	 }
 	 
 	  $(".navigate").on('click', function () {
+		  timerStopFunction(window.inquiryIntervalTimer);
+		  timerStopFunction(window.grievanceIntervalTimer);
+			  
 		  $(".list-group-item").removeClass("active");
 			$(this).addClass("active");
 	        var $this = $(this)

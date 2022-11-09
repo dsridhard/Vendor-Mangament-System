@@ -1,24 +1,18 @@
 
- <style>
- .close {
-    float: right;
-    font-size: 2rem;
-    font-weight: 700;
-    line-height: 1;
-    color: #f05f40;
-    text-shadow: 0 1px 0 #fff;
-}
-button.close {
-    padding: 0;
-    background-color: transparent;
-    border: 0;
-    -webkit-appearance: none;
-}
- </style>
 <body>
+<div class="notification-container opacity-100" id="notification-container-gr">
+  <!-- <div class="notification notification-info">
+  <span class="closenotification remove" >X</span>
+    <strong>Info:</strong> New Inquiry Arrived.
+  </div>
+  <div class="notification notification-info">
+  <span class="closenotification remove" >X</span>
+    <strong>Info:</strong> Lorem ipsum dolor sit amet2.
+  </div> -->
+  </div>
 <div class="row">
 
-<table id="tableID" class="table" style="width:100%">
+<table id="grtableID" class="table" style="width:100%">
 <thead>
     <tr>
         <th>Service</th>
@@ -34,13 +28,13 @@ button.close {
         <th>Action</th>
     </tr>
 </thead>
-<tbody id="tbodyid">
+<tbody id="grtbodyid">
 
            
 </tbody>
 
 </table>
-<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModal" aria-hidden="true">
+<div class="modal fade" id="grremarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -56,13 +50,13 @@ button.close {
              		</div>
              		<div class=" col-md-12">
              			<input type="hidden" id="closeId" name="closeId">
-             			<textarea id="remarks" name="remarks" rows="4" style="width:100%"></textarea>
+             			<textarea id="remarks" name="remarks" rows="4" class="form-control"></textarea>
              		</div>
              </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="updateRemarks">Submit</button>
+        <button type="button" class="btn btn-primary" id="grupdateRemarks">Submit</button>
       </div>
     </div>
   </div>
@@ -71,15 +65,15 @@ button.close {
 $(document).ready(function() {
 	
     
-
-   
+var p=1;
+var grlistLength=0;
     fetchGrievance();
     function fetchGrievance(){
-    	$('#tableID').DataTable().destroy();
+    	$('#grtableID').DataTable().destroy();
     	var tbodyHtml="";
 
-    	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getvendorsupervisorsgrievancelist").then((response)=>{
-    		
+    	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getpsgngrievance").then((response)=>{
+    		console.log(JSON.stringify(response));
     		   for (i=0;i<response.length;i++){
 
     			   tbodyHtml+="<tr>";
@@ -98,21 +92,40 @@ $(document).ready(function() {
     			   else
     				   tbodyHtml+="<td>- </td>";  
         			   tbodyHtml+="<td>"+response[i].pendingWith+" </td>";
+         			   
         			   if(response[i].grievanceStatus!="Closed")
     		tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-success update' id='"+response[i].grievanceId+"' >Close</button> </td>";
     		else
-    			  tbodyHtml+="<td>- </td>";
+    			  tbodyHtml+="<td>- </td>"; 
     		tbodyHtml+="</tr>";
     			   
 
     			   }
-    		   $("#tbodyid").html(tbodyHtml);
+    		   $("#grtbodyid").html(tbodyHtml);
     			 
-    			 var t= $('#tableID').DataTable( {
-    		     "bDestroy":true
+    			 var t= $('#grtableID').DataTable( {
+    		     "bDestroy":true,
+    		     order: [[5, 'desc']],
     		      } );
     		  	
     		  	 t.draw();
+    		  	 if(p==1){
+    		  		grlistLength=response.length;
+    		  		createGrievanceInterval();
+        		  	 }
+    		  	else{
+    	        	//alert("inside k>2");
+    	if(response.length>grlistLength){
+    		//alert("inside response.length>listlength");
+    		addNotification();
+    		
+    		
+    	}
+    	grlistLength=response.length;
+    	//grlistLength=2;
+
+    	        	}
+    		  	 p=2;
    	
         })
         .fail((xhr,status)=>{
@@ -126,121 +139,81 @@ $(document).ready(function() {
             });
     
 
-    	/* 
-        var tbodyHtml="";
-     commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getvendorsupervisorstxnlist").then((response)=>{
-             console.log(JSON.stringify(response));
-             for(i=0;i<response.length;i++){
-            	 tbodyHtml+="<tr>";
-            	 if(response[i].serviceName==null){
-            		 tbodyHtml+="<td>"+response[i].obhsTypeName+" </td>";
-                	 }
-            	 else{
-            		 tbodyHtml+="<td>"+response[i].serviceName+" </td>";
-                	 }
-            	 if(response[i].subServiceName==null&&response[i].obhsSubTypeName!=null){
-            		 tbodyHtml+="<td>"+response[i].obhsSubTypeName+" </td>";
-                	 }
-            	 else{
-            		 tbodyHtml+="<td>"+response[i].subServiceName+" </td>";
-                	 }
 
-            	 
-                 tbodyHtml+= "<td>"+response[i].mobileNo+" </td>"+
-                 "<td>"+response[i].trainNo+" </td>"+
-                 "<td>"+response[i].stationName+" </td>"+
-                 "<td>"+response[i].psgnName+" </td>"+
-                 "<td>"+response[i].txnDateTime+" </td>"+
-                 "<td>"+response[i].inquiryStatusName+" </td>"+
-                 "<td>"+response[i].pendingWith+" </td>";
-                 if(response[i].inquiryStatusName!="Inquiry Closed")
-                	 tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-success updatestatus' id='"+response[i].transactionId+"' >Close</button> </td>";
-                	 else
-                    	 tbodyHtml+= "<td></td>";
-                 	 
-                	 tbodyHtml+="</tr>";
-                          
-                 }
-           
-    	 $("#tbodyid").html(tbodyHtml);
-    	 
-    	 var t= $('#tableID').DataTable( {
-	       "bDestroy":true
-	        } );
-	    	
-	    	 t.draw();
-    	
-    	
-         })
-         .fail((xhr,status)=>{
-        	 if(xhr.status=="401"){
-         		  refreshToken().then((res) => {
-         	        	console.log(res);
-         	        	setSessionStorageItems(res);
-         	        	fetchInquiries();
-         	           });
-         		  }
-             });
-    	
-    }
-
-
-    $("#tbodyid").on('click','.updatestatus',function(){
-
-          //alert($(this).attr("id"));
-          var btnid=$(this).attr("id");
-          commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendortxn/"+$(this).attr("id")).then((response)=>{
-                              alert(response.message);
-                             console.log(JSON.stringify(response));
-                             fetchInquiries();
-
-              })
-              .fail((xhr,status)=>{
-            	  if(xhr.status=="401"){
-             		  refreshToken().then((res) => {
-             	        	console.log(res);
-             	        	setSessionStorageItems(res);
-             	        	$('#'+btnid)[0].click();
-             	           });
-             		  }
-                  });
-
-        }); */
 }
-    $("#tbodyid").on('click','.update',function(){
+    $("#grtbodyid").on('click','.update',function(){
 
         //alert($(this).attr("id"));
         var btnid=$(this).attr("id");
         $('#remarks').val("");
         $('#closeId').val(btnid);
-        $('#remarksModal').modal("show");
+        $('#grremarksModal').modal("show");
 
       });
     $(".closeModal").on('click',function(){
         $('#remarks').val("");
         $('#closeId').val("");
-        $('#remarksModal').modal("hide");
+        $('#grremarksModal').modal("hide");
       });
-    $("#updateRemarks").on('click',function(){
+    $("#grupdateRemarks").on('click',function(){
     	var id = $('#closeId').val();
     	var remarks = $('#remarks').val();
-    	alert(JSON.stringify({id:id,remarks:remarks}));
-  /*   	  commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendorgrievance/"+$(this).attr("id")).then((response)=>{
-        alert(response.message);
-       console.log(JSON.stringify(response));
-       fetchGrievance();
+    	//alert(JSON.stringify({id:id,remarks:remarks}));
+    	 commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/data/updatepsgngrievance",JSON.stringify({grievanceId:id,userRemarks:remarks})).then((response)=>{
+             // alert(response.message);
+             console.log(JSON.stringify(response));
+             fetchGrievance();
+             $(".closeModal")[0].click();
 
 })
 .fail((xhr,status)=>{
-if(xhr.status=="401"){
- refreshToken().then((res) => {
-   	console.log(res);
-   	setSessionStorageItems(res);
-   	$('#'+btnid)[0].click();
-      });
- }
-});  */
+  if(xhr.status=="401"){
+		  refreshToken().then((res) => {
+	        	console.log(res);
+	        	setSessionStorageItems(res);
+	        	$(this)[0].click();
+	           });
+		  }
+  }); 
+
+  
     });
+
+
+
+    function createGrievanceInterval(){
+        //alert("timer created");
+    	window.grievanceIntervalTimer=setInterval(function(){
+    		fetchGrievance();
+    	       
+    	      
+    	     }, 10000);
+    	
+    }
+
+    var notificationContainer = document.getElementById('notification-container-gr');
+  //addNotification();
+  $('.notification-container').on('click','.remove',function() {
+      $(this).parent().remove();
+    });
+    
+  function addNotification() {
+  	notificationContainer.innerHTML="";
+      // create the DIV and add the required classes
+      const newNotification = document.createElement('div');
+      newNotification.classList.add('notification', 'notification-info');
+
+      const innerNotification = "<strong>Info:</strong>New Inquiry Arrived";
+
+      // insert the inner elements
+      newNotification.innerHTML ="<span class='closenotification remove' >X</span>" +innerNotification;
+
+      // add the newNotification to the container
+      notificationContainer.appendChild(newNotification);
+
+     // return newNotification;
+  }
+    
 });
 
 

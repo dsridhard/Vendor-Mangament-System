@@ -214,7 +214,7 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                                 <div class="mb-3 mt-3">
                                    <span style="color: #f05f40">*</span>
                                     <label for="inputnameofvendor">Name of the Organization</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Name of Organization" onkeydown="return alphaOnly(event);" required >
+                                    <input type="text" class="form-control" id="organisationName" name="organisationName" placeholder="Name of Organization" onkeydown="return alphaOnly(event);" required >
                                      <div class="invalid-tooltip">Please fill name.</div>
                                   </div>
                            </div>
@@ -310,17 +310,17 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                         <div class="col-sm-4  ">
                             <div class="mb-3 mt-3">
                                 <span style="color: #f05f40">*</span>
-                                    <label for="inputcontactno">Latest Contact No.</label>
-                                     <input type="number" class="form-control" maxlength="10" pattern="([0-9])" id="contactNo" name="contactNo" required>
+                                    <label for="">Latest Contact No.</label>
+                                     <input type="number" class="form-control" maxlength="10"  id="contactNo" name="contactNo" required>
                                       <div class="invalid-tooltip">Please enter contact no .</div>
                              
                                </div>
                           </div>
                            <div class="col-sm-4  ">
                             <div class="mb-3 mt-3">
-                                <span style="color: #f05f40">*</span>
+                               
                                     <label for="inputcontactno">Alternate Contact No.</label>
-                                     <input type="number" class="form-control" maxlength="10" pattern="([0-9])" id="altContactNo" name="contactNo" required>
+                                     <input type="number" class="form-control" maxlength="10" pattern="([0-9])" id="alternateContactNo" name="alternateContactNo" >
                                       <div class="invalid-tooltip">Please enter contact no .</div>
                              
                                </div>
@@ -340,9 +340,9 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                     <div class="row px-3 mx-3">
                     <div class="col-sm-4 ">
                             <div class="mb-3 mt-3">
-                                 <span style="color: #f05f40">*</span>
+                                 
                                  <label for="inputemailId">Alternate Email-Id (if any)</label>
-                                 <input type="email" class="form-control" id="altemail" name="altemail" required>
+                                 <input type="email" class="form-control" id="alternateEmail" name="alternateEmail" >
                                  <div class="invalid-tooltip">Please enter email-id .</div>
                                  
                              </div>

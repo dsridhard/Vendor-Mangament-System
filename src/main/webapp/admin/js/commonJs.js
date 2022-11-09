@@ -108,6 +108,7 @@ var key=sessionStorage.getItem('key');
 	};
 	
 	timerStopFunction(window.inquiryIntervalTimer);
+	timerStopFunction(window.grievanceIntervalTimer);
 
 function timerStopFunction(timername) {
 	//alert("stop timer");

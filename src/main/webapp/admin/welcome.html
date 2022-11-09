@@ -3,6 +3,8 @@
 
 <head>
     <script src="js/commonJs.js?version=6"></script>
+        <link rel="stylesheet" type="text/css" href="/VendorAppWeb/admin/css/mystyle.css" />
+    
 </head>
 
 <style>
@@ -136,7 +138,7 @@
 
         	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/getprofile").then((response)=>{
                          
-                $("#welcomeP").html("Welcome " + response.firstName + ", mobile: " + response.contactNo + ", Email: " + response.email);
+                $("#welcomeP").html("Welcome " + response.organisationName + ", mobile: " + response.contactNo + ", Email: " + response.email);
 
             	
             	})

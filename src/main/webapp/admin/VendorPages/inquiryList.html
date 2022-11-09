@@ -1,90 +1,15 @@
-<style>
- .close {
-    float: right;
-    font-size: 2rem;
-    font-weight: 700;
-    line-height: 1;
-    color: #f05f40;
-    text-shadow: 0 1px 0 #fff;
-}
-.closenotification {
-    float: right;
-   
-    font-weight: 700;
-    
-}
-button.close {
-    padding: 0;
-    background-color: transparent;
-    border: 0;
-    -webkit-appearance: none;
-}
 
-.notification-container {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  width: 500px;
-  max-width: calc(100% - 30px);
-}
-
-.notification {
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  color: #fff;
-  font-size: 16px;
-  padding: 15px 20px;
-  line-height: 20px;
-  margin-bottom: 15px;
-  animation: grow 0.5s ease-in forwards;
-}
-
-@keyframes grow {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.notification.hide {
-  animation: shrink 0.3s ease-out forwards;
-}
-
-@keyframes shrink {
-  to {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-}
-
-.notification strong {
-  font-size: 12px;
-  line-height: 20px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.notification-info {
-  background-color: #00cae3;
-}
-
- </style>
  
 <body>
-<div class="notification-container" id="notification-container">
-  <div class="notification notification-info">
+<div class="notification-container opacity-100" id="notification-container">
+  <!-- <div class="notification notification-info">
   <span class="closenotification remove" >X</span>
     <strong>Info:</strong> New Inquiry Arrived.
   </div>
   <div class="notification notification-info">
   <span class="closenotification remove" >X</span>
     <strong>Info:</strong> Lorem ipsum dolor sit amet2.
-  </div>
+  </div> -->
   </div>
 <div class="row">
 
@@ -99,7 +24,7 @@ button.close {
          <th>Passenger Name</th>
         <th>Date</th>
         <th>Status</th>
-        <th>Supervisor</th>
+        <th>Pending/Closed By</th>
         <th>Action</th>
         <th>hyrty</th>
     </tr>
@@ -126,7 +51,7 @@ button.close {
              		</div>
              		<div class=" col-md-12">
              			<input type="hidden" id="inquiryId" name="inquiryId">
-             			<textarea id="remarks" name="remarks" rows="4" style="width:100%"></textarea>
+             			<textarea id="remarks" name="remarks" rows="4" class="form-control"></textarea>
              		</div>
              </div>
       </div>
@@ -139,14 +64,15 @@ button.close {
 </div>
 <script>
 $(document).ready(function() {
-	
+	 var k=1;
     fetchInquiries();
-    var k=1;
+   
+    var listLength=0;
     function fetchInquiries(){
         
     	
         var tbodyHtml="";
-     commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getvendorsupervisorstxnlist").then((response)=>{
+     commongetmethod("http://203.176.113.183/VendorAppServices/vendor/getinquries").then((response)=>{
              console.log(JSON.stringify(response));
              for(i=0;i<response.length;i++){
             	 tbodyHtml+="<tr>";
@@ -169,19 +95,31 @@ $(document).ready(function() {
                  "<td>"+response[i].stationName+" </td>"+
                  "<td>"+response[i].psgnName+" </td>"+
                  "<td>"+response[i].txnDateTime+" </td>"+
-                 "<td>"+response[i].inquiryStatusName+" </td>"+
-                 "<td>"+response[i].pendingWith+" </td>";
+                 "<td>"+response[i].inquiryStatusName+" </td>";
+                 if(response[i].pendingWith==null)
+                	 tbodyHtml+="<td>"+response[i].closedBy+" </td>";
+                	 else{
+                    	 tbodyHtml+="<td>"+response[i].pendingWith+" </td>";
+                    	 
+                    	 }
                  if(response[i].inquiryStatusName!="Inquiry Closed")
                 	 tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-success updatestatus' id='"+response[i].transactionId+"' >Close</button> </td>";
                 	 else
                     	 tbodyHtml+= "<td></td>";
 
-
-                  if((response[i].pendingWith.split("_")).length==3)  
+if(response[i].pendingWith==null){
+                  if(((response[i].closedBy).split("_")).length==3)  
                 	  tbodyHtml+="<td>1 </td>";
                   else
                 	  tbodyHtml+="<td>0</td>";
-                 	 
+}
+else{
+	  if(((response[i].pendingWith).split("_")).length==3)  
+    	  tbodyHtml+="<td>1 </td>";
+      else
+    	  tbodyHtml+="<td>0</td>";
+	
+}
                 	 tbodyHtml+="</tr>";
                           
                  }
@@ -200,12 +138,28 @@ $(document).ready(function() {
 	        } );
 	    	
 	    	 t.draw(false);
-    	
+    	//alert("value of k is"+k);
     	if(k==1){
+    		listLength=response.length;
     		createInquiryInterval();
         	}
+    	else{
+        	//alert("inside k>2");
+if(response.length>listLength){
+	//alert("inside response.length>listlength");
+	addNotification();
+	
+	
+}
+listLength=response.length;
+//listLength=2;
+
+        	}
     	k=2;
-         })
+    	
+         }
+
+     )
          .fail((xhr,status)=>{
         	 if(xhr.status=="401"){
          		  refreshToken().then((res) => {
@@ -235,11 +189,12 @@ $(document).ready(function() {
     $("#updateInquiryRemarks").on('click',function(){
     	var id = $('#inquiryId').val();
     	var remarks = $('#remarks').val();
-    	alert(JSON.stringify({id:id,remarks:remarks}));
-  /*   	 commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendortxn/"+$(this).attr("id")).then((response)=>{
-                              alert(response.message);
+    	//alert(JSON.stringify({id:id,remarks:remarks}));
+    	 commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendortxn",JSON.stringify({inquiryTxnId:id,userRemarks:remarks})).then((response)=>{
+                             // alert(response.message);
                              console.log(JSON.stringify(response));
                              fetchInquiries();
+                             $(".closeModal")[0].click();
 
               })
               .fail((xhr,status)=>{
@@ -247,10 +202,14 @@ $(document).ready(function() {
              		  refreshToken().then((res) => {
              	        	console.log(res);
              	        	setSessionStorageItems(res);
-             	        	$('#'+btnid)[0].click();
+             	        	$(this)[0].click();
              	           });
              		  }
-                  }); */
+                  }); 
+
+
+
+        
     });
 
    
@@ -266,13 +225,14 @@ $(document).ready(function() {
     }
     
 });
-const notificationContainer = document.getElementById('notification-container');
-addNotification();
-$('.remove').click(function() {
+var notificationContainer = document.getElementById('notification-container');
+//addNotification();
+$('.notification-container').on('click','.remove',function() {
     $(this).parent().remove();
   });
   
 function addNotification() {
+	notificationContainer.innerHTML="";
     // create the DIV and add the required classes
     const newNotification = document.createElement('div');
     newNotification.classList.add('notification', 'notification-info');
