@@ -10,17 +10,19 @@
          .myform{
     display:none;
 }
+.myformmsg{
+ display:none;
+}
    </style>
 </head>
 
 <body>
       <h5 class=" font-14 text-center  " id="succesmsg" style="color:green"></h5>
        <h5 class=" font-14 text-center  " id="errormsg" style="color:red"></h5>
-    <div class="container text-center bg-danger text-light my-1 ">
-         
+<div class="container text-center bg-danger text-light my-1 ">
         <strong>Concierge Modification Services</strong>
-    </div>
-    <div class="container">
+</div>
+<div class="container">
     <div class="row mb-4">
       <div class="col-sm-4">
         <h4>Concierge</h4>
@@ -33,66 +35,55 @@
       <div class="col-sm-4">
         <h4>Station</h4>
         <select name="StationId" class="states form-control" onChange="stationChange()" id="StationId">
-      <option value="">Select Station</option>
-  </select>
+        <option value="">Select Station</option>
+       </select>
       </div>
     
     </div>
     
     
-        <form  method="post" name="ConciergeForm" id="ConciergeForm">
-        <div id="formid" class="myform  px-3 mx-3 "  style="height:80%;">
-           <!--  <table class="table">
-                <thead>
-                    <tr class="headRow">
-                        <th>Slab</th>
-                        <th>Car Type</th>
-                        <th>AC/NonAC</th>
-                        <th>Fare</th>
-                    </tr>
-                </thead>
-                <tbody id="dynamicallyadd">
-                    <tr>
-                        <td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" required ></td>
-                        <td><select id="carTypeId" name="carTypeId" class="form-control" required></select></td>
-                        <td><select id="acNonacId" name="acNonacId" class="form-control" required> </select></td>
-                        <td> <input type="number" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>
-                        <td><button type="button" id="edit" class="btn btn-success">Edit</button></td>
-                        <td><button type="button" id="delete" class="btn bg-danger">Delete</button></td>
-                    </tr>
-                </tbody>
-            </table> -->
-            
+<form  method="post" name="ConciergeForm" id="ConciergeForm" autocomplete="off">
+<div id="formid" class="myform  px-3 mx-3 "  style="height:80%;">                      
 <div class="row">
-<table id="tableID" class="display" style="width:100%">
+<table id="tableID"  class="display table" style="width:100%">
 <thead>
     <tr class="headRow">
-        <th>Taxi Details Id</th>
-        <th>Vendor Service Id</th>
+        
         <th>Slab </th>
         <th>Car Type</th>
         <th>Ac/NonAc</th>
          <th>Fare</th>
-        <th>Isl Id</th>
-       
-    </tr>
+     </tr>
 </thead>
 <tbody id="tbodyid">
 
-           
 </tbody>
-
 </table>
 </div>
-  <!--   <div class="text-center"><input type="submit" value="Submit" class="btn btn-primary"></div> -->
-          </div>
-        </form>
-    </div>
+<div class="text-center mx-5">
+       <input type="submit" value="Submit" class="btn btn-primary  btn-block" />
+       <input type="button" value="AddMore" id="add" class="btn btn-success  btn-block" />
+</div>
+
+  </div>
+    <div id="formid2" class="myformmsg  px-3 mx-3 "  style="height:80%;">
+    <h5 class=" font-14 text-center  " style="color:red">Not Data Found</h5>
+    </div>      
+
+ </form>
+</div>
 </body>
 <script>
+var carTypelist ="";
+var acNonAc ="";
+var StationElement="";
+
 function conciergeChange() {
 	
+    taxiCarTypeList();
+    acNonacList();
 	findUniqueIslsForVendor();
+
 	
 }
 
@@ -100,53 +91,146 @@ function stationChange(){
 	
 	  var id=$('#StationId option:selected').attr('id');
 	  StationElement = document.getElementById('StationId').value;
+	  gettaxidetails();
 	  $(formid).show();
-	  taxiCarTypeList();
-      acNonacList();
-	  // $('#tableID').DataTable({ });
-      gettaxidetails();
-      
+	 
 }
 
+//-----------------------------------------------------------------------------Edit function-------------------------------------------------------------------
 
+$('#ConciergeForm').on('submit', function (event) {
+    event.preventDefault();
+    $("#succesmsg").empty();
+    $("#errormsg").empty();
+   // alert("StationElement"+StationElement);
+    var form = document.querySelector('#ConciergeForm');
+    var formData = new FormData(form);
+    var data = $('tr:not(.headRow').map(function() {
+    var obj = {};
+    $(this).find('input,select').each(function() {
+    	if( this.name=="carTypeId" || this.name=="acNonacId")
+    		{
+    		 obj[this.name] =parseInt( $(this).val());
+    		}
+    	else{
+    		obj[this.name] = $(this).val();
+    	}
+    	});
+        return obj;
+    }).get();
+
+    //alert(JSON.stringify(data));
+ 
+        commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/edittaxidetails/",JSON.stringify({"stationId":parseInt(StationElement),"taxiDetailsModelList":data})).then((response)=>{
+    		  gettaxidetails();
+    		  $("#succesmsg").html( response.message);
+    		 
+    	     document.getElementById("ConciergeForm").reset();
+    	}).fail((xhr,status)=>{
+    		 if (xhr.status == '401') 
+    		 {                          
+    	            refreshToken().then((res) => {
+    	         	console.log(res);
+    	         	 $("#errormsg").html( response.message);
+    	         	setSessionStorageItems(res);
+    	         	$("#ConciergeForm").submit();
+    	            });
+    	      }
+    		 else{
+    			// alert("some internal error occurred");
+    			 $("#errormsg").html("Your service are not registered .");
+    			 
+    			 }
+    	}); 
+              
+    	 }); 
+
+//---------------------------------------------------------------------- Ged Taxi details------------------------------------------------------------
 function gettaxidetails(){	
-    var accesstoken = sessionStorage.getItem('key');
-   response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/gettaxidetails/98").then((response)=>{
-   //acNonAc=JSON.stringify(response);//acNonAc
-   console.log(JSON.stringify(response));
-   alert("gettaxidetails ::::: "+response+response.length);
+   // var accesstoken = sessionStorage.getItem('key');
+   $("#succesmsg").empty();
+    $("#errormsg").empty();
+   response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/fetchtaxidetails/"+StationElement).then((response)=>{
+   console.log("data::::::: "+JSON.stringify(response));
+   var carTypelist1=JSON.parse(carTypelist);
    var tbodyHtml ='';
-   	for(i=0;i<response.length;i++){
-   	 tbodyHtml+="<tr>"
-       /*  tbodyHtml+="<td>"+response[i].taxiDetailsId+" </td>"+
-        "<td>"+response[i].vendorServiceId+" </td>"+
-        "<td>"+response[i].slab+" </td>"+
-        "<td>"+response[i].carType+" </td>"+
-        "<td>"+response[i].acNonAcType+" </td>"+
-        "<td>"+response[i].fare+" </td>"+
-        "<td>"+response[i].islId+" </td>"+ */
-        tbodyHtml+='<td><input type="number" class="form-control" id="taxiDetailsId" name="taxiDetailsId" value="'+response[i].taxiDetailsId+'" required ></td>'+
-        
-        '<td><input type="number" class="form-control" id="vendorServiceId" name="vendorServiceId" value="'+response[i].vendorServiceId+'"required ></td>'+
-        '<td><input type="text" class="form-control" id="slab" name="slab" value="'+response[i].slab+'"required ></td>'+
-        '<td><input type="text" class="form-control" id="carType" name="carType" value="'+response[i].carType+'"required ></td>'+
-        '<td><input type="text" class="form-control" id="acNonAcType" name="acNonAcType" value="'+response[i].acNonAcType+'"required ></td>'+
-        '<td><input type="number" class="form-control" id="fare" name="fare" value="'+response[i].fare+'"required ></td>'+
-        '<td><input type="number" class="form-control" id="islId" name="islId" value="'+response[i].islId+'"required ></td>'+
+   
+   if(response.taxiDetailsModelList!=null){
+	   var tbodyHtml ='';
 
-        
-        '<td><button type="button" id="edit" class="btn btn-success" onclick="gettaxidetailsEdit()">Edit</button></td>'+
-        '<td><button type="button" id="delete" class="btn bg-danger" onclick="gettaxidetailsDelete()">Delete</button></td>'+
-        
-        "</tr>";
-                 
-        }
-$("#tbodyid").html(tbodyHtml);
+   	for(i=0;i<response.taxiDetailsModelList.length;i++){
+   	 tbodyHtml += '<tr id="row' + i + '">'
+   	/*  tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" value="'+i+'"required ></td>';
+   	  */tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" value="'+response.taxiDetailsModelList[i].slab+'"required ></td>';
+        tbodyHtml+='<td><select  class="form-control carTypeId" id="carTypeId" name="carTypeId" required >';
+   		for(j=0;j<carTypelist1.length;j++)
+   	    {if(carTypelist1[j].id == response.taxiDetailsModelList[i].carTypeId){
+   	    	
+   		 tbodyHtml+='<option value="'+carTypelist1[j].id+'" selected>'+carTypelist1[j].carType+'</option>';
+   		}
+   		else{tbodyHtml+='<option value="'+carTypelist1[j].id+'" >'+carTypelist1[j].carType+'</option>';
+          }}
+   		
+   		
+ 		tbodyHtml+='</select></td>';
+   		tbodyHtml+='<td><select  class="form-control acNonacId" id="acNonacId" name="acNonacId" required >';
+   	    var acNonAclist=JSON.parse(acNonAc);
+   		for(j=0;j<acNonAclist.length;j++){
+   			if(acNonAclist[j].id == response.taxiDetailsModelList[i].acNonacId){
+   				tbodyHtml+='<option value="'+acNonAclist[j].id+'" selected>'+acNonAclist[j].acNonacType+'</option>';
+   			}
+   			else{
+   				tbodyHtml+='<option value="'+acNonAclist[j].id+'" >'+acNonAclist[j].acNonacType+'</option>';
+          }} 
+   		  tbodyHtml+='</select></td>';
+          tbodyHtml+=  '<td><input type="number" class="form-control" id="fare" name="fare" value="'+response.taxiDetailsModelList[i].fare+'"required ></td>';
+   		  /* tbodyHtml+= '<td><button type="button" id="oldid'+response.taxiDetailsModelList[i].id+'"  class="btn btn-success" onclick="gettaxidetailsEdit()">Edit</button></td>';
+   		   */
+   		  tbodyHtml+= '<td><button type="button" id="oldid'+response.taxiDetailsModelList[i].id+'" class="btn btn-danger remove_taxi" >Delete</button></td>';
+   		  tbodyHtml+= '<td><input type="hidden" class="form-control" id="id" name="id" value="'+response.taxiDetailsModelList[i].id+'"required ></td>';
+   		  tbodyHtml+= "</tr>";
+          }
+   	$("#tbodyid").html(tbodyHtml);
+   }
    
-  // alert(tbodyHtml);
+   else{
+	   
+	  // $(formid2).show();
+	 $('#tbodyid').empty();
+	 // $('#row' + row_id).remove();
+	 var i = document.getElementById('tbodyid').rows.length;
+		
+       $('#tbodyid').append(
+    		   
+       		'<tr id="row' +(i+1)+  '">' +
+               
+               '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" required ></td>'+
+              ' <td><select id="carTypeId"  name="carTypeId" class="form-control carTypeId newcartypeid"  required> </select></td>'+
+              ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId newacNonacid"  required> </select> </td>'+
+              '<td> <input type="text" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>'+
+              '<td><button type="button" id="'+i+'" class="btn btn-danger remove_taxi" >Delete</button></td>'+
+            /*   /*  '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row">-</button></td>' */ 
+               '</tr>');
+           var carTypelist2=JSON.parse(carTypelist);
+       	 $('.newcartypeid').empty();
+       	    $('.newcartypeid').append($('<option></option>').val("").html("---select---"));
+       	    $.each(carTypelist2, function(i, p) {
+       	     $('.newcartypeid').append($('<option></option>').val(p.id).html(p.carType)); 
+       	    });
+       	    
+       	 var acNonAclist1=JSON.parse(acNonAc);
+       		 $('.newacNonacid').empty();
+       		    $('.newacNonacid').append($('<option></option>').val("").html("---select---"));
+       		    $.each(acNonAclist1, function(i, p) {
+       		     $('.newacNonacid').append($('<option></option>').val(p.id).html(p.acNonacType)); 
+       		    });
+       		 
+       
+   }
+  
+  // $("#tbodyid").html(tbodyHtml);
    
-   	 
-   }) .fail((xhr,status)=>{
+}) .fail((xhr,status)=>{
    	
   	 if (xhr.status == '401') {
          refreshToken().then((res) => {
@@ -156,62 +240,133 @@ $("#tbodyid").html(tbodyHtml);
                });
       }
   	 else{
-  		 alert("some internal error occurred");
+  		 
+  		 $("#errormsg").html("Please try again");
+  		
+  		 //alert("some internal error occurred");
   		 }
   });
  
    }
+ //---------------------------------------------------------------------------------End get taxi details----------------------------------------------------------  
 
-function gettaxidetailsEdit(){
-	alert("gettaxidetailsEdit");
-	  var form = document.querySelector('#conciergeForm');
-      var formData = new FormData(form);
-      var data = $('tr:not(.headRow').map(function() {
-      var obj = {};
-      $(this).find('input,select').each(function() {
-      	if( this.name=="carTypeId" || this.name=="acNonacId" )
-      		{
-      		 obj[this.name] =parseInt( $(this).val());
-      		}
-      	else{
-      		obj[this.name] = $(this).val();
-      	}
-      	});
-          return obj;
-      }).get();
-    //alert(JSON.stringify(data));
-      //alert(JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data}));
-     
-     commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/data/edittaxidetails",JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data})).then((response)=>{
-    		 $("#msg").html( response.message);
-    	}).fail((xhr,status)=>{
-    		 if (xhr.status == '401') 
-    		 {                             //// $("#msg").html("Error :" +xhr.status+ "");
-    	            refreshToken().then((res) => {
-    	         	console.log(res);
-    	         	setSessionStorageItems(res);
-    	         	gettaxidetailsEdit();
-    	            });
-    	      }
-    		 else{
-    			 alert("some internal error occurred");
-    			 }
-    	});    	
-    	document.getElementById("conciergeForm").reset();  
-        $(formid).remove();
-	
+    $('#add').click(() => {
+	  
+		var i = document.getElementById('tbodyid').rows.length;
+		//alert("row"+i);
+		
+		
+       $('#tbodyid').append(
+    		   
+       		'<tr id="row' + i + '">' +
+               
+               '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" required ></td>'+
+              ' <td><select id="carTypeId"  name="carTypeId" class="form-control carTypeId newcartypeid"  required> </select></td>'+
+              ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId newacNonacid"  required> </select> </td>'+
+              '<td> <input type="text" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>'+
+              '<td><button type="button" id="'+i+'" class="btn btn-danger remove_taxi" >Delete</button></td>'+
+            /*   /*  '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row">-</button></td>' */ 
+               '</tr>');
+           var carTypelist2=JSON.parse(carTypelist);
+       	 $('.newcartypeid').empty();
+       	    $('.newcartypeid').append($('<option></option>').val("").html("---select---"));
+       	    $.each(carTypelist2, function(i, p) {
+       	     $('.newcartypeid').append($('<option></option>').val(p.id).html(p.carType)); 
+       	    });
+       	    
+       	 var acNonAclist1=JSON.parse(acNonAc);
+       		 $('.newacNonacid').empty();
+       		    $('.newacNonacid').append($('<option></option>').val("").html("---select---"));
+       		    $.each(acNonAclist1, function(i, p) {
+       		     $('.newacNonacid').append($('<option></option>').val(p.id).html(p.acNonacType)); 
+       		    });
+       		 
+       		
+       			
+       });
+
+ //----------------------------------delete function-------------------------------------------------------------------------------------------------------------------  
+$(document).on('click', '.remove_taxi', function () {
+	 $("#succesmsg").empty();
+	    $("#errormsg").empty();
+    var row_id = $(this).attr("id");
+   if (row_id.startsWith("oldid")) {
+      gettaxidetailsDelete(row_id.replace("oldid", ""));
+     } else {
+        var sno = document.getElementById('tbodyid').rows.length;
+        if (sno > 1) {
+            $('#row' + row_id).remove();
+        } else {
+           // alert("No data to delete");
+            $("#errormsg").html( "No data to delete");
+            
+        }
+    }
+    
+    var row_id = document.getElementById('tbodyid').rows.length; 
+    if(row_id==0){
+        
+    	 tbodyHtml += '<tr id="row' + i + '">'
+       	/*  tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" value="'+i+'"required ></td>';
+       	 */ tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" value="'+response.taxiDetailsModelList[i].slab+'"required ></td>';
+         tbodyHtml+='<td><select  class="form-control carTypeId" id="carTypeId" name="carTypeId" required >';
+       		for(j=0;j<carTypelist1.length;j++)
+       	    {if(carTypelist1[j].id == response.taxiDetailsModelList[i].carTypeId){
+       		 tbodyHtml+='<option value="'+carTypelist1[j].id+'" selected>'+carTypelist1[j].carType+'</option>';
+       		}
+       		else{tbodyHtml+='<option value="'+carTypelist1[j].id+'" >'+carTypelist1[j].carType+'</option>';
+              }}
+     		tbodyHtml+='</select></td>';
+       		tbodyHtml+='<td><select  class="form-control acNonacId" id="acNonacId" name="acNonacId" required >';
+       	    var acNonAclist=JSON.parse(acNonAc);
+       		for(j=0;j<acNonAclist.length;j++){
+       			if(acNonAclist[j].id == response.taxiDetailsModelList[i].acNonacId){
+       				tbodyHtml+='<option value="'+acNonAclist[j].id+'" selected>'+acNonAclist[j].acNonacType+'</option>';
+       			}
+       			else{
+       				tbodyHtml+='<option value="'+acNonAclist[j].id+'" >'+acNonAclist[j].acNonacType+'</option>';
+              }} 
+       		  tbodyHtml+='</select></td>';
+              tbodyHtml+=  '<td><input type="number" class="form-control" id="fare" name="fare" value="'+response.taxiDetailsModelList[i].fare+'"required ></td>';
+       		  /* tbodyHtml+= '<td><button type="button" id="oldid'+response.taxiDetailsModelList[i].id+'"  class="btn btn-success" onclick="gettaxidetailsEdit()">Edit</button></td>';
+       		   */
+       		  tbodyHtml+= '<td><button type="button" id="oldid'+response.taxiDetailsModelList[i].id+'" class="btn btn-danger remove_taxi" >Delete</button></td>';
+       		  tbodyHtml+= '<td><input type="hidden" class="form-control" id="id" name="id" value="'+response.taxiDetailsModelList[i].id+'"required ></td>';
+       		  tbodyHtml+= "</tr>";
+             $("#tbodyid").html(tbodyHtml);///Reponse Call here
+    }
+    
+ 
+});
+
+
+function gettaxidetailsDelete(id){
+	 $("#succesmsg").empty();
+	 $("#errormsg").empty();
+	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/deletetaxidetails/"+StationElement+"/"+id).then((response) => {
+     gettaxidetails();
+     $("#succesmsg").html( response.message);
+    }).fail((xhr, status) => {
+
+        if (xhr.status == '401') {
+            refreshToken().then((res) => {
+                console.log(res);
+               $("#errormsg").html( response.message);
+                setSessionStorageItems(res);
+                gettaxidetailsDelete(id);
+            });
+        }
+        else {
+            alert("some internal error occurred");
+           // console.log(res);
+        }
+    });
 	
 }
-
-function gettaxidetailsDelete(){
-	
-	alert("under development");
-	
-}
-
+//--------------------------------------------------End delete function--------------------------------------------------------------------------
 
 function acNonacList(){	
-    var accesstoken = sessionStorage.getItem('key');
+   // var accesstoken = sessionStorage.getItem('key');
   // response=await commongetmethoderrorhandling("http://203.176.113.183/VendorAppServices/vendor/acNonacList");
    response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/acNonacList").then((response)=>{
    	  acNonAc=JSON.stringify(response);//acNonAc
@@ -233,6 +388,7 @@ function acNonacList(){
       }
   	 else{
   		 alert("some internal error occurred");
+  		
   		 }
   });
  
@@ -241,7 +397,7 @@ function acNonacList(){
 
  //async 
  function taxiCarTypeList(){	                                    
-    var accesstoken = sessionStorage.getItem('key');
+   // var accesstoken = sessionStorage.getItem('key');
  // response=await commongetmethoderrorhandling("http://203.176.113.183/VendorAppServices/vendor/taxiCarTypeList");
   response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/taxiCarTypeList").then((response)=>{
 	   carTypelist=JSON.stringify(response);
@@ -261,6 +417,7 @@ function acNonacList(){
 	             });
 	    }
 		 else{
+			 
 			 alert("some internal error occurred");
 			 }
 	});
@@ -268,7 +425,7 @@ function acNonacList(){
 
 //async
 function findUniqueIslsForVendor(){	
-   var accesstoken = sessionStorage.getItem('key');
+  // var accesstoken = sessionStorage.getItem('key');
     commongetmethod("http://203.176.113.183/VendorAppServices/vendor/findUniqueIslsForVendor").then((response)=>{
    	 
    	   // console.log(JSON.stringify(response));
@@ -289,7 +446,7 @@ function findUniqueIslsForVendor(){
    }
 	 else{
 		 alert("some internal error occurred");
-		 }
+			 }
 });
   }
 
