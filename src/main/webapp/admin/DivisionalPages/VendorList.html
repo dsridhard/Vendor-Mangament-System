@@ -1,102 +1,185 @@
-
 <script>
-$(document).ready(function() {
-    var row_id = 0;
+  $(document).ready(function () {
+	  document.getElementById('demo').innerHTML ='';
+    $("#tbodyid").on('click', '.viewbtn', function () { 
+     //alert($(this).attr("id"));
+      var viewresp = $(this).attr("modaldata");
+      alert(viewresp); 
+      $('#myModal').modal('show');
+        var resp = JSON.parse(viewresp);
+        var vid = resp.id
+        alert(vid)
+        document.getElementById('demo').innerHTML=vid; 
+        
+    });
+   
+
     $('#tableID').DataTable({
-    	 responsive: true,
-    }); 
-  fetchInquiries();
-    function fetchInquiries(){
-        var tbodyHtml="";
-     commongetmethod("http://203.176.113.183/VendorAppServices//divisional/getVendors").then((response)=>{
-             console.log(JSON.stringify(response));
-             for(i=0;i<response.length;i++){
-            	 row_id ++; 
-            	 tbodyHtml+="<tr id='"+row_id+"'>"
-                 tbodyHtml+="<td>"+row_id+"</td>"+
-                 "<td class='gfgusername'>"+response[i].organisationName+" </td>"+
-                 "<td class='gfgpp'>"+response[i].contactNo+" </td>"+
-                 "<td class='gfgscores'>"+response[i].email+" </td>"+
-                 "<td class='gfgarticles'>"+response[i].vendorConstitutionName+" </td>"+
-                 "<td >"+'<button type="button" id="'+row_id+'"  class="btn btn-secondary vbtn" data-bs-toggle="modal" data-bs-target="#myModal">View</button>'+" </td>"+
-                 "</tr>";
-             }
-    	 $("#tbodyid").html(tbodyHtml);
-         })
-         .fail((xhr,status)=>{
-        	 if(xhr.status=="401"){
-         		  refreshToken().then((res) => {
-         	        	console.log(res);
-         	        	setSessionStorageItems(res);
-         	        	fetchInquiries();
-         	           });
-         		  }
-             });
-    	
+      responsive: true
+    });
+
+    fetchInquiries();
+    function fetchInquiries() {
+      var tbodyHtml = "";
+      commongetmethod("http://203.176.113.183/VendorAppServices//divisional/getVendors").then((response) => {
+       /*  console.log(JSON.stringify(response)); */
+
+        for (i = 0; i < response.length; i++) {
+          tbodyHtml += "<tr>"
+          tbodyHtml += "<td>" + response[i].organisationName + " </td>" +
+            "<td>" + response[i].contactNo + " </td>" +
+            "<td>" + response[i].email + " </td>" +
+            "<td>" + response[i].vendorConstitutionName + " </td>" +
+            "<td>" + '<button type="button"  class="btn btn-secondary viewbtn" modaldata=' + JSON.stringify(response[i]) + ' >View</button>' + " </td>" +
+            "<td class='d-none'>" + response[i].psgnName + " </td></tr>";
+
+        }
+        $("#tbodyid").html(tbodyHtml);
+      })
+        .fail((xhr, status) => {
+          if (xhr.status == "401") {
+            refreshToken().then((res) => {
+              console.log(res);
+              setSessionStorageItems(res);
+              fetchInquiries();
+            });
+          }
+        });
+
     }
-    
-    
-    $(".vbtn").click(function () {
-    	 var a =
-             $(this).parents("tr").find(".gfgusername").text();
-    	     var c =
-             $(this).parents("tr").find(".gfgpp").text();
-             var d =
-             $(this).parents("tr").find(".gfgscores").text();
-             var e = 
-             $(this).parents("tr").find(".gfgarticles").text();
-    	
-    	
-    })
-    
-});
+
+  });
+
 
 </script>
 <div class="container">
-<div class="row">
-  <div class="col">
-   <table id="tableID" class="display hover" style="width:100%">
-<thead>
-    <tr> 
-        <th>#</th>
-        <th>Name</th>
-        <th>Contact No</th>
-        <th>Email</th>
-        <th>VendorCategory</th>
-        <th>Action</th>
-    </tr>
-</thead>
- <tfoot>
- <tr>    <td></td>
-        <th>Name</th>
-        <th>Contact No</th>
-        <th>Email</th>
-        <th>VendorCategory</th>
-        <th></th>
-    </tr>
-  </tfoot>
-<tbody id="tbodyid">
+  <div class="row">
+    <div class="col">
+      <table id="tableID" class="display hover" style="width:100%">
+        <thead>
+          <tr>
+            <th>vendorConstitutionName</th>
+            <th>Contact No</th>
 
-           
-</tbody>
+            <th>Email</th>
+            <th>VendorCategory</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>vendorConstitutionName</th>
+            <th>Contact No</th>
+            <th>Email</th>
+            <th>VendorCategory</th>
+            <th>Action</th>
+          </tr>
+        </tfoot>
+        <tbody id="tbodyid">
 
-</table>
+
+        </tbody>
+
+      </table>
+    </div>
   </div>
 </div>
-</div>
-<div class="modal" id="myModal">
-  <div class="modal-dialog modal-fullscreen">
+<div class="modal  fade" id="myModal" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
     <div class="modal-content">
 
       <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">VendorDetail</h4>
+      <div class="modal-header text-center">
+        <h4 class="modal-title"></h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <!-- Modal body -->
-      <div class="modal-body">
-       
+      <div class="modal-body" id="modal-body">
+        <div class="container-fluid text-center ">
+        <div class="text-center bg-danger text-white mt-2"><h4 class="blockquote">VendorDetails</h4></div>
+          <div class="row ">
+            <div class="col-md-3 border">
+              Id:  <p id="demo"></p>
+            </div>
+            <div class="col-md-3 border ">
+              OrangisationName
+            </div>
+            <div class="col-md-3 border">
+              VendorPan
+            </div>
+            <div class="col-md-3 border">
+              VendorHSNCode
+            </div>
+
+          </div>
+          <div class="row ">
+            <div class="col-md-3 border">
+              GoodsDetail
+            </div>
+            <div class="col-md-3 border">
+              Address
+            </div>
+            <div class="col-md-3 border">
+              ContactNo
+            </div>
+            <div class="col-md-3 border">
+              Email:<p id="demo1"></p>
+            </div>
+
+          </div>
+          <div class="row  ">
+            <div class="col-md-3 border ">
+              Alternate-Contact
+            </div>
+            <div class="col-md-3 border ">
+              Alternate-Email
+            </div>
+            <div class="col-md-3 border">
+              GSTIN
+            </div>
+            <div class="col-md-3 border">
+              UPID
+            </div>
+
+          </div>
+          <div class="row ">
+            <div class="col-md-3 border">
+              BankName
+            </div>
+            <div class="col-md-3 border">
+              BankBranch
+            </div>
+            <div class="col-md-3 border">
+              Bank-Account
+            </div>
+            <div class="col-md-3 border">
+              Bank-IFSC
+            </div>
+
+          </div>
+          <div class="row ">
+            <div class="col-md-3 border">
+              VendorCategory
+            </div>
+            <div class="col-md-3 border">
+              VendorConstitution
+            </div>
+            <div class="col-md-3 border">
+              Train
+            </div>
+            <div class="col-md-3 border">
+            
+            </div>
+
+          </div>
+        
+
+
+        </div>
+
+
+
       </div>
 
       <!-- Modal footer -->
