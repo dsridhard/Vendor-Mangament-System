@@ -1,6 +1,18 @@
 
  
 <body>
+<style>
+    @media screen and (min-width: 676px) {
+        .modal-dialog {
+          max-width: 1200px; /* New width for default modal */
+        }
+    }
+    
+    .fontbold{
+    
+    font-weight:700;
+    }
+</style>
 <div class="notification-container opacity-100" id="notification-container">
   <!-- <div class="notification notification-info">
   <span class="closenotification remove" >X</span>
@@ -37,7 +49,7 @@
 </table>
 <div class="modal fade" id="inquiryRemarksModal" tabindex="-1" role="dialog" aria-labelledby="inquiryRemarksModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+    <div class="modal-content" >
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
         <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
@@ -45,11 +57,80 @@
         </button>
       </div>
       <div class="modal-body">
-        	<div class=" row p-3 mx-3">
-             		<div class=" col-md-12 ">
+      <div class=" row p-3 mx-3">
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Inquiry Ref No: </font><span id="refNo" class="resetDet"></span>
+             		</div>
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5">
+             		<font class="fontbold">Passenger Name: </font><span id="psgnnm" class="resetDet"></span>
+
+             		</div>
+             </div>
+             <div class=" row p-3 mx-3">
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Contact No: </font><span id="contactno" class="resetDet"></span>
+             		</div>
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5">
+             		<font class="fontbold">Supervisor Mobile: </font><span id="emailid" class="resetDet" ></span>
+
+             		</div>
+             </div>
+             <div class=" row p-3 mx-3">
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Train/Station Name: </font><span id="trainnm" class="resetDet"></span>
+             		</div>
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5">
+             		<font class="fontbold">PNR No: </font><span id="pnrno" class="resetDet"></span>
+
+             		</div>
+             </div>
+                <div class=" row p-3 mx-3">
+                <div class=" col-md-5">
+             		<font class="fontbold">Inquiry Status: </font><span id="inquirystatus" class="resetDet"></span>
+
+             		</div>
+             		
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Pending With/Closed By: </font><span id="pendingwith" class="resetDet"></span>
+             		</div>
+             </div>
+               <div class=" row p-3 mx-3">
+                <div class=" col-md-5">
+             		<font class="fontbold">Inquiry Time: </font><span id="inquirytime" class="resetDet"></span>
+
+             		</div>
+             		
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Closing Time: </font><span id="closingtime" class="resetDet"></span>
+             		</div>
+             </div>
+              <div class=" row p-3 mx-3">
+                <div class=" col-md-5">
+             		<font class="fontbold">Passenger Remarks: </font><span id="psgnremark" class="resetDet"></span>
+
+             		</div>
+             		
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Closing Remarks: </font><span id="closingremark" class="resetDet"></span>
+             		</div>
+             </div>
+        	<div class=" row p-3 mx-3 hideview">
+             		<div class=" col-md-1 ">
              			<label for="remarks"><b><span style="color: #f05f40">*</span>Remarks</b></label>
              		</div>
-             		<div class=" col-md-12">
+             		<div class=" col-md-6 float-left">
              			<input type="hidden" id="inquiryId" name="inquiryId">
              			<textarea id="remarks" name="remarks" rows="4" class="form-control"></textarea>
              		</div>
@@ -57,11 +138,12 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="updateInquiryRemarks">Submit</button>
+        <button type="button" class="btn btn-primary hideview" id="updateInquiryRemarks">Submit</button>
       </div>
     </div>
   </div>
 </div>
+
 <script>
 $(document).ready(function() {
 	 var k=1;
@@ -104,9 +186,9 @@ $(document).ready(function() {
                     	 
                     	 }
                  if(response[i].inquiryStatusName!="Inquiry Closed")
-                	 tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-success updatestatus' id='"+response[i].transactionId+"' >Close</button> </td>";
+                	 tbodyHtml+= "<td><button type='button' viewonly='no' class='btn btn-sm btn-outline-danger updatestatus' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >Action</button> </td>";
                 	 else
-                    	 tbodyHtml+= "<td></td>";
+                    	 tbodyHtml+= "<td><button type='button' viewonly='yes' class='btn btn-sm btn-outline-info updatestatus' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >View</button> </td>";
 
 if(response[i].pendingWith==null){
                   if(((response[i].closedBy).split("_")).length==3)  
@@ -181,6 +263,56 @@ listLength=response.length;
           var btnid=$(this).attr("id");
           $('#remarks').val("");
           $('#inquiryId').val(btnid);
+          var details=$(this).attr('modaldata');
+          var viewonly=$(this).attr('viewonly');
+          if(viewonly=='yes'){
+
+$('.hideview').css('display','none');
+              }
+          else{
+        	  $('.hideview').css('display','block');
+              
+              }
+          var jsonObj=JSON.parse(details);
+         console.log(details);
+         $(".resetDet").html("");
+         
+         $("#refNo").html(jsonObj.inquiryRefNo);
+         $("#psgnnm").html(jsonObj.psgnName);
+         $("#contactno").html(jsonObj.mobileNo);
+         $("#supervisorno").html("");
+         if(jsonObj.trainNo!=null)
+         $("#trainnm").html(jsonObj.trainNo+"/"+jsonObj.trainName);
+         else
+             $("#trainnm").html(jsonObj.stationName);
+         
+         $("#pnrno").html(jsonObj.pnrNo);
+         $("#inquirystatus").html(jsonObj.inquiryStatusName);
+         if(jsonObj.closedBy==null)
+         $("#pendingwith").html(jsonObj.pendingWith);
+         else
+             $("#pendingwith").html(jsonObj.closedBy);
+         
+             if(jsonObj.remarks==null)
+         $("#psgnremark").html("");
+             else
+            	 $("#psgnremark").html(jsonObj.remarks);
+
+             if(jsonObj.closingRemark==null)  	     
+         $("#closingremark").html("");
+             else
+            	 $("#closingremark").html(jsonObj.closingRemark);
+
+       	  
+         $("#inquirytime").html(jsonObj.txnDateTime);
+
+         if(jsonObj.closingDateTime==null)
+             $("#closingtime").html("");
+
+         else
+         $("#closingtime").html(jsonObj.closingDateTime);
+         
+          
           $('#inquiryRemarksModal').modal("show");
           });
     $(".closeModal").on('click',function(){
