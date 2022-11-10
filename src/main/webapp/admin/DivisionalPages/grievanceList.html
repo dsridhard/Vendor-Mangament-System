@@ -84,36 +84,24 @@ $(document).ready(function() {
 	checksession();
 	getVendorList();
 	function getVendorList(){
-		var accesstoken = sessionStorage.getItem('key');
-	 $.ajax({
-		 url: "http://203.176.113.183/VendorAppServices/divisional/getVendors",
-		 method: "GET",
-		 timeout: 0,
-		 headers: {
-		    "Authorization": "Bearer " + accesstoken
-		  },
-		    success: function (response) {
-		    	var vendorList = '';
-	        	for(var i=0;i<response.length;i++){
-	        		vendorList = vendorList + '<option value="'+response[i].id+'">'+response[i].organisationName+'</option>';
-	        	}
-	        	$('#vendorList').append(vendorList);
-		    },
-		    error: function (xhr, status) {
-		        if (xhr.status == '401') {
-		          
-		        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
-		            //alert("access denied, please refresh the page again");
-		        	  refreshToken().then((res) => {
+		 commongetmethod("http://203.176.113.183/VendorAppServices/divisional/getVendors").then((response)=>{
+	         console.log(JSON.stringify(response));
+	         var vendorList = '';
+	     	for(var i=0;i<response.length;i++){
+	     		vendorList = vendorList + '<option value="'+response[i].id+'">'+response[i].organisationName+'</option>';
+	     	}
+	     	$('#vendorList').append(vendorList);
+		
+	     })
+	     .fail((xhr,status)=>{
+	    	 if(xhr.status=="401"){
+	    		 refreshToken().then((res) => {
 		              	console.log(res);
 		              	setSessionStorageItems(res);
 		              	getVendorList();
 		                 });
-		        }
-
-		    },
-
-		});
+	     		  }
+	         });
 		}
 $('#vendorList').change(function(){
 	fetchGrievance($(this).val());
