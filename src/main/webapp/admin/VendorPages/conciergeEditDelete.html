@@ -26,11 +26,11 @@
     <div class="row mb-4">
       <div class="col-sm-4">
         <h4>Concierge</h4>
-        <select name="concierge" class="countries form-control" onChange="conciergeChange()" id="concierge">
+        <select name="concierge" class="countries form-control" onChange="conciergeChange()" id="concierge" required>
         <option value="">Select Concierge</option>
         <option value="1">Taxi</option>
-        <option value="2">Value Added</option></select>
-
+        <!-- <option value="2">Value Added</option> -->
+         </select>
       </div>
       <div class="col-sm-4">
         <h4>Station</h4>
@@ -77,22 +77,22 @@
 var carTypelist ="";
 var acNonAc ="";
 var StationElement="";
-
 function conciergeChange() {
 	
     taxiCarTypeList();
     acNonacList();
+   
 	findUniqueIslsForVendor();
-
+  
 	
 }
 
 function stationChange(){
-	
-	  var id=$('#StationId option:selected').attr('id');
+	 var id=$('#StationId option:selected').attr('id');
 	  StationElement = document.getElementById('StationId').value;
 	  gettaxidetails();
 	  $(formid).show();
+	  
 	 
 }
 
