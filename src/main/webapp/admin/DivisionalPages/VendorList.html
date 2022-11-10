@@ -1,19 +1,69 @@
 <script>
   $(document).ready(function () {
-	  document.getElementById('demo').innerHTML ='';
-    $("#tbodyid").on('click', '.viewbtn', function () { 
-     //alert($(this).attr("id"));
+    document.getElementById('demo').innerHTML = '';
+    $("#tbodyid").on('click', '.viewbtn', function () {
+      //alert($(this).attr("id"));
       var viewresp = $(this).attr("modaldata");
-      console.log(viewresp); 
-    
-        var resp = JSON.parse(viewresp);
-        var vid = resp.id
-        alert(vid)
-        document.getElementById('demo').innerHTML=vid; 
-        $('#myModal').modal('show');
-        
+      console.log(viewresp);
+
+      var resp = JSON.parse(viewresp);
+      var vid = resp.id;
+      var vorg = resp.organisationName;
+      var vpan = resp.vendorPan;
+      var vhsn = resp.vendorHsnCode;
+      var vgd = resp.goodsDetails;
+      var vadd = resp.address;
+      var vcon = resp.contactNo;
+      var vem = resp.email;
+      var valtc = resp.alternateContactNo;
+      var valte = resp.alternateEmail;
+      var vgstin = resp.gstin;
+      var vupiId = resp.upiId;
+      var vbankName = resp.bankName;
+      var vbankBranch = resp.bankBranch;
+      var vbankAccountNo = resp.bankAccountNo;
+      var vbankIfsc = resp.bankIfsc;
+      var vbankMicr = resp.bankMicr;
+      var vvendorCategoryName = resp.vendorCategoryName;
+      var vvendorConstitutionName = resp.vendorConstitutionName;
+      for (j = 0; j < resp.trains.length; j++) {
+
+        var vtrainsid = resp.trains[j].id;
+        var vtrainsno = resp.trains[j].trainNo;
+        var vtrainsname = resp.trains[j].trainName;
+      }
+      alert(vid)
+      document.getElementById('demo').innerHTML = vid;
+      document.getElementById('demo1').innerHTML = vorg;
+      document.getElementById('demo2').innerHTML = vpan;
+      document.getElementById('demo3').innerHTML = vhsn;
+      document.getElementById('demo4').innerHTML = vgd;
+      document.getElementById('demo5').innerHTML = vadd;
+      document.getElementById('demo6').innerHTML = vcon;
+      document.getElementById('demo7').innerHTML = vem;
+      document.getElementById('demo8').innerHTML = valtc;
+      document.getElementById('demo9').innerHTML = valte;
+      document.getElementById('demo10').innerHTML = vgstin;
+      document.getElementById('demo11').innerHTML = vupiId;
+      document.getElementById('demo12').innerHTML = vbankName;
+      document.getElementById('demo13').innerHTML = vbankBranch;
+      document.getElementById('demo14').innerHTML = vbankAccountNo;
+      document.getElementById('demo15').innerHTML = vbankIfsc;
+      document.getElementById('demo16').innerHTML = vbankMicr;
+      document.getElementById('demo17').innerHTML = vvendorCategoryName;
+      document.getElementById('demo18').innerHTML = vvendorConstitutionName;
+      document.getElementById('demo19').innerHTML = vtrainsid;
+      document.getElementById('demo20').innerHTML = vtrainsno;
+      document.getElementById('demo21').innerHTML = vtrainsname;
+
+
+
+
+
+      $('#myModal').modal('show');
+
     });
-   
+
 
     $('#tableID').DataTable({
       responsive: true
@@ -23,7 +73,7 @@
     function fetchInquiries() {
       var tbodyHtml = "";
       commongetmethod("http://203.176.113.183/VendorAppServices//divisional/getVendors").then((response) => {
-       /*  console.log(JSON.stringify(response)); */
+        /*  console.log(JSON.stringify(response)); */
 
         for (i = 0; i < response.length; i++) {
           tbodyHtml += "<tr>"
@@ -96,85 +146,126 @@
       </div>
 
       <!-- Modal body -->
-      <div class="modal-body" id="modal-body">
-        <div class="container-fluid text-center ">
-        <div class="text-center bg-danger text-white mt-2"><h4 class="blockquote">VendorDetails</h4></div>
-          <div class="row ">
-            <div class="col-md-3 border">
-              Id:  <p id="demo"></p>
+      <div class="modal-body mb-3" id="modal-body">
+        <div class="container-fluid text-center    ">
+          <div class="text-center bg-danger text-white mt-2 text-center">
+            <h4 class="blockquote">VendorDetails</h4>
+          </div>
+          <div class="row border  text-center">
+            <div class="col-md-3 mt-3">
+              <span class="h6">Id:</span>
+              <p id="demo"></p>
             </div>
-            <div class="col-md-3 border ">
-              OrangisationName
+            <div class="col-md-3 mt-3">
+              <span class="h6 ">OrangisationName:</span>
+              <p id="demo1"></p>
             </div>
-            <div class="col-md-3 border">
-              VendorPan
+            <div class="col-md-3 mt-3">
+              <span class="h6">VendorPan:</span>
+              <p id="demo2"></p>
             </div>
-            <div class="col-md-3 border">
-              VendorHSNCode
+            <div class="col-md-3 mt-3">
+              <span class="h6 ">VendorHSNCode:</span>
+              <p id="demo3"></p>
             </div>
 
           </div>
-          <div class="row ">
-            <div class="col-md-3 border">
-              GoodsDetail
+          <div class="row border text-center ">
+            <div class="col-md-3 mt-3 ">
+              <span class="h6 ">GoodsDetail:</span>
+              <p id="demo4"></p>
             </div>
-            <div class="col-md-3 border">
-              Address
+            <div class="col-md-3  mt-3">
+              <span class="h6 ">Address:</span>
+              <p id="demo5"></p>
             </div>
-            <div class="col-md-3 border">
-              ContactNo
+            <div class="col-md-3 mt-3">
+              <span class="h6 ">ContactNo:</span>
+              <p id="demo6"></p>
             </div>
-            <div class="col-md-3 border">
-              Email:<p id="demo1"></p>
-            </div>
-
-          </div>
-          <div class="row  ">
-            <div class="col-md-3 border ">
-              Alternate-Contact
-            </div>
-            <div class="col-md-3 border ">
-              Alternate-Email
-            </div>
-            <div class="col-md-3 border">
-              GSTIN
-            </div>
-            <div class="col-md-3 border">
-              UPID
+            <div class="col-md-3 mt-3 ">
+              <span class="h6 "> Email:</span>
+              <p id="demo7"></p>
             </div>
 
           </div>
-          <div class="row ">
-            <div class="col-md-3 border">
-              BankName
+          <div class="row border text-center ">
+            <div class="col-md-3  mt-3">
+              <span class="h6 ">Alternate-Contact</span>
+              <p id="demo8"></p>
             </div>
-            <div class="col-md-3 border">
-              BankBranch
+            <div class="col-md-3 mt-3 ">
+              <span class="h6 ">Alternate-Email:</span>
+              <p id="demo9"></p>
             </div>
-            <div class="col-md-3 border">
-              Bank-Account
+            <div class="col-md-3 mt-3 ">
+              <span class="h6 ">GSTIN:</span>
+              <p id="demo10"></p>
             </div>
-            <div class="col-md-3 border">
-              Bank-IFSC
+            <div class="col-md-3 mt-3">
+              <span class="h6 ">UPID:</span>
+              <p id="demo11"></p>
             </div>
 
           </div>
-          <div class="row ">
-            <div class="col-md-3 border">
-              VendorCategory
+          <div class="row border text-center ">
+            <div class="col-md-3 mt-3">
+              <span class="h6 ">BankName:</span>
+              <p id="demo12"></p>
             </div>
-            <div class="col-md-3 border">
-              VendorConstitution
+            <div class="col-md-3 mt-3 ">
+              <span class="h6 ">BankBranch:</span>
+              <p id="demo13"></p>
             </div>
-            <div class="col-md-3 border">
-              Train
+            <div class="col-md-3 mt-3 ">
+              <span class="h6 ">Bank-Account:</span>
+              <p id="demo14"></p>
             </div>
-            <div class="col-md-3 border">
+            <div class="col-md-3 mt-3">
+              <span class="h6 "> Bank-IFSC:</span>
+              <p id="demo15"></p>
+            </div>
+
+          </div>
+          <div class="row border text-center">
+            <div class="col-md-3 mt-3  ">
+              <span class="h6 "> BankMicr:</span>
+              <p id="demo16"></p>
+            </div>
+            <div class="col-md-3 mt-3 ">
+             <span class="h6"> vendorCategoryName: </span> 
+              <p id="demo17"></p>
+
+            </div>
+            <div class="col-md-3 mt-3">
+              <span class="h6"> vendorConstitutionName:</span>
+              <p id="demo18"></p>
+            </div>
+
+           
+
+          </div>
+            <div class="row border text-center">
             
+              <div class="col-md-4 mt-3  ">
+              <span class="h6 "> Train_id:</span>
+              <p id="demo19"></p>
             </div>
+            <div class="col-md-4 mt-3">
+               <span class="h6 "> TrainNo:</span>
+              <p id="demo20"></p>
+             </div>
+             
+             <div class="col-md-4 mt-3">
+             
+              <span class="h6 "> TrainName:</span>
+              <p id="demo21"></p>
+             
+               </div>
+            
+             </div>
 
-          </div>
-        
+   
 
 
         </div>
