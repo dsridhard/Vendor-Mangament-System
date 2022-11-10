@@ -1,0 +1,228 @@
+<style>
+ .close {
+    float: right;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #f05f40;
+    text-shadow: 0 1px 0 #fff;
+}
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+ </style>
+ 
+<body>
+<span style="color: #f05f40">*</span><span>Mandatory Fields</span>
+
+                    <div class="text-light bg-danger text-center shadow-lg">Inquiry List</div>
+<div class=" row p-3 mx-3">
+                   		<div class=" col-md-6 ">
+                   			<b><span style="color: #f05f40">*</span>Vendor</b>
+                   		</div>
+                   		<div class=" col-md-6 ">
+                   		<select class="form-control required" id="vendorList" name="vendor" style="width:100%">
+                   			<option value="" disabled selected>Select Vendor</option>
+                   		</select>
+                   		</div>
+                   </div>
+<div class="row">
+
+<table id="tableID" class="table" style="width:100%">
+<thead>
+    <tr>
+        <th>Service</th>
+        <th>Sub Service</th>
+        <th>Contact No</th>
+        <th>Train No</th>
+        <th>Station Name</th>
+         <th>Passenger Name</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Supervisor</th>
+        <th>Action</th>
+    </tr>
+</thead>
+<tbody id="tbodyid">
+
+           
+</tbody>
+
+</table>
+</div>
+<div class="modal fade" id="inquiryRemarksModal" tabindex="-1" role="dialog" aria-labelledby="inquiryRemarksModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
+        <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<div class=" row p-3 mx-3">
+             		<div class=" col-md-12 ">
+             			<label for="remarks"><b><span style="color: #f05f40">*</span>Remarks</b></label>
+             		</div>
+             		<div class=" col-md-12">
+             			<input type="hidden" id="inquiryId" name="inquiryId">
+             			<textarea id="remarks" name="remarks" rows="4" style="width:100%"></textarea>
+             		</div>
+             </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="updateInquiryRemarks">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+	checksession();
+	getVendorList();
+	function getVendorList(){
+		var accesstoken = sessionStorage.getItem('key');
+	 $.ajax({
+		 url: "http://localhost:8082/VendorAppServices/divisional/getVendors",
+		 method: "GET",
+		 timeout: 0,
+		 headers: {
+		    "Authorization": "Bearer " + accesstoken
+		  },
+		    success: function (response) {
+		    	var vendorList = '';
+	        	for(var i=0;i<response.length;i++){
+	        		vendorList = vendorList + '<option value="'+response[i].id+'">'+response[i].firstName+' '+response[i].lastName+'</option>';
+	        	}
+	        	$('#vendorList').append(vendorList);
+		    },
+		    error: function (xhr, status) {
+		        if (xhr.status == '401') {
+		          
+		        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+		            //alert("access denied, please refresh the page again");
+		        	  refreshToken().then((res) => {
+		              	console.log(res);
+		              	setSessionStorageItems(res);
+		              	getVendorList();
+		                 });
+		        }
+
+		    },
+
+		});
+		}
+$('#vendorList').change(function(){
+	fetchInquiries($(this).val());
+});
+    function fetchInquiries(id){
+    	$('#tableID').DataTable().destroy();
+        var tbodyHtml="";
+     commongetmethod("http://localhost:8082/VendorAppServices/divisional/data/getdivisionalvendorsupervisorstxnlist/"+id).then((response)=>{
+             console.log(JSON.stringify(response));
+             for(i=0;i<response.length;i++){
+            	 tbodyHtml+="<tr>";
+            	 if(response[i].serviceName==null){
+            		 tbodyHtml+="<td>"+response[i].obhsTypeName+" </td>";
+                	 }
+            	 else{
+            		 tbodyHtml+="<td>"+response[i].serviceName+" </td>";
+                	 }
+            	 if(response[i].subServiceName==null&&response[i].obhsSubTypeName!=null){
+            		 tbodyHtml+="<td>"+response[i].obhsSubTypeName+" </td>";
+                	 }
+            	 else{
+            		 tbodyHtml+="<td>"+response[i].subServiceName+" </td>";
+                	 }
+
+            	 
+                 tbodyHtml+= "<td>"+response[i].mobileNo+" </td>"+
+                 "<td>"+response[i].trainNo+" </td>"+
+                 "<td>"+response[i].stationName+" </td>"+
+                 "<td>"+response[i].psgnName+" </td>"+
+                 "<td>"+response[i].txnDateTime+" </td>"+
+                 "<td>"+response[i].inquiryStatusName+" </td>"+
+                 "<td>"+response[i].pendingWith+" </td>";
+                 if(response[i].inquiryStatusName!="Inquiry Closed")
+                	 tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-success updatestatus' id='"+response[i].transactionId+"' >Close</button> </td>";
+                	 else
+                    	 tbodyHtml+= "<td></td>";
+                 	 
+                	 tbodyHtml+="</tr>";
+                          
+                 }
+           
+    	 $("#tbodyid").html(tbodyHtml);
+    	 
+    	 var t= $('#tableID').DataTable( {
+	       "bDestroy":true
+	        } );
+	    	
+	    	 t.draw();
+    	
+    	
+         })
+         .fail((xhr,status)=>{
+        	 if(xhr.status=="401"){
+         		  refreshToken().then((res) => {
+         	        	console.log(res);
+         	        	setSessionStorageItems(res);
+         	        	fetchInquiries(id);
+         	           });
+         		  }
+             });
+    	
+    }
+
+
+    $("#tbodyid").on('click','.updatestatus',function(){
+
+          //alert($(this).attr("id"));
+          var btnid=$(this).attr("id");
+          $('#remarks').val("");
+          $('#inquiryId').val(btnid);
+          $('#inquiryRemarksModal').modal("show");
+          });
+    $(".closeModal").on('click',function(){
+        $('#remarks').val("");
+        $('#inquiryId').val("");
+        $('#inquiryRemarksModal').modal("hide");
+      });
+
+    $('#inquiryRemarksModal').on('hidden.bs.modal',function (){
+    	$('#remarks').val("");
+        $('#closeId').val("");
+    });
+    $("#updateInquiryRemarks").on('click',function(){
+    	var id = $('#inquiryId').val();
+    	var remarks = $('#remarks').val();
+    	alert(JSON.stringify({id:id,remarks:remarks}));
+  /*   	 commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitvendortxn/"+$(this).attr("id")).then((response)=>{
+                              alert(response.message);
+                             console.log(JSON.stringify(response));
+                             fetchInquiries();
+
+              })
+              .fail((xhr,status)=>{
+            	  if(xhr.status=="401"){
+             		  refreshToken().then((res) => {
+             	        	console.log(res);
+             	        	setSessionStorageItems(res);
+             	        	$('#'+btnid)[0].click();
+             	           });
+             		  }
+                  }); */
+    });
+});
+
+
+
+
+</script>
+
+
+</body>

@@ -1,0 +1,175 @@
+
+ <style>
+ .close {
+    float: right;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #f05f40;
+    text-shadow: 0 1px 0 #fff;
+}
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+ </style>
+<body>
+<span style="color: #f05f40">*</span><span>Mandatory Fields</span>
+
+                    <div class="text-light bg-danger text-center shadow-lg">Grievances List</div>
+<div class=" row p-3 mx-3">
+                   		<div class=" col-md-6 ">
+                   			<b><span style="color: #f05f40">*</span>Vendor</b>
+                   		</div>
+                   		<div class=" col-md-6 ">
+                   		<select class="form-control required" id="vendorList" name="vendor" style="width:100%">
+                   			<option value="" disabled selected>Select Vendor</option>
+                   		</select>
+                   		</div>
+                   </div>
+<div class="row">
+<table id="tableIDGrievanceDiv" class="table" style="width:100%;display:none">
+<thead>
+    <tr>
+        <th>Service</th>
+        <th>Passenger Name</th>
+        <th>Contact No</th>
+        <th>Train No</th>
+        
+         <th>Grievance</th>
+        <th>Created On</th>
+        <th>Status</th>
+        <th>Closed On</th>
+        <th>Closed/Pending With</th>
+    </tr>
+</thead>
+<tbody id="tbodyidGrievanceDiv">
+
+           
+</tbody>
+
+</table>
+</div>
+<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
+        <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        	<div class=" row p-3 mx-3">
+             		<div class=" col-md-12 ">
+             			<label for="remarks"><b><span style="color: #f05f40">*</span>Remarks</b></label>
+             		</div>
+             		<div class=" col-md-12">
+             			<input type="hidden" id="closeId" name="closeId">
+             			<textarea id="remarks" name="remarks" rows="4" style="width:100%"></textarea>
+             		</div>
+             </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="updateRemarks">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+	checksession();
+	getVendorList();
+	function getVendorList(){
+		var accesstoken = sessionStorage.getItem('key');
+	 $.ajax({
+		 url: "http://203.176.113.183/VendorAppServices/divisional/getVendors",
+		 method: "GET",
+		 timeout: 0,
+		 headers: {
+		    "Authorization": "Bearer " + accesstoken
+		  },
+		    success: function (response) {
+		    	var vendorList = '';
+	        	for(var i=0;i<response.length;i++){
+	        		vendorList = vendorList + '<option value="'+response[i].id+'">'+response[i].organisationName+'</option>';
+	        	}
+	        	$('#vendorList').append(vendorList);
+		    },
+		    error: function (xhr, status) {
+		        if (xhr.status == '401') {
+		          
+		        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+		            //alert("access denied, please refresh the page again");
+		        	  refreshToken().then((res) => {
+		              	console.log(res);
+		              	setSessionStorageItems(res);
+		              	getVendorList();
+		                 });
+		        }
+
+		    },
+
+		});
+		}
+$('#vendorList').change(function(){
+	fetchGrievance($(this).val());
+});
+    function fetchGrievance(id){
+    	$('#tableIDGrievanceDiv').DataTable().destroy();
+    	var tbodyHtml="";
+
+    	commongetmethod("http://203.176.113.183/VendorAppServices/divisional/data/getpsgngrievance/"+id).then((response)=>{
+    		
+    		   for (i=0;i<response.length;i++){
+
+    			   tbodyHtml+="<tr>";
+    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.serviceName+" </td>";
+    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.psgnName+" </td>";
+    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.mobileNo+" </td>";
+    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.trainNo+" </td>";
+
+    			   tbodyHtml+="<td>"+response[i].grievanceType+" </td>";
+
+    			   tbodyHtml+="<td>"+response[i].createdOn+" </td>";
+
+    			   tbodyHtml+="<td>"+response[i].grievanceStatus+" </td>";
+    		if(response[i].grievanceStatus=="Closed")
+    			   tbodyHtml+="<td>"+response[i].closedOn+" </td>";
+    			   else
+    				   tbodyHtml+="<td>- </td>";  
+        			   tbodyHtml+="<td>"+response[i].pendingWith+" </td>";
+        			   
+    		tbodyHtml+="</tr>";
+    			   
+
+    			   }
+    		   $("#tbodyidGrievanceDiv").html(tbodyHtml);
+    			 
+    			 var t= $('#tableIDGrievanceDiv').DataTable( {
+    		     "bDestroy":true
+    		      } );
+    		  	
+    		  	 t.draw();
+    		  	$('#tableIDGrievanceDiv').css('display','');
+        })
+        .fail((xhr,status)=>{
+       	 if(xhr.status=="401"){
+        		  refreshToken().then((res) => {
+        	        	console.log(res);
+        	        	setSessionStorageItems(res);
+        	        	fetchGrievance(id);
+        	           });
+        		  }
+            });
+    
+    }
+});
+
+
+</script>
+
+</body>
