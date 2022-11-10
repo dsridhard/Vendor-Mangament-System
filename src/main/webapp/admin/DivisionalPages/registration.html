@@ -46,8 +46,8 @@ console.log("//inside vendor registration form submit");
 	 if(!response.error){
      document.getElementById("vendorRegistrationForm").reset();
 	 }
-    /* $('#trainsId').multiselect('refresh');
-    trainlist(); */
+    $('#trainsId').multiselect('refresh');
+    trainlist(); 
 })
 .fail((xhr,status)=>{
 	  if (xhr.status == '401') {
@@ -65,8 +65,6 @@ console.log("//inside vendor registration form submit");
     });
 
 
-	
-	
         checksession();
         vendorcategorylist();
 
