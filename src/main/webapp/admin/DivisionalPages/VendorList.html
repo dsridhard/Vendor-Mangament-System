@@ -4,12 +4,13 @@
     $("#tbodyid").on('click', '.viewbtn', function () { 
      //alert($(this).attr("id"));
       var viewresp = $(this).attr("modaldata");
-      alert(viewresp); 
-      $('#myModal').modal('show');
+      console.log(viewresp); 
+    
         var resp = JSON.parse(viewresp);
         var vid = resp.id
         alert(vid)
         document.getElementById('demo').innerHTML=vid; 
+        $('#myModal').modal('show');
         
     });
    
@@ -30,7 +31,7 @@
             "<td>" + response[i].contactNo + " </td>" +
             "<td>" + response[i].email + " </td>" +
             "<td>" + response[i].vendorConstitutionName + " </td>" +
-            "<td>" + '<button type="button"  class="btn btn-secondary viewbtn" modaldata=' + JSON.stringify(response[i]) + ' >View</button>' + " </td>" +
+            "<td>" + "<button type='button'  class='btn btn-secondary viewbtn' modaldata='" + JSON.stringify(response[i]) + "' >View</button>" + " </td>" +
             "<td class='d-none'>" + response[i].psgnName + " </td></tr>";
 
         }
