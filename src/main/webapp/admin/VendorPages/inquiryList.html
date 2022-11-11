@@ -75,7 +75,7 @@
              		<div class=" col-md-2">
              		</div>
              		<div class=" col-md-5">
-             		<font class="fontbold">Supervisor Mobile: </font><span id="emailid" class="resetDet" ></span>
+             		<font class="fontbold">Supervisor Mobile: </font><span id="supervisorno" class="resetDet" ></span>
 
              		</div>
              </div>
@@ -173,7 +173,7 @@ $(document).ready(function() {
                 	 }
 
             	 
-                 tbodyHtml+= "<td>"+response[i].mobileNo+" </td>"+
+                 tbodyHtml+= "<td>"+response[i].passengerMobile+" </td>"+
                  "<td>"+response[i].trainNo+" </td>"+
                  "<td>"+response[i].stationName+" </td>"+
                  "<td>"+response[i].psgnName+" </td>"+
@@ -279,8 +279,11 @@ $('.hideview').css('display','none');
          
          $("#refNo").html(jsonObj.inquiryRefNo);
          $("#psgnnm").html(jsonObj.psgnName);
-         $("#contactno").html(jsonObj.mobileNo);
+         $("#contactno").html(jsonObj.passengerMobile);
+         if(jsonObj.supervisorMobile==null)
          $("#supervisorno").html("");
+         else
+          $("#supervisorno").html(jsonObj.supervisorMobile);  
          if(jsonObj.trainNo!=null)
          $("#trainnm").html(jsonObj.trainNo+"/"+jsonObj.trainName);
          else
