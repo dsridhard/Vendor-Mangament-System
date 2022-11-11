@@ -61,7 +61,7 @@
                 </div>
                 <div class=" col-12 col-md-9 col-sm-7  ">
                     <div class="col" id="content">
-                        <div id="maincontent" ></div>
+                        <div id="maincontent" class="scroll"></div>
                     </div>
                 </div>
         
@@ -96,7 +96,7 @@
     
     $(document).ready(() => {
     	checksession();
-    	//$(".scroll").css("height", $(window).height()-200);
+    	$(".scroll").css("height", $(window).height()-200);
 
         $("#logoutlink").on("click", function () {
 
