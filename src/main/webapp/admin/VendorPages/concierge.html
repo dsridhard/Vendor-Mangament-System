@@ -3,10 +3,7 @@
 <html>
      
 <head>
-
-   
-    
-    <style>
+  <style>
         .myform{
     display:none;
 }
@@ -27,9 +24,7 @@
         }
     </style>
     
-    
    
-    
 </head>
 <body>
         <div class="row" style="height:100%;">
@@ -38,16 +33,17 @@
                    <div class="col-12 p-2 bg-white no-print"  >
                     <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
                      <h5 class=" font-14 text-center" style="color:green" id="msg"></h5></div>
+                     <h5 class=" font-14 text-center" style="color:red" id="msg"></h5></div>
                     <div class="text-light bg-danger text-center shadow-lg">Concierge Form</div>
   
   <div class="container"  style="height:100%;">
     <div class="row mb-4">
       <div class="col-sm-4">
         <h4>Concierge</h4>
-        <select name="concierge" class="countries form-control" onChange="conciergeChange()" id="concierge">
+        <select name="concierge" class="countries form-control" onChange="conciergeChange()" id="concierge" required>
       <option value="">Select Concierge</option>
        <option value="1">Taxi</option>
-        <option value="2">Value Added</option>
+       <!--  <option value="2">Value Added</option> -->
   </select>
 
       </div>
@@ -64,7 +60,7 @@
     <div class="row">
       <div id="main"> 
       <form method="post" name="conciergeForm" id="conciergeForm">
-      <div id="formid" class="myform  px-3 mx-3 "  style="height:80%;">
+      <div id="formid" class="myform consform px-3 mx-3 "  style="height:80%;">
       
        <div class="row" id="onegroup">
                          
@@ -114,20 +110,21 @@
 var carTypelist ="";
 var acNonAc ="";
 var StationElement="";
+
 function conciergeChange() {
-	
+	 taxiCarTypeList();
+     acNonacList();
 	findUniqueIslsForVendor();
-	//alert("changed");
-	//findUniqueIslsForVendor();
+	
 }
 
 function stationChange(){
+	 $("#msg").empty();
 	
 	  var id=$('#StationId option:selected').attr('id');
 	  StationElement = document.getElementById('StationId').value;
-	  $(formid).show();
-	  taxiCarTypeList();
-      acNonacList();
+	  $('#formid').show();
+	 
 }
 
 
@@ -165,8 +162,8 @@ $(document).on('click', '.remove_row', function () {
 
  
   $("#conciergeForm").submit(function (e) {
-       
-      //  alert("hello");
+	  $("#msg").empty();
+	     
         var trainNoId = [];
         e.preventDefault();
         accesstoken = sessionStorage.getItem('key');
@@ -187,41 +184,36 @@ $(document).on('click', '.remove_row', function () {
             return obj;
         }).get();
     //alert(JSON.stringify(data));
-    alert(JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data}));
-   // commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/data/taxidetails",JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data})).then((response)=>{
-	
-    	 commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/savetaxidetails",JSON.stringify({"stationId":parseInt(StationElement),"taxiDetailsModelList":data})).then((response)=>{
-    			
-    	
-    	$("#msg").html( response.message);
-     //document.getElementById("mappingForm").reset();
+   // alert(JSON.stringify({"serviceId":1,"subServiceId":1,"stationId":parseInt(StationElement),"taxiDetailsList":data}));
+    commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/savetaxidetails",JSON.stringify({"stationId":parseInt(StationElement),"taxiDetailsModelList":data})).then((response)=>{
+     $("#msg").html( response.message);
+   
 }).fail((xhr,status)=>{
 	
 	 if (xhr.status == '401') 
-	 {                             //// $("#msg").html("Error :" +xhr.status+ "");
-     
-        refreshToken().then((res) => {
+	 {                             
+            refreshToken().then((res) => {
          	console.log(res);
          	setSessionStorageItems(res);
            $("#conciergeForm").submit();
             });
-      }
+     }
 	 else{
 		 alert("some internal error occurred");
 		 }
 });    	
     
     document.getElementById("conciergeForm").reset();  
-    $(formid).remove();
-   /*  $(formid).hide(); */
+   // $('.consform').empty();
+   // $(".consform").load();
+ //   $('.consform').remove();
+  
     });
 
 
-  //async
+
   function acNonacList(){	
-     var accesstoken = sessionStorage.getItem('key');
-   // response=await commongetmethoderrorhandling("http://203.176.113.183/VendorAppServices/vendor/acNonacList");
-    response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/acNonacList").then((response)=>{
+     response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/acNonacList").then((response)=>{
     	  acNonAc=JSON.stringify(response);//acNonAc
     	   //console.log(JSON.stringify(response));
     	    $('#acNonacId').empty();
@@ -249,9 +241,7 @@ $(document).on('click', '.remove_row', function () {
  
   //async 
   function taxiCarTypeList(){	                                    
-     var accesstoken = sessionStorage.getItem('key');
-  // response=await commongetmethoderrorhandling("http://203.176.113.183/VendorAppServices/vendor/taxiCarTypeList");
-   response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/taxiCarTypeList").then((response)=>{
+    response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/taxiCarTypeList").then((response)=>{
 	   carTypelist=JSON.stringify(response);
 	   //console.log(JSON.stringify(response));
 	     $('#carTypeId').empty();
@@ -274,9 +264,8 @@ $(document).on('click', '.remove_row', function () {
 	});
  }
 
-// async
+
 function findUniqueIslsForVendor(){	
-    var accesstoken = sessionStorage.getItem('key');
      commongetmethod("http://203.176.113.183/VendorAppServices/vendor/findUniqueIslsForVendor").then((response)=>{
     	 
     	   // console.log(JSON.stringify(response));
