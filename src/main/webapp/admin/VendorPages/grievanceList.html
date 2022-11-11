@@ -1,4 +1,15 @@
-
+<style>
+    @media screen and (min-width: 676px) {
+        .modal-dialog {
+          max-width: 1200px; /* New width for default modal */
+        }
+    }
+    
+    .fontbold{
+    
+    font-weight:700;
+    }
+</style>
 <body>
 <div class="notification-container opacity-100" id="notification-container-gr">
   <!-- <div class="notification notification-info">
@@ -44,7 +55,76 @@
         </button>
       </div>
       <div class="modal-body">
-        	<div class=" row p-3 mx-3">
+      <div class=" row p-3 mx-3">
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Grievance Type: </font><span id="gretype" class="resetDet"></span>
+             		</div>
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5">
+             		<font class="fontbold">Passenger Name: </font><span id="psgnnm" class="resetDet"></span>
+
+             		</div>
+             </div>
+             <div class=" row p-3 mx-3">
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Contact No: </font><span id="contactno" class="resetDet"></span>
+             		</div>
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5">
+             		<font class="fontbold">Supervisor Mobile: </font><span id="supervisorno" class="resetDet" ></span>
+
+             		</div>
+             </div>
+             <div class=" row p-3 mx-3">
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Train/Station Name: </font><span id="trainnm" class="resetDet"></span>
+             		</div>
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5">
+             		<font class="fontbold">PNR No: </font><span id="pnrno" class="resetDet"></span>
+
+             		</div>
+             </div>
+                <div class=" row p-3 mx-3">
+                <div class=" col-md-5">
+             		<font class="fontbold">Grievance Status: </font><span id="grstatus" class="resetDet"></span>
+
+             		</div>
+             		
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Pending With/Closed By: </font><span id="pendingwith" class="resetDet"></span>
+             		</div>
+             </div>
+               <div class=" row p-3 mx-3">
+                <div class=" col-md-5">
+             		<font class="fontbold">Grievance Time: </font><span id="grtime" class="resetDet"></span>
+
+             		</div>
+             		
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Closing Time: </font><span id="closingtime" class="resetDet"></span>
+             		</div>
+             </div>
+               <div class=" row p-3 mx-3">
+                <div class=" col-md-5">
+             		<font class="fontbold">Grievance Description: </font><span id="psgnremark" class="resetDet"></span>
+
+             		</div>
+             		
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Closing Remarks: </font><span id="closingremark" class="resetDet"></span>
+             		</div>
+             </div>
+        	<div class=" row p-3 mx-3 hideview">
              		<div class=" col-md-12 ">
              			<label for="remarks"><b><span style="color: #f05f40">*</span>Remarks</b></label>
              		</div>
@@ -56,7 +136,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="grupdateRemarks">Submit</button>
+        <button type="button" class="btn btn-primary hideview" id="grupdateRemarks">Submit</button>
       </div>
     </div>
   </div>
@@ -75,11 +155,10 @@ var grlistLength=0;
     	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getpsgngrievance").then((response)=>{
     		console.log(JSON.stringify(response));
     		   for (i=0;i<response.length;i++){
-
     			   tbodyHtml+="<tr>";
     			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.serviceName+" </td>";
     			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.psgnName+" </td>";
-    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.mobileNo+" </td>";
+    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.passengerMobile+" </td>";
     			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.trainNo+" </td>";
 
     			   tbodyHtml+="<td>"+response[i].grievanceType+" </td>";
@@ -94,13 +173,14 @@ var grlistLength=0;
         			   tbodyHtml+="<td>"+response[i].pendingWith+" </td>";
          			   
         			   if(response[i].grievanceStatus!="Closed")
-    		tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-success update' id='"+response[i].grievanceId+"' >Close</button> </td>";
+    		tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-danger update' viewonly='no'  modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].grievanceId+"' >Action</button> </td>";
     		else
-    			  tbodyHtml+="<td>- </td>"; 
+        		tbodyHtml+= "<td><button type='button' class='btn btn-sm btn-outline-info update' viewonly='yes'  modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].grievanceId+"' >View</button> </td>";
     		tbodyHtml+="</tr>";
     			   
 
     			   }
+    		   $('#grtableID').DataTable().destroy();
     		   $("#grtbodyid").html(tbodyHtml);
     			 
     			 var t= $('#grtableID').DataTable( {
@@ -108,7 +188,7 @@ var grlistLength=0;
     		     order: [[5, 'desc']],
     		      } );
     		  	
-    		  	 t.draw();
+    		  	 t.draw(false);
     		  	 if(p==1){
     		  		grlistLength=response.length;
     		  		createGrievanceInterval();
@@ -147,6 +227,62 @@ var grlistLength=0;
         var btnid=$(this).attr("id");
         $('#remarks').val("");
         $('#closeId').val(btnid);
+
+        var details=$(this).attr('modaldata');
+        var viewonly=$(this).attr('viewonly');
+        if(viewonly=='yes'){
+
+$('.hideview').css('display','none');
+            }
+        else{
+      	  $('.hideview').css('display','block');
+            
+            }
+        var jsonObj=JSON.parse(details);
+       console.log(details);
+       $(".resetDet").html("");
+       
+       $("#gretype").html(jsonObj.grievanceType);
+       $("#psgnnm").html(jsonObj.getPsgnTxnListModel.psgnName);
+       $("#contactno").html(jsonObj.getPsgnTxnListModel.passengerMobile);
+       if(jsonObj.getPsgnTxnListModel.supervisorMobile==null)
+       $("#supervisorno").html("");
+       else
+        $("#supervisorno").html(jsonObj.getPsgnTxnListModel.supervisorMobile);  
+       if(jsonObj.getPsgnTxnListModel.trainNo!=null)
+       $("#trainnm").html(jsonObj.getPsgnTxnListModel.trainNo+"/"+jsonObj.getPsgnTxnListModel.trainName);
+       else
+           $("#trainnm").html(jsonObj.getPsgnTxnListModel.stationName);
+       
+       $("#pnrno").html(jsonObj.getPsgnTxnListModel.pnrNo);
+       $("#grstatus").html(jsonObj.grievanceStatus);
+       
+       $("#pendingwith").html(jsonObj.pendingWith);
+      
+       
+          
+          	 $("#psgnremark").html(jsonObj.remarks);
+
+           if(jsonObj.closingRemarks==null)  	     
+       $("#closingremark").html("");
+           else
+          	 $("#closingremark").html(jsonObj.closingRemarks);
+
+     	  
+       $("#grtime").html(jsonObj.createdOn);
+
+       if(jsonObj.closedOn==null)
+           $("#closingtime").html("");
+
+       else
+       $("#closingtime").html(jsonObj.closedOn);
+       
+
+
+
+
+
+        
         $('#grremarksModal').modal("show");
 
       });
