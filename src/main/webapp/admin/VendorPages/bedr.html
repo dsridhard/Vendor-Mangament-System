@@ -5,17 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="icon" type="image/x-icon" href="./assets/images//IRLogo.png" />
-    <link rel="stylesheet" type="text/css" href="./assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="./assets/css/all.min.css" />
-    <script src="./assets/js/all.min.js"></script>
-    <script src="./assets/js/jquery.js"></script> -->
+    
 </head>
 
 <body>
-      <h5 class=" font-14 text-center vendorRegistered " id="supRegistered" style="color:green"></h5>
+<div class="shadow-lg">
+                    <div calss="col-12 p-2 bg-white">
+                       
+                       <h5 class=" font-14 text-center vendorRegistered " id="supRegistered" style="color:green"></h5>
      	               <h5 class=" font-14 text-center vendorRegisterederror " id="supRegisterederror" style="color:red"></h5>
-    <div class="container text-center bg-danger text-light my-1 ">
+     	               <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
+     	               <div>
+    <div class="text-center bg-danger text-light my-1 ">
          
         <strong>BedRoll</strong>
     </div>
@@ -24,22 +25,23 @@
             <table class="table">
                 <thead>
                     <tr class="headRow">
-                        <th>BedType</th>
-                        <th>Fare</th>
+                        <th>BedType<span style="color: #f05f40">*</span></th>
+                        <th>Fare<span style="color: #f05f40">*</span></th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="dynamicallyadd">
                     <tr>
-                        <td><input type="text" name="type" id="type" class="form-control"></td>
-                        <td><input type="text" name="fare" id="fare" class="form-control"></td>
+                        <td><input type="text" name="type" id="type" class="form-control" onkeydown="return alphaOnly(event);" required></td>
+                        <td><input type="number" name="fare" id="fare" class="form-control" required></td>
                         <td><button type="button" id="add" class="btn btn-success">+</button></td>
                     </tr>
                 </tbody>
             </table>
-            <div class="text-center"><input type="submit" value="Submit" class="btn btn-primary"></div>
+            <div class="text-center "><input type="submit" value="Submit" class="btn btn-primary mb-2"></div>
         </form>
     </div>
+    <div>
 </body>
 <script type="text/javascript">
   
@@ -49,8 +51,8 @@
             i++;
             $('#dynamicallyadd').append(
                 '<tr id="row' + i + '">' +
-                '<td><input type="text" name="type" id="type" class="form-control"></td>' +
-                '<td><input type="text" name="fare" id="fare" class="form-control"></td>' +
+                '<td><input type="text" name="type" id="type" onkeydown="return alphaOnly(event);" class="form-control" required></td>' +
+                '<td><input type="number" name="fare" id="fare" class="form-control" required></td>' +
                 '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row">-</button></td>' +
                 '</tr>');
         });
@@ -66,21 +68,11 @@
             
             $("#tafa").submit(function (e) {
             	console.log("//inside bedroll form submit");
-            	        ////alert("hello");
-            	      //  var tname = $('#tname').val();
-            	       // alert(tname);
-            	       // var trainNoId = [];
+            	       
             	        e.preventDefault();
             	        accesstoken = sessionStorage.getItem('key');
             	        var serializedReturn = $(this).serializeArray();
-            	        //console.log("/////"+serializedReturn);
-            	      /*   var train = $("#trainsId").val();
-            	       // alert("train" + train);
-            	        for (var k = 0; k < train.length; k++) {
-
-            	            trainNoId[k] = parseInt(train[k]);
-            	        }
-            	        console.log(trainNoId); */
+            	       
             	        
             	        
             	        var data = $('tr:not(.headRow').map(function() {
@@ -123,40 +115,7 @@
               });
      }
 });
-            	       /*  $.ajax({
-            	            url: "http://203.176.113.183/VendorAppServices/vendor/savebedrolldetails",
-            	            method: "POST",
-
-            	            headers: {
-            	                "Authorization": "Bearer " + accesstoken,
-            	                "Content-Type": "application/json"
-            	            },
-            	            data:JSON.stringify({"service": 2,"bedRoll":data}),
-            	            	
-            	            	
-            	            	//JSON.stringify(loginFormObject),
-            	            success: function (response) {
-            	                ////alert("successfully register");
-            	              //alert(response.message);
-
-            	                $("#msg").html(":" + response.message+ ":");
-
-            	            },
-            	            error: function (xhr, status) {
-            	                if (xhr.msg == '401') {
-            	                  
-            	                	  $("#msg").html("Error :" +xhr.status+ "");
-            	                  //  alert("access denied, please refresh the page again");
-            	                    refreshToken();
-            	                }
-
-            	            },
-
-            	        }); */
-            	        
-            	       // document.getElementById("vendorRegistrationForm").reset();
-
-            	    });
+ });
 
 
             

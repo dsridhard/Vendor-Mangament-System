@@ -27,19 +27,19 @@
    
 </head>
 <body>
-        <div class="row" style="height:100%;">
-            <div class="col">
-                <div class="shadow-lg ">
-                   <div class="col-12 p-2 bg-white no-print"  >
+        <div class="row shadow-lg " style="height:100%;">
+            <div class="col-12 p-2 bg-white">
+                <!-- <div class="shadow-lg "> -->
+                   
                     <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
-                     <h5 class=" font-14 text-center" style="color:green" id="msg"></h5></div>
-                     <h5 class=" font-14 text-center" style="color:red" id="msg"></h5></div>
-                    <div class="text-light bg-danger text-center shadow-lg">Concierge Form</div>
+                     <h5 class=" font-14 text-center" style="color:green" id="msg"></h5>
+                     <h5 class=" font-14 text-center" style="color:red" id="msg"></h5></div><!-- </div> -->
+                    <div class="text-light bg-danger text-center">Concierge Form</div>
   
-  <div class="container"  style="height:100%;">
-    <div class="row mb-4">
+  <div class="container "  style="height:100%;">
+    <div class="row mb-4 ">
       <div class="col-sm-4">
-        <h4>Concierge</h4>
+        <h4>Concierge<span style="color: #f05f40">*</span></h4>
         <select name="concierge" class="countries form-control" onChange="conciergeChange()" id="concierge" required>
       <option value="">Select Concierge</option>
        <option value="1">Taxi</option>
@@ -76,7 +76,7 @@
                 </thead>
                 <tbody id="dynamicallyadd">
                     <tr>
-                        <td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" required >
+                        <td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" onkeydown="return alphaOnly(event);" required >
                         </td>
                         <td><select id="carTypeId" name="carTypeId" class="form-control" required>
                         </select></td>
@@ -135,7 +135,7 @@ $('#rowAdder').click(() => {
     $('#dynamicallyadd').append(
         '<tr id="row' + i + '">' +
         
-        '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" required ></td>'+
+        '<td><input type="text" class="form-control" id="slab" name="slab" onkeydown="return alphaOnly(event);" placeholder="please enter input" required ></td>'+
        ' <td><select id="carTypeId"  name="carTypeId" class="form-control carTypeId"  required> </select></td>'+
        ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId"  required> </select> </td>'+
        '<td> <input type="text" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>'+

@@ -1,7 +1,7 @@
 <h5 class=" font-14 text-center vendorRegistered " id="supRegistered" style="color:green"></h5>
 <h5 class=" font-14 text-center vendorRegisterederror " id="supRegisterederror" style="color:red"></h5>
 <div class="container">
-    <div class="row">
+    <div class="row ">
         <div class="col">
             <div class="shadow-lg ">
                 <div class="col-12 p-2 bg-white h-100 no-print">
@@ -45,12 +45,11 @@
         	 var tbodyHtml = "";
             commongetmethod("http://203.176.113.183/VendorAppServices/vendor/fetchbedrolldetails/2").then((response) => {
                 console.log(JSON.stringify(response));
-                 /*  alert(JSON.stringify(response))   */
+                 
                  if(response.bedRoll!=null){
                 for (i = 0; i < response.bedRoll.length; i++) {
                     bedrollid = response.bedRoll[i].id;
-                    /* alert(bedrollid+":::::bedrollid"); */
-                    /* alert(response.bedRoll[i].type); */
+                   
                     tbodyHtml += '<tr id="row' + i + '">'
                     tbodyHtml += '<td><input type="text" name="type" id="type" class="form-control" value="' + response.bedRoll[i].type + '"></td>' +
                         '<td><input type="text"name="fare" id="fare" class="form-control" value="' + response.bedRoll[i].fare + '"> </td>' +
@@ -191,12 +190,6 @@ getBedDetail();
 
 
             })
-
-
-
-
-
-
 
     });
 </script>

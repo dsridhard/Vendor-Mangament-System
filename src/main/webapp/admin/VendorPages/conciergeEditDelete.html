@@ -17,15 +17,19 @@
 </head>
 
 <body>
-      <h5 class=" font-14 text-center  " id="succesmsg" style="color:green"></h5>
-       <h5 class=" font-14 text-center  " id="errormsg" style="color:red"></h5>
+<div class="col-12 p-2 bg-white "  >
+                    <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
+                   <h5 class=" font-14 text-center  " id="succesmsg" style="color:green"></h5>
+                      <h5 class=" font-14 text-center  " id="errormsg" style="color:red"></h5>
+     	              </div>
+       
 <div class="container text-center bg-danger text-light my-1 ">
         <strong>Concierge Modification Services</strong>
 </div>
 <div class="container">
     <div class="row mb-4">
       <div class="col-sm-4">
-        <h4>Concierge</h4>
+        <h4>Concierge<span style="color: #f05f40">*</span></h4> 
         <select name="concierge" class="countries form-control" onChange="conciergeChange()" id="concierge" required>
         <option value="">Select Concierge</option>
         <option value="1">Taxi</option>
@@ -145,13 +149,13 @@ $('#ConciergeForm').on('submit', function (event) {
               
     	 }); 
 
-//---------------------------------------------------------------------- Ged Taxi details------------------------------------------------------------
+//---------------------------------------------------------------------- Get Taxi details------------------------------------------------------------
 function gettaxidetails(){	
    // var accesstoken = sessionStorage.getItem('key');
    $("#succesmsg").empty();
     $("#errormsg").empty();
    response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/fetchtaxidetails/"+StationElement).then((response)=>{
-   console.log("data::::::: "+JSON.stringify(response));
+   //console.log("data::::::: "+JSON.stringify(response));
    var carTypelist1=JSON.parse(carTypelist);
    var tbodyHtml ='';
    
@@ -161,7 +165,7 @@ function gettaxidetails(){
    	for(i=0;i<response.taxiDetailsModelList.length;i++){
    	 tbodyHtml += '<tr id="row' + i + '">'
    	/*  tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" value="'+i+'"required ></td>';
-   	  */tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" value="'+response.taxiDetailsModelList[i].slab+'"required ></td>';
+   	  */tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" onkeydown="return alphaOnly(event);" value="'+response.taxiDetailsModelList[i].slab+'"required ></td>';
         tbodyHtml+='<td><select  class="form-control carTypeId" id="carTypeId" name="carTypeId" required >';
    		for(j=0;j<carTypelist1.length;j++)
    	    {if(carTypelist1[j].id == response.taxiDetailsModelList[i].carTypeId){
@@ -204,7 +208,7 @@ function gettaxidetails(){
     		   
        		'<tr id="row' +(i+1)+  '">' +
                
-               '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" required ></td>'+
+               '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" onkeydown="return alphaOnly(event);" required ></td>'+
               ' <td><select id="carTypeId"  name="carTypeId" class="form-control carTypeId newcartypeid"  required> </select></td>'+
               ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId newacNonacid"  required> </select> </td>'+
               '<td> <input type="text" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>'+
@@ -234,7 +238,7 @@ function gettaxidetails(){
    	
   	 if (xhr.status == '401') {
          refreshToken().then((res) => {
-            	console.log(res);
+            	//console.log(res);
             	setSessionStorageItems(res);
             	gettaxidetails();
                });
@@ -260,7 +264,7 @@ function gettaxidetails(){
     		   
        		'<tr id="row' + i + '">' +
                
-               '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" required ></td>'+
+               '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" onkeydown="return alphaOnly(event);" required ></td>'+
               ' <td><select id="carTypeId"  name="carTypeId" class="form-control carTypeId newcartypeid"  required> </select></td>'+
               ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId newacNonacid"  required> </select> </td>'+
               '<td> <input type="text" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>'+
@@ -308,7 +312,7 @@ $(document).on('click', '.remove_taxi', function () {
         
     	 tbodyHtml += '<tr id="row' + i + '">'
        	/*  tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" value="'+i+'"required ></td>';
-       	 */ tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" value="'+response.taxiDetailsModelList[i].slab+'"required ></td>';
+       	 */ tbodyHtml+= '<td><input type="text" class="form-control" id="slab" onkeydown="return alphaOnly(event);" name="slab" value="'+response.taxiDetailsModelList[i].slab+'"required ></td>';
          tbodyHtml+='<td><select  class="form-control carTypeId" id="carTypeId" name="carTypeId" required >';
        		for(j=0;j<carTypelist1.length;j++)
        	    {if(carTypelist1[j].id == response.taxiDetailsModelList[i].carTypeId){
@@ -350,7 +354,7 @@ function gettaxidetailsDelete(id){
 
         if (xhr.status == '401') {
             refreshToken().then((res) => {
-                console.log(res);
+              //  console.log(res);
                $("#errormsg").html( response.message);
                 setSessionStorageItems(res);
                 gettaxidetailsDelete(id);
@@ -381,7 +385,7 @@ function acNonacList(){
    	
   	 if (xhr.status == '401') {
          refreshToken().then((res) => {
-            	console.log(res);
+            	//console.log(res);
             	setSessionStorageItems(res);
             	 acNonacList();
                });
@@ -397,9 +401,7 @@ function acNonacList(){
 
  //async 
  function taxiCarTypeList(){	                                    
-   // var accesstoken = sessionStorage.getItem('key');
- // response=await commongetmethoderrorhandling("http://203.176.113.183/VendorAppServices/vendor/taxiCarTypeList");
-  response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/taxiCarTypeList").then((response)=>{
+   response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/taxiCarTypeList").then((response)=>{
 	   carTypelist=JSON.stringify(response);
 	   //console.log(JSON.stringify(response));
 	     $('#carTypeId').empty();
