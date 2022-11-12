@@ -115,26 +115,65 @@ $('#vendorList').change(function(){
              for(i=0;i<response.length;i++){
             	 tbodyHtml+="<tr>";
             	 if(response[i].serviceName==null){
-            		 tbodyHtml+="<td>"+response[i].obhsTypeName+" </td>";
+            		 if(response[i].obhsTypeName!=null){
+            		 	tbodyHtml+="<td>"+response[i].obhsTypeName+" </td>";
+            		 }else{
+            			 tbodyHtml+="<td>-</td>";
+            		 }
                 	 }
             	 else{
-            		 tbodyHtml+="<td>"+response[i].serviceName+" </td>";
+            		 if(response[i].serviceName!=null){
+             		 	tbodyHtml+="<td>"+response[i].serviceName+" </td>";
+             		 }else{
+             			 tbodyHtml+="<td>-</td>";
+             		 }
                 	 }
             	 if(response[i].subServiceName==null&&response[i].obhsSubTypeName!=null){
+            		 
             		 tbodyHtml+="<td>"+response[i].obhsSubTypeName+" </td>";
                 	 }
             	 else{
-            		 tbodyHtml+="<td>"+response[i].subServiceName+" </td>";
+            		 if(response[i].subServiceName!=null){
+               		 	tbodyHtml+="<td>"+response[i].subServiceName+" </td>";
+               		 }else{
+               			 tbodyHtml+="<td>-</td>";
+               		 }
                 	 }
-
-            	 
-                 tbodyHtml+= "<td>"+response[i].passengerMobile+" </td>"+
-                 "<td>"+response[i].trainNo+" </td>"+
-                 "<td>"+response[i].stationName+" </td>"+
-                 "<td>"+response[i].psgnName+" </td>"+
-                 "<td>"+response[i].txnDateTime+" </td>"+
-                 "<td>"+response[i].inquiryStatusName+" </td>"+
-                 "<td>"+response[i].pendingWith+" </td>";
+            	 if(response[i].passengerMobile!=null){
+            		 	tbodyHtml+="<td>"+response[i].passengerMobile+" </td>";
+            		 }else{
+            			 tbodyHtml+="<td>-</td>";
+            		 }
+            	 if(response[i].trainNo!=null){
+            		 	tbodyHtml+="<td>"+response[i].trainNo+" </td>";
+            		 }else{
+            			 tbodyHtml+="<td>-</td>";
+            		 }
+            	 if(response[i].stationName!=null){
+            		 	tbodyHtml+="<td>"+response[i].stationName+" </td>";
+            		 }else{
+            			 tbodyHtml+="<td>-</td>";
+            		 }
+            	 if(response[i].psgnName!=null){
+         		 	tbodyHtml+="<td>"+response[i].psgnName+" </td>";
+         		 }else{
+         			 tbodyHtml+="<td>-</td>";
+         		 }
+            	 if(response[i].txnDateTime!=null){
+         		 	tbodyHtml+="<td>"+response[i].txnDateTime+" </td>";
+         		 }else{
+         			 tbodyHtml+="<td>-</td>";
+         		 }
+            	 if(response[i].inquiryStatusName!=null){
+         		 	tbodyHtml+="<td>"+response[i].inquiryStatusName+" </td>";
+         		 }else{
+         			 tbodyHtml+="<td>-</td>";
+         		 }
+            	 if(response[i].pendingWith!=null){
+          		 	tbodyHtml+="<td>"+response[i].pendingWith+" </td>";
+          		 }else{
+          			 tbodyHtml+="<td>-</td>";
+          		 }
                  
                  	 
                 	 tbodyHtml+="</tr>";

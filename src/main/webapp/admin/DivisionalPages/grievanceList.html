@@ -115,21 +115,54 @@ $('#vendorList').change(function(){
     		   for (i=0;i<response.length;i++){
 
     			   tbodyHtml+="<tr>";
-    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.serviceName+" </td>";
-    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.psgnName+" </td>";
-    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.passengerMobile+" </td>";
-    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.trainNo+" </td>";
-
-    			   tbodyHtml+="<td>"+response[i].grievanceType+" </td>";
-
-    			   tbodyHtml+="<td>"+response[i].createdOn+" </td>";
-
-    			   tbodyHtml+="<td>"+response[i].grievanceStatus+" </td>";
+    			   if(response[i].getPsgnTxnListModel.serviceName!=null){
+             		 	tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.serviceName+" </td>";
+             		 }else{
+             			 tbodyHtml+="<td>-</td>";
+             		 }
+    			   if(response[i].getPsgnTxnListModel.psgnName!=null){
+            		 	tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.psgnName+" </td>";
+            		 }else{
+            			 tbodyHtml+="<td>-</td>";
+            		 }
+    			   if(response[i].getPsgnTxnListModel.passengerMobile!=null){
+            		 	tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.passengerMobile+" </td>";
+            		 }else{
+            			 tbodyHtml+="<td>-</td>";
+            		 }
+    			   if(response[i].getPsgnTxnListModel.trainNo!=null){
+            		 	tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.trainNo+" </td>";
+            		 }else{
+            			 tbodyHtml+="<td>-</td>";
+            		 }
+    			   if(response[i].grievanceType!=null){
+           		 	tbodyHtml+="<td>"+response[i].grievanceType+" </td>";
+           		 }else{
+           			 tbodyHtml+="<td>-</td>";
+           		 }
+    			   if(response[i].createdOn!=null){
+              		 	tbodyHtml+="<td>"+response[i].createdOn+" </td>";
+              		 }else{
+              			 tbodyHtml+="<td>-</td>";
+              		 }
+    			   if(response[i].grievanceStatus!=null){
+              		 	tbodyHtml+="<td>"+response[i].grievanceStatus+" </td>";
+              		 }else{
+              			 tbodyHtml+="<td>-</td>";
+              		 }
     		if(response[i].grievanceStatus=="Closed")
-    			   tbodyHtml+="<td>"+response[i].closedOn+" </td>";
+    			if(response[i].closedOn!=null){
+          		 	tbodyHtml+="<td>"+response[i].closedOn+" </td>";
+          		 }else{
+          			 tbodyHtml+="<td>-</td>";
+          		 }
     			   else
     				   tbodyHtml+="<td>- </td>";  
-        			   tbodyHtml+="<td>"+response[i].pendingWith+" </td>";
+    		if(response[i].pendingWith!=null){
+      		 	tbodyHtml+="<td>"+response[i].pendingWith+" </td>";
+      		 }else{
+      			 tbodyHtml+="<td>-</td>";
+      		 }
         			   
     		tbodyHtml+="</tr>";
     			   
