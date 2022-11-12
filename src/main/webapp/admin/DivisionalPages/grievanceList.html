@@ -21,11 +21,11 @@ button.close {
                     <div class="text-light bg-danger text-center shadow-lg">Grievances List</div>
 <div class=" row p-3 mx-3">
                    		<div class=" col-md-6 ">
-                   			<b><span style="color: #f05f40">*</span>Vendor</b>
+                   			<b><span style="color: #f05f40">*</span>Service Provider</b>
                    		</div>
                    		<div class=" col-md-6 ">
                    		<select class="form-control required" id="vendorList" name="vendor" style="width:100%">
-                   			<option value="" disabled selected>Select Vendor</option>
+                   			<option value="" disabled selected>Select Service Provider</option>
                    		</select>
                    		</div>
                    </div>
@@ -117,7 +117,7 @@ $('#vendorList').change(function(){
     			   tbodyHtml+="<tr>";
     			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.serviceName+" </td>";
     			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.psgnName+" </td>";
-    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.mobileNo+" </td>";
+    			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.passengerMobile+" </td>";
     			   tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.trainNo+" </td>";
 
     			   tbodyHtml+="<td>"+response[i].grievanceType+" </td>";

@@ -47,6 +47,49 @@
 </tbody>
 
 </table>
+
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Feedback</h5>
+        <button type="button" class="close closeFeedbackModal" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class=" row p-3 mx-3">
+             		<div class=" col-md-5 ">
+             			<font class="fontbold">Inquiry Ref No: </font><span id="refNo" class="resetDet"></span>
+             		</div>
+             		<div class=" col-md-2">
+             		</div>
+             		<div class=" col-md-5">
+             		<font class="fontbold">Passenger Name: </font><span id="psgnnm" class="resetDet"></span>
+
+             		</div>
+             </div>
+             
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary closeFeedbackModal" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="modal fade" id="inquiryRemarksModal" tabindex="-1" role="dialog" aria-labelledby="inquiryRemarksModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content" >
@@ -188,7 +231,7 @@ $(document).ready(function() {
                  if(response[i].inquiryStatusName!="Inquiry Closed")
                 	 tbodyHtml+= "<td><button type='button' viewonly='no' class='btn btn-sm btn-outline-danger updatestatus' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >Action</button> </td>";
                 	 else
-                    	 tbodyHtml+= "<td><button type='button' viewonly='yes' class='btn btn-sm btn-outline-info updatestatus' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >View</button> </td>";
+                    	 tbodyHtml+= "<td><button type='button' viewonly='yes' class='btn btn-sm btn-outline-info updatestatus' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >View</button>/ <button type='button'  class='btn btn-sm btn-outline-info feedbackbtn'  id='"+response[i].transactionId+"/"+response[i].serviceId+"' >Feedback</button></td>";
 
 if(response[i].pendingWith==null){
                   if(((response[i].closedBy).split("_")).length==3)  
@@ -323,6 +366,14 @@ $('.hideview').css('display','none');
         $('#inquiryId').val("");
         $('#inquiryRemarksModal').modal("hide");
       });
+
+
+
+    $("#tbodyid").on('click','.feedbackbtn',function(){
+    	 var btnid=$(this).attr("id");
+        
+    });
+    
     $("#updateInquiryRemarks").on('click',function(){
     	var id = $('#inquiryId').val();
     	var remarks = $('#remarks').val();
