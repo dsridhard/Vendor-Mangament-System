@@ -15,7 +15,7 @@
             margin-top: 1%;
             justify-content: center;
             align-items: center; */
-            width: 80%;
+            width: 100%;
             height:100%
         }
  
@@ -27,17 +27,17 @@
    
 </head>
 <body>
-        <div class="row shadow-lg " style="height:100%;">
-            <div class="col-12 p-2 bg-white">
+        <div class="row shadow-lg">
+            <div class="bg-white">
                 <!-- <div class="shadow-lg "> -->
                    
                     <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
                      <h5 class=" font-14 text-center" style="color:green" id="msg"></h5>
                      <h5 class=" font-14 text-center" style="color:red" id="msg"></h5></div><!-- </div> -->
                     <div class="text-light bg-danger text-center">Concierge Form</div>
-  
-  <div class="container "  style="height:100%;">
-    <div class="row mb-4 ">
+  <div class="divid1 p-2 bg-white">
+    <div class="container bg-white"  style="height:100%;">
+    <div class="row mb-4 " >
       <div class="col-sm-4 fontStyleHeader">
         Concierge<span style="color: #f05f40">*</span>
         <select name="concierge" class="countries form-control" onChange="conciergeChange()" id="concierge" required>
@@ -58,12 +58,12 @@
     
     
     <div class="row">
-      <div id="main"> 
+      <div id="main" class="col"> 
       <form method="post" name="conciergeForm" id="conciergeForm">
-      <div id="formid" class="myform consform px-3 mx-3 "  style="height:80%;">
+      <div id="formid" class="myform consform px-3 mx-3 "  style="height:100%;">
       
-       <div class="row" id="onegroup">
-                         
+       <div class="row" id="onegroup" >
+               <div class="col">          
                        
                 <table class="table">
                 <thead>
@@ -89,20 +89,22 @@
                 </tbody>
             </table>
             
-             <div class="text-center mb-1"><input type="submit" value="Submit" class="btn btn-primary"></div>
+             <div class="text-center mb-1"><input type="submit" value="Submit" class="btn btn-primary "></div>
+</div>
  </div>
  </div>
  </form>
  </div>
 </div>
  </div>
+</div>
 
   </div>
-  </div>
+ <!--  </div>
 </div>
    </div>
    </div>
-   </div>
+   </div> -->
 
 
 </body>
@@ -135,11 +137,11 @@ $('#rowAdder').click(() => {
     $('#dynamicallyadd').append(
         '<tr id="row' + i + '">' +
         
-        '<td><input type="text" class="form-control" id="slab" name="slab" onkeydown="return alphaOnly(event);" placeholder="please enter input" required ></td>'+
-       ' <td><select id="carTypeId"  name="carTypeId" class="form-control carTypeId"  required> </select></td>'+
-       ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId"  required> </select> </td>'+
-       '<td> <input type="text" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>'+
-        '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row">-</button></td>' +
+        '<td><input type="text" class="form-control " id="slab" name="slab" onkeydown="return alphaOnly(event);" placeholder="please enter input" required ></td>'+
+       ' <td><select id="carTypeId"  name="carTypeId " class="form-control carTypeId "  required> </select></td>'+
+       ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId "  required> </select> </td>'+
+       '<td> <input type="text" class="form-control bg-white" id="fare" name="fare" placeholder="please enter input" required ></td>'+
+        '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row ">-</button></td>' +
         '</tr>');
     var carTypelist1=JSON.parse(carTypelist);
 	 $('.carTypeId').empty();
@@ -156,7 +158,7 @@ $('#rowAdder').click(() => {
 		    });
 });
 $(document).on('click', '.remove_row', function () {
-    var row_id = $(this).attr("id");
+    var row_id = $(this).attr("id");  
     $('#row' + row_id + '').remove();
 });
 
