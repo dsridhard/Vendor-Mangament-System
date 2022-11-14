@@ -185,6 +185,7 @@ var grlistLength=0;
     			 
     			 var t= $('#grtableID').DataTable( {
     		     "bDestroy":true,
+    		     "stateSave": true,
     		     order: [[5, 'desc']],
     		      } );
     		  	
@@ -323,7 +324,7 @@ $('.hideview').css('display','none');
     		fetchGrievance();
     	       
     	      
-    	     }, 10000);
+    	     }, 600000);
     	
     }
 

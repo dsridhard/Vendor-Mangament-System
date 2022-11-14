@@ -23,8 +23,8 @@
                       <h5 class=" font-14 text-center  " id="errormsg" style="color:red"></h5>
      	              </div>
        
-<div class="container text-center bg-danger text-light my-1 ">
-        <strong>Concierge Modification Services</strong>
+<div class="container text-center bg-danger text-light my-1 shadow-lg">
+        Concierge Modification Services
 </div>
 <div class="container">
     <div class="row mb-4">
@@ -53,10 +53,10 @@
 <thead>
     <tr class="headRow">
         
-        <th class="fontStyleHeader">Slab </th>
-        <th class="fontStyleHeader">Car Type</th>
-        <th class="fontStyleHeader">Ac/NonAc</th>
-         <th class="fontStyleHeader">Fare</th>
+        <th >Slab </th>
+        <th >Car Type</th>
+        <th >Ac/NonAc</th>
+         <th >Fare</th>
      </tr>
 </thead>
 <tbody id="tbodyid">
@@ -190,7 +190,7 @@ function gettaxidetails(){
           tbodyHtml+=  '<td><input type="number" class="form-control" id="fare" name="fare" value="'+response.taxiDetailsModelList[i].fare+'"required ></td>';
    		  /* tbodyHtml+= '<td><button type="button" id="oldid'+response.taxiDetailsModelList[i].id+'"  class="btn btn-success" onclick="gettaxidetailsEdit()">Edit</button></td>';
    		   */
-   		  tbodyHtml+= '<td><button type="button" id="oldid'+response.taxiDetailsModelList[i].id+'" class="btn btn-danger remove_taxi" >Delete</button></td>';
+   		  tbodyHtml+= '<td><button type="button" id="oldid'+response.taxiDetailsModelList[i].id+'" class="btn btn-danger remove_taxi" >-</button></td>';
    		  tbodyHtml+= '<td><input type="hidden" class="form-control" id="id" name="id" value="'+response.taxiDetailsModelList[i].id+'"required ></td>';
    		  tbodyHtml+= "</tr>";
           }
@@ -212,7 +212,7 @@ function gettaxidetails(){
               ' <td><select id="carTypeId"  name="carTypeId" class="form-control carTypeId newcartypeid"  required> </select></td>'+
               ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId newacNonacid"  required> </select> </td>'+
               '<td> <input type="text" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>'+
-              '<td><button type="button" id="'+i+'" class="btn btn-danger remove_taxi" >Delete</button></td>'+
+              '<td><button type="button" id="'+i+'" class="btn btn-danger remove_taxi" >-</button></td>'+
             /*   /*  '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row">-</button></td>' */ 
                '</tr>');
            var carTypelist2=JSON.parse(carTypelist);
@@ -268,7 +268,7 @@ function gettaxidetails(){
               ' <td><select id="carTypeId"  name="carTypeId" class="form-control carTypeId newcartypeid"  required> </select></td>'+
               ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId newacNonacid"  required> </select> </td>'+
               '<td> <input type="text" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>'+
-              '<td><button type="button" id="'+i+'" class="btn btn-danger remove_taxi" >Delete</button></td>'+
+              '<td><button type="button" id="'+i+'" class="btn btn-danger remove_taxi" >-</button></td>'+
             /*   /*  '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row">-</button></td>' */ 
                '</tr>');
            var carTypelist2=JSON.parse(carTypelist);
@@ -334,7 +334,7 @@ $(document).on('click', '.remove_taxi', function () {
               tbodyHtml+=  '<td><input type="number" class="form-control" id="fare" name="fare" value="'+response.taxiDetailsModelList[i].fare+'"required ></td>';
        		  /* tbodyHtml+= '<td><button type="button" id="oldid'+response.taxiDetailsModelList[i].id+'"  class="btn btn-success" onclick="gettaxidetailsEdit()">Edit</button></td>';
        		   */
-       		  tbodyHtml+= '<td><button type="button" id="oldid'+response.taxiDetailsModelList[i].id+'" class="btn btn-danger remove_taxi" >Delete</button></td>';
+       		  tbodyHtml+= '<td><button type="button" id="oldid'+response.taxiDetailsModelList[i].id+'" class="btn btn-danger remove_taxi" >-</button></td>';
        		  tbodyHtml+= '<td><input type="hidden" class="form-control" id="id" name="id" value="'+response.taxiDetailsModelList[i].id+'"required ></td>';
        		  tbodyHtml+= "</tr>";
              $("#tbodyid").html(tbodyHtml);///Reponse Call here

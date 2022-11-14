@@ -53,7 +53,7 @@
                     tbodyHtml += '<tr id="row' + i + '">'
                     tbodyHtml += '<td><input type="text" name="type" id="type" class="form-control" value="' + response.bedRoll[i].type + '"></td>' +
                         '<td><input type="text"name="fare" id="fare" class="form-control" value="' + response.bedRoll[i].fare + '"> </td>' +
-                        '<td><button type="button"name="delbed" id="oldid' + response.bedRoll[i].id + '" class="btn btn-danger remove_row_bed " ">Del</button> </td>' +
+                        '<td><button type="button"name="delbed" id="oldid' + response.bedRoll[i].id + '" class="btn btn-danger remove_row_bed " ">-</button> </td>' +
                         '<td><input type="hidden"name="id" id="id" class="form-control" value="' + response.bedRoll[i].id + '"> </td>' +
                         '</tr>';
 
@@ -66,7 +66,7 @@
                         '<tr id="row' + i + '">' +
                         '<td><input type="text" name="type" id="type" class="form-control"></td>' +
                         '<td><input type="text" name="fare" id="fare" class="form-control"></td>' +
-                        '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row">Del</button></td>' +
+                        '<td><button type="button" id="' + i + '" class="btn btn-danger remove_row">-</button></td>' +
                         '</tr>');
                 });
 
@@ -114,7 +114,7 @@
             	 tbodyHtml += '<tr id="row' + i + '">'
                  tbodyHtml += '<td><input type="text"name="type" id="type" class="form-control" value="' + response.bedRoll[i].type + '"></td>' +
                      '<td><input type="text"name="fare" id="fare" class="form-control" value="' + response.bedRoll[i].fare + '"> </td>' +
-                     '<td><button type="button"name="delbed" id="oldid' + response.bedRoll[i].id + '" class="btn btn-danger remove_row_bed " ">Del</button> </td>' +
+                     '<td><button type="button"name="delbed" id="oldid' + response.bedRoll[i].id + '" class="btn btn-danger remove_row_bed " ">-</button> </td>' +
                      '<td><input type="hidden"name="id" id="id" class="form-control" value="' + response.bedRoll[i].id + '"> </td>' +
                      '</tr>';
                      $("#dynamicallyadd").html(tbodyHtml);///Reponse Call here

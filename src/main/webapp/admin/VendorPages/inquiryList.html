@@ -1,5 +1,5 @@
 
- 
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <body>
 <style>
     @media screen and (min-width: 676px) {
@@ -12,6 +12,9 @@
     
     font-weight:700;
     }
+    .checked {
+  color: orange;
+}
 </style>
 <div class="notification-container opacity-100" id="notification-container">
   <!-- <div class="notification notification-info">
@@ -32,8 +35,8 @@
         <th>Sub Service</th>
         <th>Contact No</th>
         <th>Train No</th>
-        <th>Station Name</th>
-         <th>Passenger Name</th>
+<!--         <th>Station Name</th>
+ -->         <th>Passenger Name</th>
         <th>Date</th>
         <th>Status</th>
         <th>Pending/Closed By</th>
@@ -49,7 +52,7 @@
 </table>
 
 <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 1000px !important" role="document">
     <div class="modal-content" >
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Feedback</h5>
@@ -57,18 +60,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-      <div class=" row p-3 mx-3">
-             		<div class=" col-md-5 ">
-             			<font class="fontbold">Inquiry Ref No: </font><span id="refNo" class="resetDet"></span>
-             		</div>
-             		<div class=" col-md-2">
-             		</div>
-             		<div class=" col-md-5">
-             		<font class="fontbold">Passenger Name: </font><span id="psgnnm" class="resetDet"></span>
-
-             		</div>
-             </div>
+      <div class="modal-body fbContent">
+ 
              
       </div>
       <div class="modal-footer">
@@ -195,7 +188,7 @@ $(document).ready(function() {
 
     var listLength=0;
     function fetchInquiries(){
-        
+        //alert("called");
     	
         var tbodyHtml="";
      commongetmethod("http://203.176.113.183/VendorAppServices/vendor/getinquries").then((response)=>{
@@ -212,13 +205,16 @@ $(document).ready(function() {
             		 tbodyHtml+="<td>"+response[i].obhsSubTypeName+" </td>";
                 	 }
             	 else{
+                	 if(response[i].subServiceName==null)
+                		 tbodyHtml+="<td>-</td>";
+                	else	 
             		 tbodyHtml+="<td>"+response[i].subServiceName+" </td>";
                 	 }
 
             	 
                  tbodyHtml+= "<td>"+response[i].passengerMobile+" </td>"+
                  "<td>"+response[i].trainNo+" </td>"+
-                 "<td>"+response[i].stationName+" </td>"+
+                 /* "<td>"+response[i].stationName+" </td>"+ */
                  "<td>"+response[i].psgnName+" </td>"+
                  "<td>"+response[i].txnDateTime+" </td>"+
                  "<td>"+response[i].inquiryStatusName+" </td>";
@@ -230,9 +226,13 @@ $(document).ready(function() {
                     	 }
                  if(response[i].inquiryStatusName!="Inquiry Closed")
                 	 tbodyHtml+= "<td><button type='button' viewonly='no' class='btn btn-sm btn-outline-danger updatestatus' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >Action</button> </td>";
-                	 else
-                    	 tbodyHtml+= "<td><button type='button' viewonly='yes' class='btn btn-sm btn-outline-info updatestatus' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >View</button>/ <button type='button'  class='btn btn-sm btn-outline-info feedbackbtn'  id='"+response[i].transactionId+"/"+response[i].serviceId+"' >Feedback</button></td>";
-
+                	 else{
+                    	 if(response[i].serviceId!=null)
+                    	 tbodyHtml+= "<td class='text-right'><button type='button' viewonly='yes' class='btn btn-sm btn-outline-info updatestatus float-left' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >View</button><button type='button'  class='btn btn-sm btn-outline-warning feedbackbtn float-right'  id='"+response[i].serviceId+"/"+response[i].transactionId+"' >Feedback</button></td>";
+                    	 else
+                        	 tbodyHtml+= "<td class='text-right'><button type='button' viewonly='yes' class='btn btn-sm btn-outline-info updatestatus float-left' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >View</button></td>";
+                    	 
+                	 }
 if(response[i].pendingWith==null){
                   if(((response[i].closedBy).split("_")).length==3)  
                 	  tbodyHtml+="<td>1 </td>";
@@ -251,16 +251,18 @@ else{
                  }
         	 $('#tableID').DataTable().destroy();
              
-    	 $("#tbodyid").html(tbodyHtml);
-    	 var t= $('#tableID').DataTable( {
+        	 $("#tbodyid").html(tbodyHtml);
+        	 
+             
+    	  var t= $('#tableID').DataTable( {
     		 
 	       "bDestroy":true,
 	       
-	       /* "stateSave": true,*/
-	       order: [[10, 'desc'],[6, 'desc']],
+	     
+	       order: [[9, 'desc'],[5, 'desc']],
 	      'columnDefs' : [
 	           //hide the second & fourth column
-	           { 'visible': false, 'targets': [10] }
+	           { 'visible': false, 'targets': [9] }
 	       ]  
 	        } );
 	    	
@@ -367,13 +369,65 @@ $('.hideview').css('display','none');
         $('#inquiryRemarksModal').modal("hide");
       });
 
+    $(".closeFeedbackModal").on('click',function(){
+       
+    	 $('.fbContent').html("");
+  	   $('#feedbackModal').modal("hide");     
+
+  	    });
 
 
     $("#tbodyid").on('click','.feedbackbtn',function(){
     	 var btnid=$(this).attr("id");
+    	fetchfeedbackdetail(btnid);
+    	 
         
     });
-    
+   function fetchfeedbackdetail(fbid){
+	   $('.fbContent').html("");
+var starHtml="";
+               commongetmethod("http://203.176.113.183/VendorAppServices/vendor/feedbackKpiListWithRatings/"+fbid).then((response)=>{
+            	   console.log(JSON.stringify(response));
+            	   for(k=0;k<response.length;k++){
+                	   var ratingLen=0;
+                      starHtml+="<div class='row'><div class='col-12 text-center'>" +
+                      response[k].name+"</div><div class='col-12 text-center'>";
+                      if(response[k].ratingValue!=null)
+                    	  ratingLen=response[k].ratingValue;
+                	  for(m=0;m<5;m++){
+                              if(m<ratingLen){
+
+                            	  starHtml+="<span class='fa fa-star checked'></span>";
+
+                                  }
+                              else
+                            	  starHtml+="<span class='fa fa-star '></span>";
+                               
+
+                    	  }
+                	  starHtml+="</div></div><hr>";
+                    	  
+                           
+            	   }
+            	   
+            	 
+            	   $('.fbContent').html(starHtml);
+            	   $('#feedbackModal').modal("show");
+            	   
+                   })
+                   .fail((xhr,status)=>{
+                  	 if(xhr.status=="401"){
+                   		  refreshToken().then((res) => {
+                   	        	console.log(res);
+                   	        	setSessionStorageItems(res);
+                   	        	fetchfeedbackdetail(fbid);
+                   	           });
+                   		  }
+                       });
+
+
+	   
+        }
     $("#updateInquiryRemarks").on('click',function(){
     	var id = $('#inquiryId').val();
     	var remarks = $('#remarks').val();
@@ -408,7 +462,7 @@ $('.hideview').css('display','none');
     		 fetchInquiries();
     	       
     	      
-    	     }, 10000);
+    	     },600000);
     	
     }
     
