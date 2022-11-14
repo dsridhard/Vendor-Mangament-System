@@ -1,4 +1,19 @@
-
+.modal-header-style {
+    color:#fff;
+    padding:9px 15px;
+    border-bottom:1px solid #eee;
+    background-color: #ca85a8;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
+}
+.modal-footer-style{
+	  background-color: #ca85a833;
+	
+}
  .close {
     float: right;
     font-size: 2rem;

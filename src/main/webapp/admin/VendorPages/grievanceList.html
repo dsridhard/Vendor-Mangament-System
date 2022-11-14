@@ -48,7 +48,7 @@
 <div class="modal fade" id="grremarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header modal-header-style">
         <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
         <button type="button" class="close closeModal" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -125,16 +125,17 @@
              		</div>
              </div>
         	<div class=" row p-3 mx-3 hideview">
-             		<div class=" col-md-12 ">
+        	<div class=" col-md-1 ">
              			<label for="remarks"><b><span style="color: #f05f40">*</span>Remarks</b></label>
              		</div>
-             		<div class=" col-md-12">
+             		
+             		<div class=" col-md-6 float-left">
              			<input type="hidden" id="closeId" name="closeId">
              			<textarea id="remarks" name="remarks" rows="4" class="form-control"></textarea>
              		</div>
              </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer modal-footer-style">
         <button type="button" class="btn btn-secondary closeModal" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary hideview" id="grupdateRemarks">Submit</button>
       </div>
