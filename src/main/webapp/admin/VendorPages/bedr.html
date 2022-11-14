@@ -98,7 +98,7 @@
             	       // loginFormObject["trainsId"] = trainNoId;
             	     /*  console.log(JSON.stringify({"service": 2,"bedRoll":data})); */
             	       commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/savebedrolldetails",JSON.stringify({"service": 2,"bedRoll":data})).then((response)=>{
-	                   alert(response.message);
+	                   //alert(response.message);
 
                        $("#supRegistered").html( response.message);
                        document.getElementById("tafa").reset();
