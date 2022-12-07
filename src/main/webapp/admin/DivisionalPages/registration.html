@@ -39,11 +39,11 @@ console.log("//inside vendor registration form submit");
         //console.log(JSON.stringify(loginFormObject));
         
         
-        commonpostmethod("http://203.176.113.183/VendorAppServices/divisional/registernewvendor",JSON.stringify(loginFormObject)).then((response)=>{
+        commonpostmethod(configOptions.servicebaseurl+"divisional/registernewvendor",JSON.stringify(loginFormObject)).then((response)=>{
 	 //alert(response.message);
 
-	 $("#vendorRegistered").html( response.message);
-	 if(!response.error){
+	 $("#vendorRegistered").html( response.data.message);
+	 if(!response.data.error){
      document.getElementById("vendorRegistrationForm").reset();
 	 }
     $('#trainsId').multiselect('refresh');
@@ -70,12 +70,12 @@ console.log("//inside vendor registration form submit");
 
  function vendorcategorylist(){	
 	////alert("vendorcategary");
-	commongetmethod("http://203.176.113.183/VendorAppServices/divisional/vendorcategorylist").then((response) => {
+	commongetmethod(configOptions.servicebaseurl+"divisional/vendorcategorylist").then((response) => {
      	//console.log(res);
      	//alert("mapping response"+res);
      	$('#vendorCategoryId').empty();
      	$('#vendorCategoryId').append($('<option></option>').val("").html("---select---"));
-     	$.each(response, function(i, p) {
+     	$.each(response.data, function(i, p) {
      	$('#vendorCategoryId').append($('<option></option>').val(p.id).html(p.categoryName)); 
      	});
      	vendorconstitutionlist();
@@ -97,13 +97,13 @@ console.log("//inside vendor registration form submit");
 	////alert("vendorconstitutionlist");
 	
 	
-	commongetmethod("http://203.176.113.183/VendorAppServices/divisional/vendorconstitutionlist").then((response) => {
+	commongetmethod(configOptions.servicebaseurl+"divisional/vendorconstitutionlist").then((response) => {
      	//console.log(res);
      	//alert("mapping response"+res);
      	
 $('#vendorConstitutionId').empty();
 $('#vendorConstitutionId').append($('<option></option>').val("").html("---Select---"));
-$.each(response, function(i, p) {
+$.each(response.data, function(i, p) {
 $('#vendorConstitutionId').append($('<option></option>').val(p.id).html(p.constitutionName));
 });	
      	
@@ -124,10 +124,10 @@ $('#vendorConstitutionId').append($('<option></option>').val(p.id).html(p.consti
  
  function trainlist(){	
 
-commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist").then((response) => {
+commongetmethod(configOptions.servicebaseurl+"divisional/trainlist").then((response) => {
  
 	$('#trainsId').empty();
-	$.each(response, function(i, p) {
+	$.each(response.data, function(i, p) {
 	    $('#trainsId').append($('<option></option>').val(p.id).html(p.trainNo+" - "+p.trainName));
 	    $('#trainsId').multiselect('rebuild');
 	    
@@ -212,7 +212,7 @@ commongetmethod("http://203.176.113.183/VendorAppServices/divisional/trainlist")
                                 <div class="mb-3 mt-3">
                                    <span style="color: #f05f40">*</span>
                                     <label for="inputnameofvendor">Name of the Organization</label>
-                                    <input type="text" class="form-control" id="organisationName" name="organisationName" placeholder="Name of Organization" onkeydown="return alphaOnly(event);" required >
+                                    <input type="text" class="form-control" id="organisationName" name="organisationName" placeholder="Name of Organization"  required >
                                      <div class="invalid-tooltip">Please fill name.</div>
                                   </div>
                            </div>

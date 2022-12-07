@@ -125,7 +125,7 @@ $('#ConciergeForm').on('submit', function (event) {
 
     //alert(JSON.stringify(data));
  
-        commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/edittaxidetails/",JSON.stringify({"stationId":parseInt(StationElement),"taxiDetailsModelList":data})).then((response)=>{
+        commonpostmethod(configOptions.servicebaseurl+"vendor/taxidetails/",JSON.stringify({"stationId":parseInt(StationElement),"taxiDetailsModelList":data})).then((response)=>{
     		  gettaxidetails();
     		  $("#succesmsg").html( response.message);
     		 
@@ -154,7 +154,7 @@ function gettaxidetails(){
    // var accesstoken = sessionStorage.getItem('key');
    $("#succesmsg").empty();
     $("#errormsg").empty();
-   response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/fetchtaxidetails/"+StationElement).then((response)=>{
+   response= commongetmethod(configOptions.servicebaseurl+"vendor/fetchtaxidetails/"+StationElement).then((response)=>{
    //console.log("data::::::: "+JSON.stringify(response));
    var carTypelist1=JSON.parse(carTypelist);
    var tbodyHtml ='';
@@ -165,7 +165,7 @@ function gettaxidetails(){
    	for(i=0;i<response.taxiDetailsModelList.length;i++){
    	 tbodyHtml += '<tr id="row' + i + '">'
    	/*  tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" value="'+i+'"required ></td>';
-   	  */tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" onkeydown="return alphaOnly(event);" value="'+response.taxiDetailsModelList[i].slab+'"required ></td>';
+   	  */tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab"  value="'+response.taxiDetailsModelList[i].slab+'"required ></td>';
         tbodyHtml+='<td><select  class="form-control carTypeId" id="carTypeId" name="carTypeId" required >';
    		for(j=0;j<carTypelist1.length;j++)
    	    {if(carTypelist1[j].id == response.taxiDetailsModelList[i].carTypeId){
@@ -208,7 +208,7 @@ function gettaxidetails(){
     		   
        		'<tr id="row' +(i+1)+  '">' +
                
-               '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" onkeydown="return alphaOnly(event);" required ></td>'+
+               '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input"  required ></td>'+
               ' <td><select id="carTypeId"  name="carTypeId" class="form-control carTypeId newcartypeid"  required> </select></td>'+
               ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId newacNonacid"  required> </select> </td>'+
               '<td> <input type="text" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>'+
@@ -264,7 +264,7 @@ function gettaxidetails(){
     		   
        		'<tr id="row' + i + '">' +
                
-               '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input" onkeydown="return alphaOnly(event);" required ></td>'+
+               '<td><input type="text" class="form-control" id="slab" name="slab" placeholder="please enter input"  required ></td>'+
               ' <td><select id="carTypeId"  name="carTypeId" class="form-control carTypeId newcartypeid"  required> </select></td>'+
               ' <td> <select id="acNonacId" name="acNonacId" class="form-control acNonacId newacNonacid"  required> </select> </td>'+
               '<td> <input type="text" class="form-control" id="fare" name="fare" placeholder="please enter input" required ></td>'+
@@ -312,7 +312,7 @@ $(document).on('click', '.remove_taxi', function () {
         
     	 tbodyHtml += '<tr id="row' + i + '">'
        	/*  tbodyHtml+= '<td><input type="text" class="form-control" id="slab" name="slab" value="'+i+'"required ></td>';
-       	 */ tbodyHtml+= '<td><input type="text" class="form-control" id="slab" onkeydown="return alphaOnly(event);" name="slab" value="'+response.taxiDetailsModelList[i].slab+'"required ></td>';
+       	 */ tbodyHtml+= '<td><input type="text" class="form-control" id="slab"  name="slab" value="'+response.taxiDetailsModelList[i].slab+'"required ></td>';
          tbodyHtml+='<td><select  class="form-control carTypeId" id="carTypeId" name="carTypeId" required >';
        		for(j=0;j<carTypelist1.length;j++)
        	    {if(carTypelist1[j].id == response.taxiDetailsModelList[i].carTypeId){
@@ -347,7 +347,7 @@ $(document).on('click', '.remove_taxi', function () {
 function gettaxidetailsDelete(id){
 	 $("#succesmsg").empty();
 	 $("#errormsg").empty();
-	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/deletetaxidetails/"+StationElement+"/"+id).then((response) => {
+	commongetmethod(configOptions.servicebaseurl+"vendor/deletetaxidetails/"+StationElement+"/"+id).then((response) => {
      gettaxidetails();
      $("#succesmsg").html( response.message);
     }).fail((xhr, status) => {
@@ -372,7 +372,7 @@ function gettaxidetailsDelete(id){
 function acNonacList(){	
    // var accesstoken = sessionStorage.getItem('key');
   // response=await commongetmethoderrorhandling("http://203.176.113.183/VendorAppServices/vendor/acNonacList");
-   response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/acNonacList").then((response)=>{
+   response= commongetmethod(configOptions.servicebaseurl+"vendor/acNonacList").then((response)=>{
    	  acNonAc=JSON.stringify(response);//acNonAc
    	   //console.log(JSON.stringify(response));
    	    $('#acNonacId').empty();
@@ -401,7 +401,7 @@ function acNonacList(){
 
  //async 
  function taxiCarTypeList(){	                                    
-   response= commongetmethod("http://203.176.113.183/VendorAppServices/vendor/taxiCarTypeList").then((response)=>{
+   response= commongetmethod(configOptions.servicebaseurl+"vendor/taxiCarTypeList").then((response)=>{
 	   carTypelist=JSON.stringify(response);
 	   //console.log(JSON.stringify(response));
 	     $('#carTypeId').empty();
@@ -428,7 +428,7 @@ function acNonacList(){
 //async
 function findUniqueIslsForVendor(){	
   // var accesstoken = sessionStorage.getItem('key');
-    commongetmethod("http://203.176.113.183/VendorAppServices/vendor/findUniqueIslsForVendor").then((response)=>{
+    commongetmethod(configOptions.servicebaseurl+"vendor/findUniqueIslsForVendor").then((response)=>{
    	 
    	   // console.log(JSON.stringify(response));
    	    $('#StationId').empty();

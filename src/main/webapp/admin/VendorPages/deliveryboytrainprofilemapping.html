@@ -1,0 +1,222 @@
+    <script src="js/commonlist.js"></script>
+
+
+        <div class="row">
+            <div class="col">
+                <div class="shadow-lg ">
+                   <div class="col-12 p-2 bg-white h-100 no-print"  >
+                   <h5 class=" font-14 text-center vendorRegistered " id="ecateringRes" style="color:green"></h5>
+                    <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
+
+                    <div class="text-light bg-danger text-center shadow-lg">Train Delivery Boy Mapping Form</div>
+                    <form  method="post" id="traindelmapping" name="traindelmapping">
+                   <!--  <form action="" class="was-validated"> -->
+                   <div class=" row p-3 mx-3">
+                   <p class="msg text-center" style="color:green;"></p>
+                   		<div class=" col-md-6 fontStyleHeader">
+                   		<span style="color: #f05f40">*</span>Select Train
+                   		<select class="form-control required" id="trainno" name="trainno" style="width:100%"></select>
+                   			
+                   		</div>
+                   		<div class=" col-md-6 fontStyleHeader">
+                   		<span style="color: #f05f40">*</span>Train Profile
+                   		<select class="form-control required" id="trainprofile" name="trainprofile" style="width:100%"></select>
+                   			
+                   		</div>
+                   		
+                   		
+                   </div>
+                  
+                   
+                   <div class=" row p-3 mx-3 inputcontent" name="inputcontent" >
+                   
+                  
+                 
+                   </div>
+               
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+<script>
+$(document).ready(function(){
+	checksession();
+	getVendorTrainList();
+	$('#trainno').on('change', function(event)  {
+        if($('#trainno').val()!=""){
+        	getTrainProfile($('#trainno').val());
+        }
+
+	
+	});
+	$('#trainprofile').on('change', function(event)  {
+        if($('#trainprofile').val()!=""){
+        	getDeliveryBoyList($('#trainprofile').val());
+        }
+
+	
+	});
+
+	function getDeliveryBoyList(trainprofile){
+		$(".msg").html("");
+		commongetmethod(configOptions.servicebaseurl+"vendor/getavailabledeliveryboylist/"+trainprofile).then((response) => {
+	        //console.log(JSON.stringify(response));
+	        if(response.data==null||response.data.length<=0){
+$(".msg").html("No delivery boy found");
+
+		        }
+	        else{
+var html=' <table  class="table text-center" style="border-radius: 4px;width:100%" ><thead ><tr  class="headRow"><th>Delivery Boy</th><th>Enable/Disable</th></tr></thead>';
+html+='<tbody>';
+    
+   
+	        	 $.each(response.data, function(i, p) {
+
+
+                         html+=frameHtmlRow(i,p);
+
+		        	 
+	        	 });
+
+	        	 html+='<tr  class="headRow"><td colspan="2" class="text-center "><button class="btn btn-md btn-primary btn-block submitbtn" type="submit">Submit</button></tr></tbody></table>';
+
+	        	 $(".inputcontent").html(html);
+		        }
+
+	    }).fail((xhr, status) => {
+
+	        if (xhr.status == '401') {
+	        	 refreshToken().then((res) => {
+		              	console.log(res);
+		              	setSessionStorageItems(res);
+		              	getDeliveryBoyList(trainprofile);
+		                 });
+	        }
+	        else {
+	            alert("some internal error occurred");
+	        }
+	    });
+		}
+	function frameHtmlRow(i,p){
+var html='';
+var checkedcontent="";
+if(p.assigned==true){
+ checkedcontent='<input type="checkbox" class="togglecheck" id="assign'+i+'" name="assigned" value=true checked>';
+}
+ else{
+	 checkedcontent='<input type="checkbox" class="togglecheck" value=false name="assigned" >'; 
+ }
+html='<tr><input type="hidden" value="'+p.deliveryBoyId+'" name="deliveryBoyId"><input type="hidden" value="'+p.mappingId+'" name="mappingId">';
+   html+='<td>'+p.firstName+' '+p.lastName+'</td><td>'+checkedcontent+'</td></tr>';
+
+return html;
+
+		}
+
+	$("#traindelmapping").on('change', '.togglecheck', function () {
+		
+
+$(this).val(this.checked);
+			
+	       
+	          
+	                
+	    });
+
+
+
+	$('#traindelmapping').on('submit', function(event) {
+		event.preventDefault();
+		
+		 
+	   var data=frameOutput1Data();
+	  
+	   console.log(data);
+
+	   submittraindelform(data);
+		 
+	    
+	});
+
+
+
+function submittraindelform(data){
+
+
+	commonpostmethod(configOptions.servicebaseurl+"vendor/data/submitdeliveryboytrainprofile",JSON.stringify({trainProfileId:+($('#trainprofile').val()),data:data})).then((response)=>{
+	   	if(response.status==200){
+
+
+	   		getDeliveryBoyList($('#trainprofile').val());
+	   		$(".msg").html(response.message);
+
+
+		   	}
+
+		
+   })
+   .fail((xhr,status)=>{
+   	  if (xhr.status == '401') {
+             
+        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+            //alert("access denied, please refresh the page again");
+        	  refreshToken().then((res) => {
+              	console.log(res);
+              	setSessionStorageItems(res);
+              	submittraindelform(data);
+                 });
+        }
+   }); 
+
+
+	
+}
+
+
+
+
+
+
+
+
+	
+
+	function frameOutput1Data(){
+		 var checkArray =[];
+		    var data = $('tr:not(.headRow').map(function() {
+		    	var obj = {};
+		    	var temp='';
+		    	$(this).find('input').each(function() {
+		    		temp+=$(this).val();
+		    		if(this.name=='deliveryBoyId'||this.name=='mappingId'){
+			    		if($(this).val()=='null')
+			    			obj[this.name] = null;
+			    		else	
+		    			obj[this.name] = +$(this).val();
+		    		}else{
+			    		if(this.name=='assigned'){
+				    		
+		    	    	obj[this.name] = $(this).val()=='true'?true:false;
+				    		
+			    		}
+			    		else
+			    			obj[this.name] = $(this).val();	
+		    		}
+		        });
+		    	if(!checkArray.includes(temp)){
+				   	checkArray.push(temp);
+				    return obj;
+		    	}
+		    }).get();
+		    
+		    return data;
+		
+		
+	}
+	
+
+});
+</script>
+

@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+<script src="../customjs/config.js"></script>
+
     <script src="js/commonJs.js?version=6"></script>
         <link rel="stylesheet" type="text/css" href="/VendorAppWeb/admin/css/mystyle.css" />
     
@@ -125,9 +127,9 @@
 
       function printVendorUserDetail(){
 
-        	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/getprofile").then((response)=>{
+        	commongetmethod(configOptions.servicebaseurl+"vendor/getprofile").then((response)=>{
                          
-                $("#welcomeP").html("Welcome " + response.organisationName + ", mobile: " + response.contactNo + ", Email: " + response.email);
+                $("#welcomeP").html("Welcome " + response.data.organisationName + ", mobile: " + response.data.contactNo + ", Email: " + response.data.email);
 
             	
             	})
@@ -146,9 +148,9 @@
         function printDivisionalUserDetail() {
 
         	 var username = sessionStorage.getItem('username');
-        	commongetmethod("http://203.176.113.183/VendorAppServices/divisional/userdetails/" + username).then((response)=>{
+        	commongetmethod(configOptions.servicebaseurl+"divisional/userdetails/" + username).then((response)=>{
                 
-                $("#welcomeP").html("Welcome " + username + " Zone: " + response.zoneName + " Division: " + response.divName);
+                $("#welcomeP").html("Welcome " + username + " Zone: " + response.data.zoneName + " Division: " + response.data.divName);
 
             	
             	})

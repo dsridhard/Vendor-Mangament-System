@@ -14,7 +14,7 @@
   <div class="accordion-item userDisp">
     <h2 class="accordion-header" id="headingTwo">
       <button class="accordion-button collapsed bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="color:#e3e8e4">
-       Update Services
+       Manage Inventory
       </button>
     </h2>
     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
@@ -61,9 +61,9 @@ $(document).ready(() => {
 		$(".userDisp").css("display", "none");
 		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item active navigate" data-target="DivisionalPages/registration">Service Provider Registration</li>';
 		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="DivisionalPages/VendorList">Registered Service Provider</li>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="DivisionalPages/grievanceList">Grievance List</li>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="DivisionalPages/inquiryList">Inquiry List</li>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="misReport/misReport">MIS Report</li>';
+/* 		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="DivisionalPages/grievanceList">Grievance List</li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="DivisionalPages/inquiryList">Booking List</li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="misReport/misReport">MIS Report</li>'; */
 		
 		
 		}
@@ -71,21 +71,32 @@ $(document).ready(() => {
 		
 		
 		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item active navigate" data-target="VendorPages/concierge">Concierge</li>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="VendorPages/bedr">Bed Roll</li>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="VendorPages/ecatering">Food and Beverages</li>';
-		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="VendorPages/vendingonboard">Travel Essentials</li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="VendorPages/bedroll">Bed Roll</li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="VendorPages/foodbeverages">Food and Beverages</li>';
+		sideHtmlmanageServices= sideHtmlmanageServices+'<li class="list-group-item  navigate" data-target="VendorPages/travelessentials">Travel Essentials</li>';
+	    sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/itemtemplate">Add Item Template</li>';
+	    sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/inventory">Load Inventory</li>';
+	    sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/inventoryreport">Inventory Status</li>';
+	    
+	    
 		
-		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/conciergeEditDelete">Modify Concierge </li>';
-	    sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/BedRollEdit">Modify bedRoll</li>';
+		/* sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/conciergeEditDelete">Modify Concierge </li>';
+	    sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/BedRollEdit">Modify BedRoll</li>';
 		 
 		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/ecateringedit">Modify Food and Beverages</li>';
 		sideHtmlupdateServices= sideHtmlupdateServices+'<li class="list-group-item  navigate" data-target="VendorPages/vendingonboardedit">Modify Travel Essentials</li>';
-		
+		 */
 		
 		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate" data-target="VendorPages/createsupervisor">Create Supervisor</li>';
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate"  data-target="VendorPages/trainsupervisormapping">Train Supervisor Mapping</li>';
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate" data-target="VendorPages/inquiryList">Service Inquiry</li>';
-		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate" data-target="VendorPages/grievanceList">Grievance List</li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate"  data-target="VendorPages/supervisortrainprofilemapping">Train Supervisor Mapping</li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate" data-target="VendorPages/createdeliveryboy">Create Delivery Boy</li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate"  data-target="VendorPages/deliveryboytrainprofilemapping">Train Delivery Boy Mapping</li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate"  data-target="VendorPages/orders">Order List</li>';
+		
+		
+/* 		
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate" data-target="VendorPages/inquiryList">Service Booking</li>';
+		sideHtmlmanageSupportServices= sideHtmlmanageSupportServices+'<li class="list-group-item  navigate" data-target="VendorPages/grievanceList">Grievance List</li>'; */
 		
 		
 	

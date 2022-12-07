@@ -35,10 +35,12 @@
             var vbankIfsc = resp.bankIfsc;
             var vbankMicr = resp.bankMicr;
             var vvendorCategoryName = resp.vendorCategoryName;
+            var vtrainsno;
+            var vtrainsname;
             var vvendorConstitutionName = resp.vendorConstitutionName;
             for (j = 0; j < resp.trains.length; j++) {
-                var vtrainsno = resp.trains[j].trainNo;
-                var vtrainsname = resp.trains[j].trainName;
+                 vtrainsno = resp.trains[j].trainNo;
+                 vtrainsname = resp.trains[j].trainName;
             }
             document.getElementById('demo1').innerHTML = vorg;
             document.getElementById('demo2').innerHTML = vpan;
@@ -58,8 +60,8 @@
             document.getElementById('demo16').innerHTML = vbankMicr;
             document.getElementById('demo17').innerHTML = vvendorCategoryName;
             document.getElementById('demo18').innerHTML = vvendorConstitutionName;
-            document.getElementById('demo19').innerHTML = vtrainsno;
-            document.getElementById('demo20').innerHTML = vtrainsname;
+            /* document.getElementById('demo19').innerHTML = vtrainsno;
+            document.getElementById('demo20').innerHTML = vtrainsname; */
             
             $('#myModal').modal('show');
 
@@ -69,16 +71,16 @@
         fetchInquiries();
         function fetchInquiries() {
             var tbodyHtml = "";
-            commongetmethod("http://203.176.113.183/VendorAppServices//divisional/getVendors").then((response) => {
+            commongetmethod(configOptions.servicebaseurl+"divisional/getVendors").then((response) => {
                 /*  console.log(JSON.stringify(response)); */
 
-                for (i = 0; i < response.length; i++) {
+                for (i = 0; i < response.data.length; i++) {
                     tbodyHtml += "<tr>"
-                    tbodyHtml += "<td>" + response[i].organisationName + " </td>" +
-                        "<td>" + response[i].contactNo + " </td>" +
-                        "<td>" + response[i].email + " </td>" +
-                        "<td>" + response[i].vendorConstitutionName + " </td>" +
-                        "<td>" + "<button type='button'  class='btn btn-secondary viewbtn' modaldata='" + JSON.stringify(response[i]) + "' >View <i class='fa fa-eye' aria-hidden='true'></i></button>" + " </td>" +
+                    tbodyHtml += "<td>" + response.data[i].organisationName + " </td>" +
+                        "<td>" + response.data[i].contactNo + " </td>" +
+                        "<td>" + response.data[i].email + " </td>" +
+                        "<td>" + response.data[i].vendorConstitutionName + " </td>" +
+                        "<td>" + "<button type='button'  class='btn btn-secondary viewbtn' modaldata='" + JSON.stringify(response.data[i]) + "' >View <i class='fa fa-eye' aria-hidden='true'></i></button>" + " </td>" +
                         "</tr>";
 
                 }
@@ -110,7 +112,7 @@
                         <th>Name</th>
                         <th>Contact No</th>
                         <th>Email</th>
-                        <th>VendorCategory</th>
+                        <th>Service Provider Category</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -137,14 +139,14 @@
             <div class="modal-body mb-3" id="modal-body">
                 <div class="container-fluid text-center    ">
                     <div class="text-center shadow-lg bg-danger text-white mt-2 text-center">
-                        <h4 class="blockquote txt-shadow ">VendorDetails <i
+                        <h4 class="blockquote txt-shadow ">Service Provider Details <i
                                         class="fa fa-info txt-shadow" aria-hidden="true"></i></h4>
                     </div>
                     <div class="row">
                         <div class="col-sm-3">
                             <div class="card text-center bg-secondary text-white shadow-md">
                                 <div title="OrganisationName" class="card-header text-white txt-shadow ">
-                                    OrganisationName <i class="fa fa-user txt-shadow" aria-hidden="true"></i></div>
+                                    Organisation Name <i class="fa fa-user txt-shadow" aria-hidden="true"></i></div>
                                 <strong class="text-capitalize txt-shadow" id="demo1"></strong>
                             </div>
                         </div>
@@ -187,7 +189,7 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="card text-center bg-secondary text-white shadow-md">
-                                <div title="GoodDetail " class="card-header text-white txt-shadow ">GoodDetail <i
+                                <div title="GoodDetail " class="card-header text-white txt-shadow ">Good Detail <i
                                         class="fa fa-info txt-shadow" aria-hidden="true"></i></div><strong
                                     class="text-capitalize txt-shadow" id="demo4"></strong>
                             </div>
@@ -202,25 +204,25 @@
                     <div class="row mt-2">
                         <div class="col-sm-3">
                             <div class="card text-center bg-secondary text-white shadow-md">
-                                <div title="VedorHSNCode" class="card-header text-white txt-shadow ">VedorHSNCode
+                                <div title="VedorHSNCode" class="card-header text-white txt-shadow ">HSNCode
                                 </div><strong class="text-capitalize txt-shadow" id="demo3"></strong>
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="card text-center bg-secondary text-white shadow-md">
-                                <div title="VendorCategoryName" class="card-header text-white txt-shadow ">VendorCategoryName
+                                <div title="VendorCategoryName" class="card-header text-white txt-shadow ">CategoryName
                                 </div><strong class="text-capitalize txt-shadow" id="demo17"></strong>
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="card text-center bg-secondary text-white shadow-md">
-                                <div title="VendorConstitutionName" class="card-header text-white txt-shadow ">VendorConstitutionName
+                                <div title="VendorConstitutionName" class="card-header text-white txt-shadow ">ConstitutionName
                                 </div><strong class="text-capitalize txt-shadow" id="demo18"></strong>
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="card text-center bg-secondary text-white shadow-md">
-                                <div title="VendorPan" class="card-header text-white txt-shadow ">VendorPan <i
+                                <div title="VendorPan" class="card-header text-white txt-shadow ">Pan <i
                                         class="fa fa-id-card txt-shadow" aria-hidden="true"></i></div><strong
                                     class="text-capitalize txt-shadow" id="demo2"></strong>
                             </div>
@@ -268,7 +270,7 @@
 
 
                     </div>
-                    <div class="row mt-2">
+                  <!--   <div class="row mt-2">
                         <div class="col-sm-6">
                             <div class="card text-center bg-secondary text-white shadow-md">
                                 <div title="Train Name" class="card-header text-white txt-shadow ">Train Name <i
@@ -283,7 +285,7 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div> -->
                 </div>
 
             </div>

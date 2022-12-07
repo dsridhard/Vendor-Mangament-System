@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="./assets/css/all.min.css">
 <script src="./assets/js/all.min.js"></script>
+<script src="./customjs/config.js"></script>
+
 <div class=" mx-3 card border  rounded-3 shadow-lg">
 	<div class="card-title text-center border border-danger shadow-lg bg-danger text-white">Login</div>
 	<div class=" card-body">
@@ -49,7 +51,7 @@
 			var userLoginType = $("#usertype").val();
 			//alert("userLoginType  "+userLoginType);
 			var settings = {
-				"url": "http://203.176.113.183/VendorAppLogin/oauth/token",
+				"url": configOptions.oauthbaseurl+"oauth/token",
 				"method": "POST",
 				"timeout": 0,
 				"headers": {

@@ -93,4 +93,22 @@ button.close {
 	font-size:18px;
 	font-weight: 500;
 }
+fieldset {
+  border: 10px solid transparent; 
+  border-top-color: black; 
+  box-sizing: border-box; 
+  grid-area: 1 / 1; /* first row, first column */
+  padding: 20px; 
+  width: inherit; 
+}
+legend {
+  font: 15pt/0 'Averia Serif Libre'; 
+  margin: auto; /* to center */
+  padding: 0 4px; 
+}
+
+.serviceFieldClass{
+	text-align:center;color: #d31d59;
+	font-size: larger;
+}
  

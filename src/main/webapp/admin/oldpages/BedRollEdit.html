@@ -43,7 +43,7 @@
         ///Get Function Start Here
         function getBedDetail() {
         	 var tbodyHtml = "";
-            commongetmethod("http://203.176.113.183/VendorAppServices/vendor/fetchbedrolldetails/2").then((response) => {
+            commongetmethod(configOptions.servicebaseurl+"vendor/fetchbedrolldetails/2").then((response) => {
                 console.log(JSON.stringify(response));
                  
                  if(response.bedRoll!=null){
@@ -126,7 +126,7 @@
         function deleteBedRoll(id) {
             var row_id = $(this).attr("id");
           
-            commongetmethod("http://203.176.113.183/VendorAppServices/vendor/deletebedrolldetails/2/" + id).then((response) => {
+            commongetmethod(configOptions.servicebaseurl+"vendor/deletebedrolldetails/2/" + id).then((response) => {
                 console.log(JSON.stringify(response));
                 /*  alert(JSON.stringify(response))  */
               /*   $('#row' + row_id + '').remove(); */
@@ -171,7 +171,7 @@ getBedDetail();
                 //alert(JSON.stringify(data))
 
 
-                 commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/editbedrolldetails", JSON.stringify({ "service": 2, "bedRoll": data })).then((response) => {
+                 commonpostmethod(configOptions.servicebaseurl+"vendor/editbedrolldetails", JSON.stringify({ "service": 2, "bedRoll": data })).then((response) => {
                     alert(response.message);
                     $("#supRegistered").html(response.message);
                     getBedDetail()

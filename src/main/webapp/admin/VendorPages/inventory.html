@@ -1,0 +1,621 @@
+    <script src="js/commonlist.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>  
+        <div class="row">
+            <div class="col">
+                <div class="shadow-lg ">
+                   <div class="col-12 p-2 bg-white h-100 no-print"  >
+                   <h5 class=" font-14 text-center msg "  style="color:green"></h5>
+                    <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
+
+                    <div class="text-light bg-danger text-center shadow-lg">Inventory Form</div>
+                    <form  method="post" id="itemInventoryForm" name="itemInventoryForm">
+                   <!--  <form action="" class="was-validated"> -->
+                   <div class=" row p-3 mx-3">
+                   		<div class=" col-md-6 fontStyleHeader">
+                   		<span style="color: #f05f40">*</span>Select Train
+                   		<select class="form-control required" id="trainno" name="trainno" style="width:100%"></select>
+                   			
+                   		</div>
+                   		<div class=" col-md-6 fontStyleHeader">
+                   		<span style="color: #f05f40">*</span>Train Profile
+                   		<select class="form-control required" id="trainprofile" name="trainprofile" style="width:100%"></select>
+                   			
+                   		</div>
+                   		
+                   		
+                   		
+                   </div>
+                   <div class=" row px-3 mx-3 notemp">
+                            <div class=" col-md-12 text-center">
+                            <p>No Inventory Found </p><input type="button" value="Load from Template" id="loadFromTemplate" class="btn btn-success btn-block" /> <input type="button" value="Load From Products" id="loadFromProducts" class="btn btn-success btn-block loadfromproduct" /> 
+                            </div>
+                            </div>
+                          <div class=" row px-3 mx-3 tempshow">
+                            <div class=" col-md-12 ">
+                                <table  class="table " name="inventorytable" style="border-radius: 4px;width:100%" >
+                                
+                                <thead >
+                                <tr class="headRow">
+                                <th><b><span style="color: #f05f40">*</span>Item</b></th>
+                                <th><b><span style="color: #f05f40">*</span>Price</b></th>
+                               
+                                <th><b><span style="color: #f05f40">*</span>Default Quantity</b></th>
+                                <th><b><span style="color: #f05f40">*</span>Total Quantity</b></th>
+                                 <th><b><span style="color: #f05f40">*</span>Date</b></th>
+                                
+                                
+                                <th><b>Action</b></th>
+                                </tr>
+                                </thead>
+                               
+                                <tbody id="tempInvList">
+                                
+                                
+                                </tbody>
+                                
+                                
+                                
+                                </table>
+                           </div>
+                           </div>
+                   
+               <div class="row px-3 mx-3 tempshow">
+                        <center class="col-lg-12 mb-3 toshow">
+                            <button class="btn btn-md btn-primary btn-block showfortemp" type="submit">Submit</button>
+                            <input type="button" value="Add More Items" id="loadMoreItems" class="btn btn-success loadfromproduct btn-block showforinv" /> 
+                      </center>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="modal fade" id="inventoryModal" tabindex="-1" role="dialog" aria-labelledby="inventoryModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl"  role="document">
+    <div class="modal-content" >
+      <div class="modal-header modal-header-style">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Items</h5>
+        <button type="button" class="close closeinventoryModal" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body templateContent">
+      <div class="row">
+            <div class="col">
+                <div class="shadow-lg ">
+                   <div class="col-12 p-2 bg-white h-100 no-print"  >
+                                      <h5 class=" font-14 text-center someerror "  style="color:red"></h5>
+                                     <form  method="post" id="itemproductform" name="itemproductform">
+                   
+ <table  class="table " name="producttable" style="border-radius: 4px;width:100%" >
+                                
+                                <thead >
+                                <tr class="headRow">
+                                <th><b><span style="color: #f05f40">*</span>Item</b></th>
+                                <th><b><span style="color: #f05f40">*</span>Price</b></th>
+                                
+                                <th><b><span style="color: #f05f40">*</span>Default Quantity</b></th>
+                                <th><b><span style="color: #f05f40">*</span>Total Quantity</b></th>
+                                <th><b><span style="color: #f05f40">*</span>Date</b></th>
+                                
+                                <th><b>Check</b></th>
+                                </tr>
+                                </thead>
+                               
+                                <tbody id="productListModal">
+                                
+                                
+                                </tbody>
+                                
+                                
+                                
+                                </table>
+                                </form>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                
+             
+      </div>
+      <div class="modal-footer modal-footer-style">
+        <button type="button" class="btn btn-secondary closeinventoryModal" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+	checksession();
+	getVendorTrainList();
+	var jrnyarr=[];
+	$('.tempshow').css('display','none');
+	$('.notemp').css('display','none');
+	$(".loadfromproduct").click(function(){
+		fetchItemFromProductsNotInItem();
+
+        //$('#inventoryModal').modal("show");
+		
+	});
+	$(".closeinventoryModal").click(function(){
+		
+
+        $('#inventoryModal').modal("hide");
+		
+	});
+
+
+function fetchItemFromProductsNotInItem(){
+	$("#productListModal").empty();
+	commongetmethodwithdata(configOptions.servicebaseurl+"vendor/getVendorProductsByServiceNotInItem",{"trainProfileId":+($('#trainprofile').val())}).then((response) => {
+        console.log(JSON.stringify(response));
+
+            if(response.data!=null&&response.data.length!=0){
+
+
+            	var html='';
+            	    
+            	var mstServiceHead=0;
+            		        	 $.each(response.data, function(i, p) {
+            		        	   	  
+            		        		 if(p.mstServicesId==mstServiceHead){
+            	                         html+=frameProductListRowForInv(p.productsDto,p.mstSubServicesId);
+            		        		 	
+            		        		 }
+            		        		 else{
+            		        		 	if(p.productsDto.length>0){
+            		        		 html+='<tr class="headRow" ><td colspan="6" class="serviceFieldClass">'+p.serviceName+'</td></tr>';
+        	                         html+=frameProductListRowForInv(p.productsDto,p.mstSubServicesId);
+            		        		 	}
+            		        		 }
+            		        		 mstServiceHead=	p.mstServicesId;  
+            		        		 
+
+
+            			        	 
+            		        	 });
+
+            		        	 html+='<tr class="headRow"><td colspan="6" class="text-center"><button class="btn btn-md btn-primary btn-block submitbtn" type="submit">Submit</button></tr>';
+
+            		        	 $("#productListModal").html(html);
+            		        	 $('#inventoryModal').modal("show");
+
+
+                }
+            else{
+
+alert("No products found");
+                }
+    }).fail((xhr, status) => {
+
+        if (xhr.status == '401') {
+        	 refreshToken().then((res) => {
+	              	console.log(res);
+	              	setSessionStorageItems(res);
+	              	fetchItemFromProductsNotInItem();
+	                 });
+        }
+        else {
+            alert("some internal error occurred");
+        }
+    });
+
+
+
+	
+}
+function makeDateArray(){
+	var trainprofilelabel=jQuery('#trainprofile option:selected').text();
+	//alert(trainprofilelabel);
+	 jrnyarr=[];
+	//jrnyarr.push(moment(splitdate[0]).format("DD-MM-YYYY"));
+	var splitdate=trainprofilelabel.split("-");
+	var startdate=moment(splitdate[0]).format("DD-MM-YYYY");
+	
+	var enddate=moment(splitdate[1]).format("DD-MM-YYYY");
+	var nextday=startdate;
+	//console.log("nextday is"+nextday);
+	var k=1;
+	while(nextday!=enddate){
+		//alert("inside while loop");
+		jrnyarr.push(nextday);
+		nextday=moment(splitdate[0]).add(k, 'days').format("DD-MM-YYYY");
+         k++;
+		}
+	jrnyarr.push(enddate);
+	
+			console.log(jrnyarr);
+	
+	
+}
+
+function frameProductListRowForInv(productsDto,subService){
+//console.log("p is////////"+JSON.stringify(p));
+
+	var html='';
+	var checkedcontent="";
+	for(const x of productsDto){
+	if(subService==8){
+		for(var i=0;i<jrnyarr.length;i++){
+
+		 checkedcontent='<input type="checkbox" class="togglecheck" value=false name="inItem" >'; 
+	 
+	html+='<tr><input type="hidden" value="'+x.id+'" name="productId">';
+	html+='<td>'+x.title+'</td><td>'+x.price+'</td>';
+	html+='<td>'+x.maxQtyPerOrder+'</td>';
+	   html+='<td><input type="number" name="quantity" class="required"></td><td><input type="text" name="deliveryDate" value="'+jrnyarr[i]+'" readonly /></td><td>'+checkedcontent+'</td></tr>';
+	}
+	}
+	else{
+
+		 checkedcontent='<input type="checkbox" class="togglecheck" value=false name="inItem" >'; 
+		 
+			html+='<tr><input type="hidden" value="'+x.id+'" name="productId">';
+			html+='<td>'+x.title+'</td><td>'+x.price+'</td>';
+			html+='<td>'+x.maxQtyPerOrder+'</td>';
+			   html+='<td><input type="number" name="quantity" class="required"></td><td><input type="text" name="deliveryDate" value="" readonly></td><td>'+checkedcontent+'</td></tr>';
+			
+
+		}
+	}
+	return html;
+	
+}
+
+$("#productListModal").on('change', '.togglecheck', function () {
+	
+
+	$(this).val(this.checked);
+				
+		       
+		          
+		                
+		    });
+
+
+
+
+	
+	$('#trainno').on('change', function(event)  {
+		$('.tempshow').css('display','none');
+		$('.notemp').css('display','none');
+		$('.showforinv').css('display','none');
+		$('.showfortemp').css('display','none');
+		$("#tempInvList").empty();
+        if($('#trainno').val()!=""){
+        	getTrainProfile($('#trainno').val());
+        }
+
+	
+	});
+
+	$('#trainprofile').on('change', function(event)  {
+		$('.tempshow').css('display','none');
+		$('.notemp').css('display','none');
+		$('.showforinv').css('display','none');
+		$('.showfortemp').css('display','none');
+		$("#tempInvList").empty();
+        if($('#trainprofile').val()!=""){
+        	makeDateArray();
+        	getInventoryList($('#trainprofile').val());
+        }
+
+	
+	});
+
+	$('#loadFromTemplate').on('click', function(event)  {
+       
+		fetchTemplateDetailsForInventory($('#trainno').val());
+        
+
+	
+	});
+
+
+function getInventoryList(trainprofile){
+	$("#tempInvList").empty();
+	$('.tempshow').css('display','none');
+	$('.notemp').css('display','none');
+
+	commongetmethodwithdata(configOptions.servicebaseurl+"vendor/getVendorProductsByServiceInItem",{"trainProfileId":+($('#trainprofile').val())}).then((response) => {
+    console.log(JSON.stringify(response));
+
+    if(response.data==null||response.data.length==0){
+        alert("No Inventory found, Load data from Template/Products ");
+    	$('.notemp').css('display','block');
+        
+        }
+
+    else{
+        var mstServiceHead=0;
+        var mstSubService=0;
+        var html="";
+    	  $.each(response.data, function(i, p) {
+  	        //console.log(JSON.stringify(p.productsDto));
+  //alert(p.productsDto.length);      	  
+if(p.mstServicesId==mstServiceHead){
+html+=addHtmlRows(p.productsDto,p.mstSubServicesId,true);
+
+}
+else{
+if(p.productsDto.length>0){
+html+='<tr class="headRow" ><td colspan="6" class="serviceFieldClass">'+p.serviceName+'</td></tr>';
+html+=addHtmlRows(p.productsDto,p.mstSubServicesId,true);
+}
+
+}
+mstServiceHead=	p.mstServicesId;  
+      	   
+      	    });	
+
+      	    
+    	  $("#tempInvList").append(html);
+    		$('.tempshow').css('display','block');
+    		$('.showforinv').css('display','block');
+    		$('.showfortemp').css('display','none');
+        	  
+        }
+  
+}).fail((xhr, status) => {
+
+    if (xhr.status == '401') {
+    	 refreshToken().then((res) => {
+              	console.log(res);
+              	setSessionStorageItems(res);
+              	 getInventoryList(trainprofile);
+                 });
+    }
+    else {
+        alert("some internal error occurred");
+    }
+});
+
+
+}
+
+
+	
+
+
+	function fetchTemplateDetailsForInventory(trainno){
+		$('.notemp').css('display','none');
+		$('.tempshow').css('display','none');
+		
+		$("#tempInvList").empty();
+		commongetmethod(configOptions.servicebaseurl+"vendor/fetchproductsfromtemplate/"+trainno).then((response) => {
+	        console.log(JSON.stringify(response));
+
+	        if(response.data==null){
+		        alert("No template found, Load data from products ");
+	        	$('.notemp').css('display','block');
+                
+		        }
+
+	        else{
+		        var mstServiceHead=0;
+		        var mstSubService=0;
+		        var html="";
+	        	  $.each(response.data.serviceMapDtoList, function(i, p) {
+	      	        //console.log(JSON.stringify(p.productsDto));
+		  //alert(p.productsDto.length);      	  
+if(p.mstServicesId==mstServiceHead){
+	html+=addHtmlRows(p.productsDto,p.mstSubServicesId,false);
+	
+}
+else{
+	if(p.productsDto.length>0){
+html+='<tr class="headRow" ><td colspan="6" class="serviceFieldClass">'+p.serviceName+'</td></tr>';
+html+=addHtmlRows(p.productsDto,p.mstSubServicesId,false);
+	}
+	
+}
+mstServiceHead=	p.mstServicesId;  
+	          	   
+	          	    });	
+
+	          	    
+	        	  $("#tempInvList").append(html);
+	        		$('.tempshow').css('display','block');
+	        		
+	        		$('.showforinv').css('display','none');
+	        		$('.showfortemp').css('display','block');
+		        	  
+		        }
+	      
+	    }).fail((xhr, status) => {
+
+	        if (xhr.status == '401') {
+	        	 refreshToken().then((res) => {
+		              	console.log(res);
+		              	setSessionStorageItems(res);
+		              	fetchTemplateDetailsForInventory(trainno);
+		                 });
+	        }
+	        else {
+	            alert("some internal error occurred");
+	        }
+	    });
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	function addHtmlRows(productsDto,subServiceId,forInv){
+     var html="";
+     console.log(JSON.stringify(productsDto));
+
+
+		for(const x of productsDto){
+			if(!forInv){
+			if(subServiceId==8){
+				for(var i=0;i<jrnyarr.length;i++){
+			html = html + '<tr ><td><input type="hidden" name="productId" value="'+x.id+'"/><input type="hidden" name="inItem" value="true" /><input class="form-control " type="text" name="title" style="width:100%" placeholder="Enter Title Name" value="'+x.title+'" readonly/></td>';
+			html = html + '<td><input class="form-control  " type="text" name="price" style="width:100%"  value="'+x.price+'" readonly/></td>';
+			
+			html = html + '<td><input class="form-control  " type="text" name="maxQtyPerOrder" style="width:100%"  value="'+x.maxQtyPerOrder+'" readonly/></td>';
+			html = html + '<td><input class="form-control  required" type="number" name="quantity" style="width:100%" placeholder="Enter Quantity" value="'+x.totalAvailableQty+'"/></td>';
+			html = html + '<td><input class="form-control  " type="text" name="deliveryDate" style="width:100%"  value="'+jrnyarr[i]+'" readonly/></td>';
+			
+			html = html + '<td><button type="button" id="oldid'+x.id+'" class="btn btn-danger removerow">Remove</button></td></tr>';
+				}
+			}
+			else{
+				html = html + '<tr ><td><input type="hidden" name="productId" value="'+x.id+'"/><input type="hidden" name="inItem" value="true" /><input class="form-control " type="text" name="title" style="width:100%" placeholder="Enter Title Name" value="'+x.title+'" readonly/></td>';
+				html = html + '<td><input class="form-control  " type="text" name="price" style="width:100%"  value="'+x.price+'" readonly/></td>';
+				
+				html = html + '<td><input class="form-control  " type="text" name="maxQtyPerOrder" style="width:100%"  value="'+x.maxQtyPerOrder+'" readonly/></td>';
+				html = html + '<td><input class="form-control  required" type="number" name="quantity" style="width:100%" placeholder="Enter Quantity" value="'+x.totalAvailableQty+'"/></td>';
+				html = html + '<td><input class="form-control  " type="text" name="deliveryDate" style="width:100%"  value="" readonly /></td>';
+				
+				html = html + '<td><button type="button" id="oldid'+x.id+'" class="btn btn-danger removerow">Remove</button></td></tr>';
+				
+
+				}
+			}
+			else{
+
+				html = html + '<tr ><td><input type="hidden" name="productId" value="'+x.id+'"/><input type="hidden" name="inItem" value="true" /><input class="form-control " type="text" name="title" style="width:100%" placeholder="Enter Title Name" value="'+x.title+'" readonly/></td>';
+				html = html + '<td><input class="form-control  " type="text" name="price" style="width:100%"  value="'+x.price+'" readonly/></td>';
+				
+				html = html + '<td><input class="form-control  " type="text" name="maxQtyPerOrder" style="width:100%"  value="'+x.maxQtyPerOrder+'" readonly/></td>';
+				html = html + '<td><input class="form-control  required" type="number" name="quantity" style="width:100%" placeholder="Enter Quantity" value="'+x.totalAvailableQty+'"/></td>';
+				if(x.deliveryDate!=null)
+				html = html + '<td><input class="form-control  " type="text" name="deliveryDate" style="width:100%"  value="'+x.deliveryDate+'" readonly /></td>';
+				else
+					html = html + '<td><input class="form-control  " type="text" name="deliveryDate" style="width:100%"  value="" readonly /></td>';
+				
+				
+				html = html + '<td><button type="button" id="oldid'+x.id+'" class="btn btn-danger removerow">Remove</button></td></tr>';
+				
+
+				}
+		} 
+
+return html;
+		}
+
+
+	
+
+	$('#itemInventoryForm').on('submit', function(event) {
+		event.preventDefault();
+		
+		 
+	   var data=frameCreateInventoryRequestData("inventorytable");
+	  
+	   console.log(data);
+
+	   submititeminvform(data);
+		 
+	    
+	});
+
+	$('#itemproductform').on('submit', function(event) {
+		event.preventDefault();
+		
+		 
+	   var data=frameCreateInventoryRequestData("producttable");
+	  
+	   console.log(data);
+
+	   submititeminvform(data);
+		 
+	    
+	});
+
+
+
+
+	
+	function submititeminvform(data){
+
+		commonpostmethod(configOptions.servicebaseurl+"vendor/createItems",JSON.stringify({trainProfileId:+($('#trainprofile').val()),itemCreateDto:data})).then((response)=>{
+		   	if(response.status==200){
+
+		   		getInventoryList($('#trainprofile').val());
+				//fetchTemplateDetails($('#trainno').val());
+
+		   		$(".msg").html(response.message);
+		   		$('#inventoryModal').modal("hide");
+
+
+			   	}
+		   	else{
+		   		$(".someerror").html(response.message);
+
+			   	}
+
+			
+	   })
+	   .fail((xhr,status)=>{
+	   	  if (xhr.status == '401') {
+	             
+	        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+	            //alert("access denied, please refresh the page again");
+	        	  refreshToken().then((res) => {
+	              	console.log(res);
+	              	setSessionStorageItems(res);
+	              	submititeminvform(data);
+	                 });
+	        }
+	   }); 
+
+
+
+
+
+		}
+
+	function frameCreateInventoryRequestData(tablename){
+		var checkArray =[];
+	    var data = $('table[name="'+tablename+'"]').find(('tr:not(.headRow)')).map(function() {
+	    	var obj = {};
+	    	var temp='';
+	    	var inItemVal='';
+	    	$(this).find('input').each(function() {
+		    	/* alert("id is"+$(this).attr('id'));
+		    	alert("name is"+$(this).attr('name')); */
+		    	
+		    	
+	    		temp+=$(this).val();
+	    		if(this.name=='productId'||this.name=='quantity'){
+		    		
+	    			obj[this.name] = +$(this).val();
+	    		}else{
+		    		if(this.name=='inItem'){
+		    			inItemVal=$(this).val();
+	    	    	obj[this.name] = $(this).val()=='true'?true:false;
+			    		
+		    		}
+		    		else
+		    			obj[this.name] = $(this).val();	
+	    		}
+	        });
+	    	if(!checkArray.includes(temp)){
+		    	if(inItemVal=='true'){
+			   	checkArray.push(temp);
+			    return obj;
+		    	}
+	    	}
+	    }).get();
+	    
+	    return data;
+
+
+
+		}
+
+});
+</script>
+

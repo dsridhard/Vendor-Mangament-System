@@ -4,15 +4,15 @@
             <div class="col">
                 <div class="shadow-lg ">
                    <div class="col-12 p-2 bg-white h-100 no-print"  >
-                   <h5 class=" font-14 text-center vendorRegistered " id="ecateringRes" style="color:green"></h5>
+                   <h5 class=" font-14 text-center" id="vendingonboardRes" style="color:green"></h5>
                     <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
 
-                    <div class="text-light bg-danger text-center shadow-lg">Food and Beverages Details Form</div>
-                    <form  method="post" id="ecateringForm" name="ecateringForm">
+                    <div class="text-light bg-danger text-center shadow-lg">Travel Essentials Form</div>
+                    <form  method="post" id="vendingonboardForm" name="vendingonboardForm">
                    <!--  <form action="" class="was-validated"> -->
                    <div class=" row p-3 mx-3">
-                   		<div class=" col-md-6 fontStyleHeader" >
-                   		<span style="color: #f05f40">*</span>Sub Service Type
+                   		<div class=" col-md-6 fontStyleHeader">
+                   			<span style="color: #f05f40">*</span>Sub Service Type
                    		</div>
                    		<div class=" col-md-6 ">
                    		<select class="form-control required" id="subServicetype" name="subServicetype" style="width:100%"></select>
@@ -21,10 +21,10 @@
                           <div class=" row px-3 mx-3">
                             <div class=" col-md-12 ">
                                 <table id="itemList" class="table" style="border-radius: 4px;width:100%" >
-  	<tr class="headRow ">
-  		<th "><span style="color: #f05f40">*</span>Item</th>
-  		<th ><span style="color: #f05f40">*</span>Price</th>
-  		<th >Action</th>
+  	<tr class="headRow">
+  		<th><b><span style="color: #f05f40">*</span>Item</b></th>
+  		<th><b><span style="color: #f05f40">*</span>Price</b></th>
+  		<th><b>Action</b></th>
   	</tr>
   	<tr>
   		<td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td>
@@ -52,14 +52,14 @@ $(document).ready(function(){
 		var sno = document.getElementById('itemList').rows.length;
 		html = html + '<tr id="row' +(+sno)+ '"><td><input class="form-control required" type="text" name="item" style="width:100%" placeholder="Enter Item Name" /></td>';
 		html = html + '<td><input class="form-control price required" type="text" name="price" style="width:100%" placeholder="Enter Price" /></td>';
-		html = html + '<td><button type="button" id="' +(+sno)+'" class="btn btn-danger remove_row_ecatering">-</button></td></tr>';
+		html = html + '<td><button type="button" id="' +(+sno)+'" class="btn btn-danger remove_row_vendingonboard">-</button></td></tr>';
 		$('#itemList').append(html);
 	});
-	$(document).on('click', '.remove_row_ecatering', function () {
+	$(document).on('click', '.remove_row_vendingonboard', function () {
 	    var row_id = $(this).attr("id");
 	    $('#row' + row_id + '').remove();
 	});
-	$('#ecateringForm').on('submit', function(event) {
+	$('#vendingonboardForm').on('submit', function(event) {
 		event.preventDefault();
 		 $('.err').remove();
 		var sel = document.querySelectorAll('.required'); 
@@ -85,9 +85,11 @@ $(document).ready(function(){
 			    return obj;
 	    	}
 	    }).get();
-	    commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/savecateringdetails",JSON.stringify({subService:+($("#subServicetype").val()),ecateringList:data})).then((response)=>{
-	      $("#ecateringRes").html( response.message);
-	        document.getElementById("ecateringForm").reset();
+	    commonpostmethod(configOptions.servicebaseurl+"vendor/savevendingonboarddetails",JSON.stringify({subService:+($("#subServicetype").val()),vendingOnBoardList:data})).then((response)=>{
+	   	
+
+	        $("#vendingonboardRes").html( response.message);
+	        document.getElementById("vendingonboardForm").reset();
 	   })
 	   .fail((xhr,status)=>{
 	   	  if (xhr.status == '401') {
@@ -97,10 +99,10 @@ $(document).ready(function(){
 	        	  refreshToken().then((res) => {
 	              	console.log(res);
 	              	setSessionStorageItems(res);
-	                $("#ecateringForm").submit();
+	                $("#vendingonboardForm").submit();
 	                 });
 	        }
-	   });
+	   }); 
 	    
 	});
 	//$('.price').on('input',function (){
@@ -121,7 +123,7 @@ $(document).ready(function(){
 	//	  }
 	//});
 	function getSubServiceList(){
-		commongetmethod("http://203.176.113.183/VendorAppServices/vendor/subServicesList/6").then((response) => {
+		commongetmethod(configOptions.servicebaseurl+"vendor/subServicesList/5").then((response) => {
 	        console.log(JSON.stringify(response));
 	         /*  alert(JSON.stringify(response))   */
 	        var subList = '<option value="">--Select Sub Service--</option>';

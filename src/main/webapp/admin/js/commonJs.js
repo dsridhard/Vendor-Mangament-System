@@ -40,7 +40,7 @@ var key=sessionStorage.getItem('key');
 	//alert("user name::::::"+username+" "+password+"usertype");
 	
 	  return $.ajax({
-		    url: "http://203.176.113.183/VendorAppLogin/oauth/token",
+		    url: configOptions.oauthbaseurl+"oauth/token",
 		    type: 'POST',
 		    timeout: 0,
 			  headers: {
@@ -75,6 +75,21 @@ var key=sessionStorage.getItem('key');
 		    url: geturl,
 		    type: 'GET',
 		    timeout: 0,
+		    async: false,
+		    headers: {
+                "Authorization": "Bearer " + accesstoken
+            }
+			 
+		  });
+	  
+  }
+  function commongetmethodwithdata(geturl,data){
+	  var accesstoken = sessionStorage.getItem('key');
+	  return $.ajax({
+		    url: geturl,
+		    type: 'GET',
+		    timeout: 0,
+		    data:data,
 		    headers: {
                 "Authorization": "Bearer " + accesstoken
             }
@@ -100,6 +115,22 @@ var key=sessionStorage.getItem('key');
 	  
   }
   
+  function commondeletemethod(deleteurl,deletedata){
+	  var accesstoken = sessionStorage.getItem('key');
+	  return $.ajax({
+		    url: deleteurl,
+		    method: "DELETE",
+
+		    headers: {
+		        "Authorization": "Bearer " + accesstoken,
+		        "Content-Type": "application/json"
+		    },
+		    data: deletedata
+		
+
+		});
+	  
+  }
   
   
   function alphaOnly(event) {
@@ -114,3 +145,22 @@ function timerStopFunction(timername) {
 	//alert("stop timer");
 	  clearInterval(timername);
 	}
+
+function checkMandatoryFields(){
+	
+	var sel = document.querySelectorAll('.required'); 
+    for (var i=0;i<sel.length;i++){
+    if(sel[i].value.trim()==""){
+		var errNode = document.createElement('div');
+		errNode.className = "err";
+		errNode.innerHTML = '<small style="color:red"><i>Please fill!</i></small>';
+		sel[i].after(errNode);
+		return false;
+        }
+    }
+    return true;
+}
+
+
+
+

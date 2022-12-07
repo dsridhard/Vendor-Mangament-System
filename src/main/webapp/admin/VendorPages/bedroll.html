@@ -1,0 +1,101 @@
+    <script src="js/commonlist.js"></script>
+    <script src="js/products.js"></script>
+
+
+        <div class="row">
+            <div class="col">
+                <div class="shadow-lg ">
+                   <div class="col-12 p-2 bg-white h-100 no-print"  >
+                   <h5 class=" font-14 text-center  " id="ecateringRes" style="color:green"></h5>
+                    <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
+
+                    <div class="text-light bg-danger text-center shadow-lg">Bed Roll Details Form</div>
+                    <form  method="post" id="bedrollForm" name="bedrollForm">
+                   <!--  <form action="" class="was-validated"> -->
+                 
+                          <div class=" row px-3 mx-3">
+                            <div class=" col-md-12 ">
+                                <table  class="table toshow" style="border-radius: 4px;width:100%" >
+                                
+                                <thead >
+                                <tr class="headRow">
+                                <th style="width:15%;"><b><span style="color: #f05f40">*</span>Item</b></th>
+                                <th><b><span style="color: #f05f40">*</span>Price</b></th>
+                                <th><b><span style="color: #f05f40">*</span>Summary</b></th>
+                                <th><b><span style="color: #f05f40">*</span>Description</b></th>
+                                <th><b><span style="color: #f05f40">*</span>CGST</b></th>
+                                
+                                <th><b><span style="color: #f05f40">*</span>SGST</b></th>
+                                <th><b><span style="color: #f05f40">*</span>IGST</b></th>
+                                <th><b><span style="color: #f05f40">*</span>UGST</b></th>
+                                <th><b><span style="color: #f05f40">*</span>SKU</b></th>
+                                <th><b><span style="color: #f05f40">*</span>Discount</b></th>
+                                <th><b><span style="color: #f05f40">*</span>Quantity per Order</b></th>
+                                <th><b>Action</b></th>
+                                </tr>
+                                </thead>
+                               
+                                <tbody id="itemList">
+                                
+                                
+                                
+                                </tbody>
+                                
+                                
+                                
+                                </table>
+                           </div>
+                           </div>
+                   
+               <div class="row px-3 mx-3">
+                        <center class="col-lg-12 mb-3 toshow">
+                            <button class="btn btn-md btn-primary btn-block" type="submit">Submit</button> <input type="button" value="AddMore" id="addItems" class="btn btn-success  btn-block" />
+                        </center>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script>
+$(document).ready(function(){
+	checksession();
+	
+	
+	
+	
+	$('.toshow').css('display','none');
+	fetchProductDetails(2,"","");
+	
+	$("#addItems").click(function(){
+		var html = "";
+		var sno = document.getElementById('itemList').rows.length;
+		html=getNewRowElements(sno);
+		$('#itemList').append(html);
+		
+	});
+	$("#bedrollForm").on('click', '.removerow', function () {
+		var rowid=$(this).attr("id");
+		
+		removerow(2,null,null,rowid);
+	});
+	$('#bedrollForm').on('submit', function(event) {
+		event.preventDefault();
+		 $('.err').remove();
+		 if(checkMandatoryFields()){
+	   var data=frameJsonData();
+	   console.log("my json data is:"+JSON.stringify(data));
+
+	   submitdata(2,"","",data);
+		 }
+	    
+	});
+	
+
+
+				
+
+		
+
+});
+</script>
+

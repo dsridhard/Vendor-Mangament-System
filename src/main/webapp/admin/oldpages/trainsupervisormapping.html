@@ -9,7 +9,7 @@ inputFormContent();
 var supervisorArr=[];
 var trainListLength=0;
 function inputFormContent(){
-	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getsupervisorlist").then((response) => {
+	commongetmethod(configOptions.servicebaseurl+"vendor/data/getsupervisorlist").then((response) => {
 		 //alert("list response"+response);
        	console.log(response);
  
@@ -39,7 +39,7 @@ function inputFormContent(){
 
 
 function fetchMappingList(){
-	commongetmethod("http://203.176.113.183/VendorAppServices/vendor/data/getsupervisortrainmappinglist").then((res) => {
+	commongetmethod(configOptions.servicebaseurl+"vendor/data/getsupervisortrainmappinglist").then((res) => {
      	console.log(res);
      	//alert("mapping response"+res);
      	
@@ -141,7 +141,7 @@ formJson.push(subJson) ;
 
 console.log(JSON.stringify(formJson));
 
-commonpostmethod("http://203.176.113.183/VendorAppServices/vendor/data/submitsupervisortraindata",JSON.stringify(formJson)).then((response)=>{
+commonpostmethod(configOptions.servicebaseurl+"vendor/data/submitsupervisortraindata",JSON.stringify(formJson)).then((response)=>{
 	 $("#mappingRegistered").html( response.message);
      //document.getElementById("mappingForm").reset();
 })

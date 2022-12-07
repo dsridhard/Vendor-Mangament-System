@@ -4,13 +4,13 @@
             <div class="col">
                 <div class="shadow-lg ">
                    <div class="col-12 p-2 bg-white h-100 no-print"  >
-                   <h5 class=" font-14 text-center  " id="supRegistered" style="color:green"></h5>
-     	               <h5 class=" font-14 text-center  " id="supRegisterederror" style="color:red"></h5>
+                   <h5 class=" font-14 text-center  " id="delboyRegistered" style="color:green"></h5>
+     	               <h5 class=" font-14 text-center  " id="delboyRegisterederror" style="color:red"></h5>
      	             
                     <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
 
-                    <div class="text-light bg-danger text-center shadow-lg">Supervisor Registration Form</div>
-                    <form  method="post" id="supervisorRegistrationForm" name="supervisorRegistrationForm">
+                    <div class="text-light bg-danger text-center shadow-lg">Delivery Boy Registration Form</div>
+                    <form  method="post" id="deliveryboyRegistrationForm" name="deliveryboyRegistrationForm">
                    <!--  <form action="" class="was-validated"> -->
                           <div class=" row px-3 mx-3">
                             <div class=" col-md-6 ">
@@ -37,7 +37,7 @@
                                 <div class="mb-3 mt-3">
                                    <span style="color: #f05f40">*</span>
                                     <label for="mobile">Mobile No.</label>
-                                    <input type="number" class="form-control" id="mobile" maxlength="10" name="mobile" placeholder="Enter Mobile Number" required>
+                                    <input type="number" class="form-control" id="mobile" maxlength="10"  name="mobile" placeholder="Enter Mobile Number" required>
                                      <div class="invalid-tooltip">Please Enter Mobile Number.</div>
                                   </div>
                            </div>
@@ -105,12 +105,11 @@
     <script>
     $(document).ready(function (e) {
         checksession();
-$('#supervisorRegistrationForm').on('submit', function(event) {
-	 $("#supRegistered").html( "");
+$('#deliveryboyRegistrationForm').on('submit', function(event) {
+	 $("#delboyRegistered").html( "");
 	event.preventDefault();
 	 $('.err').remove();
 	if(checkMandatoryFields()){
-    
 
    
     var serializedReturn = $(this).serializeArray();
@@ -121,11 +120,11 @@ $('#supervisorRegistrationForm').on('submit', function(event) {
         });
 
 console.log( JSON.stringify(formObject));
-commonpostmethod(configOptions.servicebaseurl+"vendor/data/registersupervisor",JSON.stringify(formObject)).then((response)=>{
+commonpostmethod(configOptions.servicebaseurl+"vendor/data/registerdeliveryboy",JSON.stringify(formObject)).then((response)=>{
 	// alert(response.message);
 
-     $("#supRegistered").html( response.message);
-     document.getElementById("supervisorRegistrationForm").reset();
+     $("#delboyRegistered").html( response.message);
+     document.getElementById("deliveryboyRegistrationForm").reset();
 })
 .fail((xhr,status)=>{
 	  if (xhr.status == '401') {
@@ -135,7 +134,7 @@ commonpostmethod(configOptions.servicebaseurl+"vendor/data/registersupervisor",J
      	  refreshToken().then((res) => {
            	console.log(res);
            	setSessionStorageItems(res);
-             $("#supervisorRegistrationForm").submit();
+             $("#deliveryboyRegistrationForm").submit();
               });
      }
 });

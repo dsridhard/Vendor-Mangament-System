@@ -84,11 +84,11 @@ $(document).ready(function() {
 	checksession();
 	getVendorList();
 	function getVendorList(){
-		 commongetmethod("http://203.176.113.183/VendorAppServices/divisional/getVendors").then((response)=>{
+		 commongetmethod(configOptions.servicebaseurl+"divisional/getVendors").then((response)=>{
 	         console.log(JSON.stringify(response));
 	         var vendorList = '';
-	     	for(var i=0;i<response.length;i++){
-	     		vendorList = vendorList + '<option value="'+response[i].id+'">'+response[i].organisationName+'</option>';
+	     	for(var i=0;i<response.data.length;i++){
+	     		vendorList = vendorList + '<option value="'+response.data[i].id+'">'+response.data[i].organisationName+'</option>';
 	     	}
 	     	$('#vendorList').append(vendorList);
 		
@@ -110,56 +110,56 @@ $('#vendorList').change(function(){
     	$('#tableIDGrievanceDiv').DataTable().destroy();
     	var tbodyHtml="";
 
-    	commongetmethod("http://203.176.113.183/VendorAppServices/divisional/data/getpsgngrievance/"+id).then((response)=>{
-    		
-    		   for (i=0;i<response.length;i++){
+    	commongetmethod(configOptions.servicebaseurl+"divisional/data/getpsgngrievance/"+id).then((response)=>{
+    		if(response.data!=null){
+    		   for (i=0;i<response.data.length;i++){
 
     			   tbodyHtml+="<tr>";
-    			   if(response[i].getPsgnTxnListModel.serviceName!=null){
-             		 	tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.serviceName+" </td>";
+    			   if(response.data[i].getPsgnTxnListModel.serviceName!=null){
+             		 	tbodyHtml+="<td>"+response.data[i].getPsgnTxnListModel.serviceName+" </td>";
              		 }else{
              			 tbodyHtml+="<td>-</td>";
              		 }
-    			   if(response[i].getPsgnTxnListModel.psgnName!=null){
-            		 	tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.psgnName+" </td>";
+    			   if(response.data[i].getPsgnTxnListModel.psgnName!=null){
+            		 	tbodyHtml+="<td>"+response.data[i].getPsgnTxnListModel.psgnName+" </td>";
             		 }else{
             			 tbodyHtml+="<td>-</td>";
             		 }
-    			   if(response[i].getPsgnTxnListModel.passengerMobile!=null){
-            		 	tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.passengerMobile+" </td>";
+    			   if(response.data[i].getPsgnTxnListModel.passengerMobile!=null){
+            		 	tbodyHtml+="<td>"+response.data[i].getPsgnTxnListModel.passengerMobile+" </td>";
             		 }else{
             			 tbodyHtml+="<td>-</td>";
             		 }
-    			   if(response[i].getPsgnTxnListModel.trainNo!=null){
-            		 	tbodyHtml+="<td>"+response[i].getPsgnTxnListModel.trainNo+" </td>";
+    			   if(response.data[i].getPsgnTxnListModel.trainNo!=null){
+            		 	tbodyHtml+="<td>"+response.data[i].getPsgnTxnListModel.trainNo+" </td>";
             		 }else{
             			 tbodyHtml+="<td>-</td>";
             		 }
-    			   if(response[i].grievanceType!=null){
-           		 	tbodyHtml+="<td>"+response[i].grievanceType+" </td>";
+    			   if(response.data[i].grievanceType!=null){
+           		 	tbodyHtml+="<td>"+response.data[i].grievanceType+" </td>";
            		 }else{
            			 tbodyHtml+="<td>-</td>";
            		 }
-    			   if(response[i].createdOn!=null){
-              		 	tbodyHtml+="<td>"+response[i].createdOn+" </td>";
+    			   if(response.data[i].createdOn!=null){
+              		 	tbodyHtml+="<td>"+response.data[i].createdOn+" </td>";
               		 }else{
               			 tbodyHtml+="<td>-</td>";
               		 }
-    			   if(response[i].grievanceStatus!=null){
-              		 	tbodyHtml+="<td>"+response[i].grievanceStatus+" </td>";
+    			   if(response.data[i].grievanceStatus!=null){
+              		 	tbodyHtml+="<td>"+response.data[i].grievanceStatus+" </td>";
               		 }else{
               			 tbodyHtml+="<td>-</td>";
               		 }
-    		if(response[i].grievanceStatus=="Closed")
-    			if(response[i].closedOn!=null){
-          		 	tbodyHtml+="<td>"+response[i].closedOn+" </td>";
+    		if(response.data[i].grievanceStatus=="Closed")
+    			if(response.data[i].closedOn!=null){
+          		 	tbodyHtml+="<td>"+response.data[i].closedOn+" </td>";
           		 }else{
           			 tbodyHtml+="<td>-</td>";
           		 }
     			   else
     				   tbodyHtml+="<td>- </td>";  
-    		if(response[i].pendingWith!=null){
-      		 	tbodyHtml+="<td>"+response[i].pendingWith+" </td>";
+    		if(response.data[i].pendingWith!=null){
+      		 	tbodyHtml+="<td>"+response.data[i].pendingWith+" </td>";
       		 }else{
       			 tbodyHtml+="<td>-</td>";
       		 }
@@ -176,6 +176,7 @@ $('#vendorList').change(function(){
     		  	
     		  	 t.draw();
     		  	$('#tableIDGrievanceDiv').css('display','');
+    		}
         })
         .fail((xhr,status)=>{
        	 if(xhr.status=="401"){

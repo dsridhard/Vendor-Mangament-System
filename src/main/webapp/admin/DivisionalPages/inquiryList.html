@@ -18,7 +18,7 @@ button.close {
 <body>
 <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
 
-                    <div class="text-light bg-danger text-center shadow-lg">Inquiry List</div>
+                    <div class="text-light bg-danger text-center shadow-lg">Booking List</div>
 <div class=" row p-3 mx-3">
                    		<div class=" col-md-6 ">
                    			<b><span style="color: #f05f40">*</span>Service Provider</b>
@@ -85,11 +85,11 @@ $(document).ready(function() {
 	getVendorList();
 	function getVendorList(){
 	
-	 commongetmethod("http://203.176.113.183/VendorAppServices/divisional/getVendors").then((response)=>{
+	 commongetmethod(configOptions.servicebaseurl+"divisional/getVendors").then((response)=>{
          console.log(JSON.stringify(response));
          var vendorList = '';
-     	for(var i=0;i<response.length;i++){
-     		vendorList = vendorList + '<option value="'+response[i].id+'">'+response[i].organisationName+'</option>';
+     	for(var i=0;i<response.data.length;i++){
+     		vendorList = vendorList + '<option value="'+response.data[i].id+'">'+response.data[i].organisationName+'</option>';
      	}
      	$('#vendorList').append(vendorList);
 	
@@ -110,67 +110,67 @@ $('#vendorList').change(function(){
     function fetchInquiries(id){
     	$('#tableIDInquiryDiv').DataTable().destroy();
         var tbodyHtml="";
-     commongetmethod("http://203.176.113.183/VendorAppServices/divisional/getvendorinquries/"+id).then((response)=>{
+     commongetmethod(configOptions.servicebaseurl+"divisional/getvendorinquries/"+id).then((response)=>{
              console.log(JSON.stringify(response));
-             for(i=0;i<response.length;i++){
+             for(i=0;i<response.data.length;i++){
             	 tbodyHtml+="<tr>";
-            	 if(response[i].serviceName==null){
-            		 if(response[i].obhsTypeName!=null){
-            		 	tbodyHtml+="<td>"+response[i].obhsTypeName+" </td>";
+            	 if(response.data[i].serviceName==null){
+            		 if(response.data[i].obhsTypeName!=null){
+            		 	tbodyHtml+="<td>"+response.data[i].obhsTypeName+" </td>";
             		 }else{
             			 tbodyHtml+="<td>-</td>";
             		 }
                 	 }
             	 else{
-            		 if(response[i].serviceName!=null){
-             		 	tbodyHtml+="<td>"+response[i].serviceName+" </td>";
+            		 if(response.data[i].serviceName!=null){
+             		 	tbodyHtml+="<td>"+response.data[i].serviceName+" </td>";
              		 }else{
              			 tbodyHtml+="<td>-</td>";
              		 }
                 	 }
-            	 if(response[i].subServiceName==null&&response[i].obhsSubTypeName!=null){
+            	 if(response.data[i].subServiceName==null&&response.data[i].obhsSubTypeName!=null){
             		 
-            		 tbodyHtml+="<td>"+response[i].obhsSubTypeName+" </td>";
+            		 tbodyHtml+="<td>"+response.data[i].obhsSubTypeName+" </td>";
                 	 }
             	 else{
-            		 if(response[i].subServiceName!=null){
-               		 	tbodyHtml+="<td>"+response[i].subServiceName+" </td>";
+            		 if(response.data[i].subServiceName!=null){
+               		 	tbodyHtml+="<td>"+response.data[i].subServiceName+" </td>";
                		 }else{
                			 tbodyHtml+="<td>-</td>";
                		 }
                 	 }
-            	 if(response[i].passengerMobile!=null){
-            		 	tbodyHtml+="<td>"+response[i].passengerMobile+" </td>";
+            	 if(response.data[i].passengerMobile!=null){
+            		 	tbodyHtml+="<td>"+response.data[i].passengerMobile+" </td>";
             		 }else{
             			 tbodyHtml+="<td>-</td>";
             		 }
-            	 if(response[i].trainNo!=null){
-            		 	tbodyHtml+="<td>"+response[i].trainNo+" </td>";
+            	 if(response.data[i].trainNo!=null){
+            		 	tbodyHtml+="<td>"+response.data[i].trainNo+" </td>";
             		 }else{
             			 tbodyHtml+="<td>-</td>";
             		 }
-            	 if(response[i].stationName!=null){
-            		 	tbodyHtml+="<td>"+response[i].stationName+" </td>";
+            	 if(response.data[i].stationName!=null){
+            		 	tbodyHtml+="<td>"+response.data[i].stationName+" </td>";
             		 }else{
             			 tbodyHtml+="<td>-</td>";
             		 }
-            	 if(response[i].psgnName!=null){
-         		 	tbodyHtml+="<td>"+response[i].psgnName+" </td>";
+            	 if(response.data[i].psgnName!=null){
+         		 	tbodyHtml+="<td>"+response.data[i].psgnName+" </td>";
          		 }else{
          			 tbodyHtml+="<td>-</td>";
          		 }
-            	 if(response[i].txnDateTime!=null){
-         		 	tbodyHtml+="<td>"+response[i].txnDateTime+" </td>";
+            	 if(response.data[i].txnDateTime!=null){
+         		 	tbodyHtml+="<td>"+response.data[i].txnDateTime+" </td>";
          		 }else{
          			 tbodyHtml+="<td>-</td>";
          		 }
-            	 if(response[i].inquiryStatusName!=null){
-         		 	tbodyHtml+="<td>"+response[i].inquiryStatusName+" </td>";
+            	 if(response.data[i].inquiryStatusName!=null){
+         		 	tbodyHtml+="<td>"+response.data[i].inquiryStatusName+" </td>";
          		 }else{
          			 tbodyHtml+="<td>-</td>";
          		 }
-            	 if(response[i].pendingWith!=null){
-          		 	tbodyHtml+="<td>"+response[i].pendingWith+" </td>";
+            	 if(response.data[i].pendingWith!=null){
+          		 	tbodyHtml+="<td>"+response.data[i].pendingWith+" </td>";
           		 }else{
           			 tbodyHtml+="<td>-</td>";
           		 }
