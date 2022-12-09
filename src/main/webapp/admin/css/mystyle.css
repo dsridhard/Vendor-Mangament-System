@@ -111,4 +111,46 @@ legend {
 	text-align:center;color: #d31d59;
 	font-size: larger;
 }
- 
+ .ajax-loader {
+  visibility: hidden;
+  background-color: rgba(255,255,255,0.7);
+  position: absolute;
+  z-index: +100 !important;
+  width: 100%;
+  height:100%;
+}
+.CANCELLED{
+	color:#007aff;
+}
+.DELIVERED{
+	color:green;
+	
+}
+
+.BOOKED{
+	color:red;
+	
+}
+.DEFECTIVE{
+	color:#8588a4fc;
+}
+.adminbtn {
+    line-height: 10px !important;
+    font-size: 12px !important;
+    
+}
+.adminbtncolor{
+	
+	color: #fff !important;
+    background-color: #008b8b !important;
+    border-color: #008b8b !important;
+}
+.card5 {
+    border-right: 4px solid #008b8b24;
+}
+
+/* .ajax-loader img {
+  position: relative;
+  top:50%;
+  left:50%;
+} */

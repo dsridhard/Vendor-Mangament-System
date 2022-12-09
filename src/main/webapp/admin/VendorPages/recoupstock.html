@@ -8,8 +8,10 @@
                    <h5 class=" font-14 text-center msg "  style="color:green"></h5>
                     <span style="color: #f05f40">*</span><span>Mandatory Fields</span>
 
-                    <div class="text-light bg-danger text-center shadow-lg">Inventory Form</div>
-                    <form  method="post" id="itemInventoryForm" name="itemInventoryForm">
+                    <div class="text-light bg-danger text-center shadow-lg">Recoup Inventory Form</div>
+                     <h5 class=" font-14 text-center someerror "  style="color:green"></h5>
+                    
+                    <form  method="post" id="recoupForm" name="recoupForm">
                    <!--  <form action="" class="was-validated"> -->
                    <div class=" row p-3 mx-3">
                    		<div class=" col-md-6 fontStyleHeader">
@@ -28,27 +30,28 @@
                    </div>
                    
                           <div class=" row px-3 mx-3 tempshow" style="overflow-x:auto;">
+                          
                             <div class=" col-md-12 ">
-                                <table  class="table " name="inventoryreporttable" style="border-radius: 4px;width:100%" >
+                                <table  class="table " name="recouptable" style="border-radius: 4px;width:100%" >
                                 
                                 <thead >
                                 <tr class="headRow">
-                                <th><b><span style="color: #f05f40">*</span>Item</b></th>
-                                <th><b><span style="color: #f05f40">*</span>Price</b></th>
-                                 <th><b><span style="color: #f05f40">*</span>Total Quantity</b></th>
+                                <th style="width:15%;"><b><span style="color: #f05f40">*</span>Item</b></th>
+                                 <th ><b><span style="color: #f05f40">*</span>Total Quantity</b></th>
                                 
                                    <th><b><span style="color: #f05f40">*</span>Sold</b></th>
                                    <th><b><span style="color: #f05f40">*</span>Available Quantity</b></th>
                                    
                                   
                                  <th><b><span style="color: #f05f40">*</span>Date</b></th>
-                                
+                                 <th style="width:10%;"><b><span style="color: #f05f40">*</span>Add/Remove Quantity</b></th>
+                                <th style="width:15%;"><b><span style="color: #f05f40">*</span>Action Type</b></th>
                                 
                                
                                 </tr>
                                 </thead>
                                
-                                <tbody id="tempInvReportList">
+                                <tbody id="invList">
                                 
                                 
                                 </tbody>
@@ -56,8 +59,16 @@
                                 
                                 
                                 </table>
+                             
                            </div>
+                           
+                            
                            </div>
+                            <div class="row px-3 mx-3 tempshow text-center">
+                       <div class=" col-md-2 text-center">
+                            <button class="btn btn-md btn-primary btn-block " type="submit">Submit</button>
+                    </div>
+                    </div>
                    
                
                 </form>
@@ -68,13 +79,15 @@
 
 <script>
 $(document).ready(function(){
+	var itemUpdateTypeDropDown="<select name='itemUpdateType' class='form-control'><option value='ADD'>ADD</option><option value='SUBTRACT'>SUBSTRACT</option></select>";
 	checksession();
 	getVendorTrainList();
 	$('.tempshow').css('display','none');
 
 	$('#trainno').on('change', function(event)  {
 		$('.tempshow').css('display','none');
-		$("#tempInvReportList").empty();
+		$(".someerror").html("");
+		$("#invList").empty();
         if($('#trainno').val()!=""){
         	getTrainProfile($('#trainno').val());
         }
@@ -84,7 +97,8 @@ $(document).ready(function(){
 
 	$('#trainprofile').on('change', function(event)  {
 		$('.tempshow').css('display','none');
-		$("#tempInvReportList").empty();
+		$(".someerror").html("");
+		$("#invList").empty();
         if($('#trainprofile').val()!=""){
         	
         	getInventoryReportList($('#trainprofile').val());
@@ -96,7 +110,7 @@ $(document).ready(function(){
 	
 
 function getInventoryReportList(trainprofile){
-	$("#tempInvReportList").empty();
+	$("#invList").empty();
 	$('.tempshow').css('display','none');
 
 	commongetmethodwithdata(configOptions.servicebaseurl+"vendor/getVendorProductsByServiceInItem",{"trainProfileId":+($('#trainprofile').val())}).then((response) => {
@@ -120,7 +134,7 @@ html+=addHtmlRows(p.productsDto,p.mstSubServicesId,true);
 }
 else{
 if(p.productsDto.length>0){
-html+='<tr class="headRow" ><td colspan="6" class="serviceFieldClass">'+p.serviceName+'</td></tr>';
+html+='<tr class="headRow" ><td colspan="7" class="serviceFieldClass">'+p.serviceName+'</td></tr>';
 html+=addHtmlRows(p.productsDto,p.mstSubServicesId);
 }
 
@@ -130,7 +144,7 @@ mstServiceHead=	p.mstServicesId;
       	    });	
 
       	    
-    	  $("#tempInvReportList").append(html);
+    	  $("#invList").append(html);
     		$('.tempshow').css('display','block');
         	  
         }
@@ -163,20 +177,21 @@ mstServiceHead=	p.mstServicesId;
 		for(const x of productsDto){
 			
 
-				html = html + '<tr ><td><input class="form-control " type="text" name="title" style="width:100%"  value="'+x.title+'" readonly/></td>';
-				html = html + '<td><input class="form-control  " type="text" name="price" style="width:100%"  value="'+x.price+'" readonly/></td>';
+				html = html + '<tr ><td><input type="hidden" name="itemId" value="'+x.itemId+'"><input class="form-control " type="text" name="title" style="width:100%"  value="'+x.title+'" readonly/></td>';
 				html = html + '<td><input class="form-control  required" type="number" name="quantity" style="width:100%"  value="'+x.totalQty+'" readonly /></td>';
 				
 				html = html + '<td><input class="form-control  required" type="number" name="quantity" style="width:100%"  value="'+x.totalSoldQty+'" readonly /></td>';
-				html = html + '<td><input class="form-control  " type="text" name="maxQtyPerOrder" style="width:100%"  value="'+x.totalAvailableQty+'" readonly/></td>';
+				html = html + '<td><input class="form-control  " type="text" name="totalAvailableQty" style="width:100%"  value="'+x.totalAvailableQty+'" readonly/></td>';
+				
 				
 				if(x.deliveryDate!=null)
 				html = html + '<td><input class="form-control  " type="text" name="deliveryDate" style="width:100%"  value="'+x.deliveryDate+'" readonly /></td>';
 				else
 					html = html + '<td><input class="form-control  " type="text" name="deliveryDate" style="width:100%"  value="" readonly /></td>';
 				
+				html = html + '<td><input class="form-control  " type="number" name="quantity" style="width:100%"  value=""  min="0"/></td>';
 				
-				
+				html+='<td>'+itemUpdateTypeDropDown+'</td>';
 
 				
 		} 
@@ -185,8 +200,83 @@ return html;
 		}
 
 
+	$('#recoupForm').on('submit', function(event) {
+		event.preventDefault();
+		
+		 
+	   var data=frameRecoupRequestData();
+	  
+	   console.log(data);
+
+	   submitrecoupform(data);
+		 
+	    
+	});
+
+function frameRecoupRequestData(){
+
+	 var checkArray =[];
+	    var data = $('tr:not(.headRow').map(function() {
+	    	var obj = {};
+	    	var temp='';
+	    	$(this).find('input').each(function() {
+	    		temp+=$(this).val();
+	    		if(this.name=='itemId'||this.name=='quantity')
+		    			obj[this.name] = +$(this).val();	
+		    	else
+		    		obj[this.name] = $(this).val();
+	        });
+	    	$(this).find('select').each(function() {
+		    	
+	    		temp+=$(this).val();
+	    		
+		    		obj[this.name] = $(this).val();
+	        });
+	    	if(!checkArray.includes(temp)){
+			   	checkArray.push(temp);
+			    return obj;
+	    	}
+	    }).get();
+	    
+	    return data;
+}
 
 
+function submitrecoupform(data){
+
+	commonpostmethod(configOptions.servicebaseurl+"vendor/updateItems",JSON.stringify({trainProfileId:+($('#trainprofile').val()),itemUpdateDto:data})).then((response)=>{
+	   	if(response.status==200){
+
+	   		getInventoryReportList($('#trainprofile').val());
+			//fetchTemplateDetails($('#trainno').val());
+
+	   		$(".someerror").html("Stock Updated Successfully");
+	   		
+
+
+		   	}
+	   	else{
+	   		$(".someerror").html(response.message);
+
+		   	}
+
+		
+   })
+   .fail((xhr,status)=>{
+   	  if (xhr.status == '401') {
+             
+        	 // $("#vendorRegisterederror").html("Error :" +xhr.status+ "");
+            //alert("access denied, please refresh the page again");
+        	  refreshToken().then((res) => {
+              	console.log(res);
+              	setSessionStorageItems(res);
+              	submitrecoupform(data);
+                 });
+        }
+   }); 
+
+	
+}
 
 });
 </script>

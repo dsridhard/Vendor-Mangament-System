@@ -19,6 +19,9 @@
 <div class="notification-container opacity-100" id="notification-container">
  
   </div>
+  <!-- <div class="ajax-loader">
+  <img src="../assets/images/spinner.gif" class="img-responsive" />
+</div> -->
 <div class="row" >
 
 <table id="tableID" class="table datatable" style="width:100%;">
@@ -172,18 +175,28 @@
 
 <script>
 $(document).ready(function() {
-	 var k=1;
-    fetchOrders();
+	//alert("inside file");
+	
+	
+   fetchOrders();
    
-
+   var k=1;
     var listLength=0;
     function fetchOrders(){
+      
         //alert("called");
-    	
+    	//$('.ajax-loader').css("visibility", "visible");
         var tbodyHtml="";
      commongetmethod(configOptions.servicebaseurl+"vendor/fetchorderdetails").then((response)=>{
              console.log(JSON.stringify(response));
+             var statusclass="";
              for(i=0;i<response.data.length;i++){
+                 if(response.data[i].orderStatus=="PARTIALLY CANCELLED"){
+                	 statusclass="CANCELLED";
+                     }
+                 else{
+                	 statusclass=response.data[i].orderStatus;
+                     }
             	 tbodyHtml+="<tr>";
             	 
                  tbodyHtml+= "<td>"+response.data[i].orderRefNo+" </td>";
@@ -194,16 +207,10 @@ $(document).ready(function() {
                  /* "<td>"+response[i].stationName+" </td>"+ */
                  "<td>"+response.data[i].pnr+" </td>"+
                  "<td>"+response.data[i].orderTimestamp+" </td>"+
-                 "<td>"+response.data[i].orderStatus+" </td>"+
+                 "<td class='"+statusclass+"'>"+response.data[i].orderStatus+" </td>"+
                  "<td>"+response.data[i].paymentType+" </td>";
-                tbodyHtml+= "<td><button type='button' viewonly='no' class='btn btn-sm btn-outline-danger viewitem' modaldata='"+JSON.stringify(response.data[i])+"' id='"+response.data[i].orderRefNo+"' >View</button> </td>";
-                	/*  else{
-                    	 if(response[i].serviceId!=null)
-                    	 tbodyHtml+= "<td class='text-right'><button type='button' viewonly='yes' class='btn btn-sm btn-outline-info updatestatus float-left' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >View</button><button type='button'  class='btn btn-sm btn-outline-warning feedbackbtn float-right'  id='"+response[i].serviceId+"/"+response[i].transactionId+"' >Feedback</button></td>";
-                    	 else
-                        	 tbodyHtml+= "<td class='text-right'><button type='button' viewonly='yes' class='btn btn-sm btn-outline-info updatestatus float-left' modaldata='"+JSON.stringify(response[i])+"' id='"+response[i].transactionId+"' >View</button></td>";
-                    	 
-                	 } */
+                tbodyHtml+= "<td><button type='button' viewonly='no' class='btn btn-sm btn-outline-success viewitem' modaldata='"+JSON.stringify(response.data[i])+"' id='"+response.data[i].orderRefNo+"' >View</button> </td>";
+                	
 
                 	 tbodyHtml+="</tr>";
                           
@@ -244,7 +251,7 @@ listLength=response.length;
 
         	}
     	k=2;
-    	
+    	//$('.ajax-loader').css("visibility", "hidden");
          }
 
      )
@@ -280,65 +287,6 @@ listLength=response.length;
 $(".itemcontent").html(html);
 
 
-        
-
-          //alert($(this).attr("id"));
-         /*  var btnid=$(this).attr("id");
-          $('#remarks').val("");
-          $('#inquiryId').val(btnid);
-          var details=$(this).attr('modaldata');
-          var viewonly=$(this).attr('viewonly');
-          if(viewonly=='yes'){
-
-$('.hideview').css('display','none');
-              }
-          else{
-        	  $('.hideview').css('display','block');
-              
-              }
-          var jsonObj=JSON.parse(details);
-         console.log(details);
-         $(".resetDet").html("");
-         
-         $("#refNo").html(jsonObj.inquiryRefNo);
-         $("#psgnnm").html(jsonObj.psgnName);
-         $("#contactno").html(jsonObj.passengerMobile);
-         if(jsonObj.supervisorMobile==null)
-         $("#supervisorno").html("");
-         else
-          $("#supervisorno").html(jsonObj.supervisorMobile);  
-         if(jsonObj.trainNo!=null)
-         $("#trainnm").html(jsonObj.trainNo+"/"+jsonObj.trainName);
-         else
-             $("#trainnm").html(jsonObj.stationName);
-         
-         $("#pnrno").html(jsonObj.pnrNo);
-         $("#inquirystatus").html(jsonObj.inquiryStatusName);
-         if(jsonObj.closedBy==null)
-         $("#pendingwith").html(jsonObj.pendingWith);
-         else
-             $("#pendingwith").html(jsonObj.closedBy);
-         
-             if(jsonObj.remarks==null)
-         $("#psgnremark").html("");
-             else
-            	 $("#psgnremark").html(jsonObj.remarks);
-
-             if(jsonObj.closingRemark==null)  	     
-         $("#closingremark").html("");
-             else
-            	 $("#closingremark").html(jsonObj.closingRemark);
-
-       	  
-         $("#inquirytime").html(jsonObj.txnDateTime);
-
-         if(jsonObj.closingDateTime==null)
-             $("#closingtime").html("");
-
-         else
-         $("#closingtime").html(jsonObj.closingDateTime);
-         
-           */
           $('#inquiryRemarksModal').modal("show");
           });
 
@@ -346,9 +294,9 @@ $('.hideview').css('display','none');
 
 
 function frameItemCard(x){
-
+    
        var html="<div class='card mt-4'>"+
-       "<div class='card-header'><h5 class='card-title'><div class='row'><div class='col-md-6 float-left'>"+x.itemName+"</div><div class='col-md-6 text-end'>"+x.currentStatus+"</div></div></h5></div>"+
+       "<div class='card-header'><h5 class='card-title'><div class='row'><div class='col-md-6 float-left'>"+x.itemName+" ("+x.serviceName+")</div><div class='col-md-6 text-end "+x.currentStatus+"'  >"+x.currentStatus+"</div></div></h5></div>"+
        "<div class='card-body'><span>Total Amount:"+x.totalAmount+"</span>"+
        "<footer class='text-muted'><span>Quantity:"+x.quantity+"</span></footer>"+
 

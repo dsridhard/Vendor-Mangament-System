@@ -26,7 +26,7 @@
                    		
                    		
                    </div>
-                   <div class=" row px-3 mx-3 notemp">
+                   <div class=" row px-3 mx-3 notemp" style="overflow-x:auto;">
                             <div class=" col-md-12 text-center">
                             <p>No Inventory Found </p><input type="button" value="Load from Template" id="loadFromTemplate" class="btn btn-success btn-block" /> <input type="button" value="Load From Products" id="loadFromProducts" class="btn btn-success btn-block loadfromproduct" /> 
                             </div>
@@ -81,7 +81,7 @@
         </button>
       </div>
       <div class="modal-body templateContent">
-      <div class="row">
+      <div class="row" style="overflow-x:auto;">
             <div class="col">
                 <div class="shadow-lg ">
                    <div class="col-12 p-2 bg-white h-100 no-print"  >
@@ -236,28 +236,21 @@ function frameProductListRowForInv(productsDto,subService){
 	var html='';
 	var checkedcontent="";
 	for(const x of productsDto){
-	if(subService==8){
-		for(var i=0;i<jrnyarr.length;i++){
-
-		 checkedcontent='<input type="checkbox" class="togglecheck" value=false name="inItem" >'; 
-	 
-	html+='<tr><input type="hidden" value="'+x.id+'" name="productId">';
-	html+='<td>'+x.title+'</td><td>'+x.price+'</td>';
-	html+='<td>'+x.maxQtyPerOrder+'</td>';
-	   html+='<td><input type="number" name="quantity" class="required"></td><td><input type="text" name="deliveryDate" value="'+jrnyarr[i]+'" readonly /></td><td>'+checkedcontent+'</td></tr>';
-	}
-	}
-	else{
+	
 
 		 checkedcontent='<input type="checkbox" class="togglecheck" value=false name="inItem" >'; 
 		 
 			html+='<tr><input type="hidden" value="'+x.id+'" name="productId">';
 			html+='<td>'+x.title+'</td><td>'+x.price+'</td>';
 			html+='<td>'+x.maxQtyPerOrder+'</td>';
-			   html+='<td><input type="number" name="quantity" class="required"></td><td><input type="text" name="deliveryDate" value="" readonly></td><td>'+checkedcontent+'</td></tr>';
+			if(x.deliveryDate==null)
+				   html+='<td><input type="number" name="quantity" class="required"></td><td><input type="text" name="deliveryDate" value="" readonly></td><td>'+checkedcontent+'</td></tr>';
+
+			else
+			   html+='<td><input type="number" name="quantity" class="required"></td><td><input type="text" name="deliveryDate" value="'+x.deliveryDate+'" readonly></td><td>'+checkedcontent+'</td></tr>';
 			
 
-		}
+		
 	}
 	return html;
 	

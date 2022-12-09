@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100" style="overflow:hidden;">
 
 <head>
 <script src="../customjs/config.js"></script>
@@ -38,10 +38,10 @@
 </style>
 <div id="head"></div>
 
-<body >
+<body class="h-100" style="overflow:hidden;">
 
     <header id="header"></header>
-    <div class="container-fluid  py-1 ">
+    <div class="container-fluid  py-1 " style="height:calc(100% - 100px);min-height:calc(100% - 100px);max-height:calc(100% - 100px);overflow:hidden;" >
         <div class="row ">
 
             <div class="col-md-5 text-center">
@@ -57,13 +57,13 @@
             
         </div>
         
-                <div class="row scroll">
-             <div class="d-md-block col-md-3 col-sm-5 sidebar">
+                <div class="row h-100">
+             <div class="d-md-block col-md-3 col-sm-5 sidebar " style="height:calc(100% - 100px);min-height:calc(100% - 100px);max-height:calc(100% - 100px);overflow:auto;">
                     
                 </div>
-                <div class=" col-12 col-md-9 col-sm-7  ">
+                <div class=" col-12 col-md-9 col-sm-7  " style="height:calc(100% - 100px);min-height:calc(100% - 100px);max-height:calc(100% - 100px);overflow:auto;">
                     <div class="col" id="content">
-                        <div id="maincontent" class="scroll"></div>
+                        <div id="maincontent" class="scroll" ></div>
                     </div>
                 </div>
         
@@ -98,8 +98,7 @@
     
     $(document).ready(() => {
     	checksession();
-    	$(".scroll").css("height", $(window).height()-200);
-
+    	//$(".scroll").css("height", $(window).height()-200);
         $("#logoutlink").on("click", function () {
 
             sessionStorage.clear();
