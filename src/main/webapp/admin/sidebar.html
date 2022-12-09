@@ -46,13 +46,15 @@
 
 $(document).ready(() => {
 	
+	
+		
 	jQuery('.accordion-button').click( function(e) {
-	    jQuery('.collapse').collapse('hide');
+    	
+	    jQuery('.accordion-collapse').collapse('hide');
+	    //jQuery('.collapsenav').collapse('hide');
+	    //$('.navbar-collapse').collapse('hide');
 	});
 
-		
-
-  
 	var userType=sessionStorage.getItem("usertype");
 	var sideHtmlmanageServices="";
 	var sideHtmlupdateServices="";
@@ -115,6 +117,7 @@ $(document).ready(() => {
 	 }
 	 
 	  $(".navigate").on('click', function () {
+		  
 		  timerStopFunction(window.inquiryIntervalTimer);
 		  timerStopFunction(window.grievanceIntervalTimer);
 			  
@@ -124,6 +127,7 @@ $(document).ready(() => {
 	        target = $this.data('target');
 
 	        $('#maincontent').load(target + '.html');
+	        $('.navbar-collapse').collapse('hide');
 	        return false;
 	    })
 

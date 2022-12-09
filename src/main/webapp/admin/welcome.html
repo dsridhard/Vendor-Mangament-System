@@ -58,9 +58,29 @@
         </div>
         
                 <div class="row h-100">
-             <div class="d-md-block col-md-3 col-sm-5 sidebar " style="height:calc(100% - 100px);min-height:calc(100% - 100px);max-height:calc(100% - 100px);overflow:auto;">
-                    
+                <div class="d-block d-md-none col-md-3 col-sm-5  " >
+                
+   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Menu</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+        <div class="navbar-nav sidebar pt-2">
+          <!-- <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="#">Features</a>
+          <a class="nav-link" href="#">Pricing</a>
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
+        </div>
+      </div>
+    </nav>
+  
                 </div>
+                
+                
+            <div class="d-none d-md-block col-md-3 col-sm-5 sidebar " style="height:calc(100% - 100px);min-height:calc(100% - 100px);max-height:calc(100% - 100px);overflow:auto;">
+                    
+                </div> 
                 <div class=" col-12 col-md-9 col-sm-7  " style="height:calc(100% - 100px);min-height:calc(100% - 100px);max-height:calc(100% - 100px);overflow:auto;">
                     <div class="col" id="content">
                         <div id="maincontent" class="scroll" ></div>
@@ -97,6 +117,8 @@
 
     
     $(document).ready(() => {
+    	
+    	
     	checksession();
     	//$(".scroll").css("height", $(window).height()-200);
         $("#logoutlink").on("click", function () {
@@ -168,5 +190,6 @@
         	        
     });
 </script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
 
 </html>
